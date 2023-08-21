@@ -21,7 +21,21 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            {
+              "scheme": "https",
+              "host": "*.soundspy.io",
+              "pathPrefix": "/records"
+            }
+          ],
+          "category": [ "BROWSABLE", "DEFAULT" ]
+        }
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png",
@@ -29,7 +43,7 @@
     },
     "plugins": [
       "expo-router"
-    ]
-  },
-  "scheme": "your-app-scheme"
+    ],
+    "scheme": "https"
+  }
 }
