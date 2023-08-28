@@ -1,6 +1,6 @@
 import { View, Text } from 'react-native'
 import React from 'react'
-import Loader from '../components/Loader'
+import Loader from '../../components/Loader'
 
 export default function HistoryScreen() {
   return (
