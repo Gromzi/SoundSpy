@@ -1,5 +1,6 @@
 import { View, Text } from 'react-native'
 import React from 'react'
+import Loader from '../components/Loader'
 
 export default function HistoryScreen() {
   return (
@@ -10,7 +11,8 @@ export default function HistoryScreen() {
         alignItems: 'center',
       }}
     >
-      <Text>History Screen</Text>
+      <Text>History screen</Text>
+      <Loader size="large" color="#0000ff" />
     </View>
   )
 }
