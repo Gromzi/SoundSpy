@@ -1,11 +1,11 @@
 import { View, Text, Pressable } from "react-native";
-import React from "react";
-import { Link } from "expo-router";
+import React, { useEffect } from "react";
 import { useAuthStore } from "../../auth/store/authStore";
 import { login, logout } from "../../auth/auth";
+import { IUser } from "../../auth/interfaces/IUser";
 
 export default function SettingsScreen() {
-  const user = useAuthStore((state) => state.user);
+  const user: IUser | null = useAuthStore((state) => state.user);
 
   return (
     <View
