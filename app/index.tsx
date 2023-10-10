@@ -1,5 +1,10 @@
+import { AppAuthInitializer } from '../utils/AppAuthInitializer'
 import WelcomeScreen from './welcome'
 
 export default function index() {
-  return <WelcomeScreen />
+  return (
+    <AppAuthInitializer>
+      <WelcomeScreen />
+    </AppAuthInitializer>
+  )
 }
