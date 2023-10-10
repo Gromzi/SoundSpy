@@ -1,6 +1,6 @@
-import { Tabs } from "expo-router";
-import { AntDesign } from "@expo/vector-icons";
-import { AppAuthInitializer } from "../../utils/AppAuthInitializer";
+import { Tabs } from 'expo-router'
+import { AntDesign } from '@expo/vector-icons'
+import { AppAuthInitializer } from '../../utils/AppAuthInitializer'
 
 export default () => {
   return (
@@ -9,7 +9,7 @@ export default () => {
         <Tabs.Screen
           name="history"
           options={{
-            tabBarLabel: "History",
+            tabBarLabel: 'History',
             tabBarIcon: ({ color, size }) => (
               <AntDesign name="book" size={size} color={color} />
             ),
@@ -19,7 +19,7 @@ export default () => {
         <Tabs.Screen
           name="home"
           options={{
-            tabBarLabel: "Home",
+            tabBarLabel: 'Home',
             tabBarIcon: ({ color, size }) => (
               <AntDesign name="home" size={size} color={color} />
             ),
@@ -29,7 +29,7 @@ export default () => {
         <Tabs.Screen
           name="settings"
           options={{
-            tabBarLabel: "Settings",
+            tabBarLabel: 'Settings',
             tabBarIcon: ({ color, size }) => (
               <AntDesign name="setting" size={size} color={color} />
             ),
@@ -45,5 +45,5 @@ export default () => {
         />
       </Tabs>
     </AppAuthInitializer>
-  );
-};
+  )
+}
