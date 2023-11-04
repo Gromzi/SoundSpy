@@ -1,10 +1,8 @@
 import { Tabs } from 'expo-router'
 import { AntDesign } from '@expo/vector-icons'
-import { AppAuthInitializer } from '../../utils/AppAuthInitializer'
 
 export default () => {
   return (
-    <AppAuthInitializer>
       <Tabs backBehavior="history">
         <Tabs.Screen
           name="history"
@@ -44,6 +42,5 @@ export default () => {
           }}
         />
       </Tabs>
-    </AppAuthInitializer>
   )
 }
