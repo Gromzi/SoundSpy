@@ -19,7 +19,7 @@ const Logo = () => {
 
 const styles = StyleSheet.create({
     circle: {
-        top: -95,
+        marginTop: '50%',
         width: 250,
         height: 250,
         borderRadius: 250 / 2,
