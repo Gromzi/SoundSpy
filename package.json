@@ -26,7 +26,8 @@
     "react-native-screens": "~3.22.0",
     "react-native-web": "~0.19.6",
     "zustand": "^4.4.1",
-    "expo-font": "~11.4.0"
+    "expo-font": "~11.4.0",
+    "expo-navigation-bar": "~2.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
