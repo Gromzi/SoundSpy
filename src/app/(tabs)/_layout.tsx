@@ -6,8 +6,7 @@ import { useColorScheme } from 'react-native'
 
 export default () => {
   const colorScheme = useColorScheme()
-  const colors =
-    colorPalette[colorScheme === 'dark' ? 'dark' : 'light']
+  const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light']
 
   return (
     <Tabs
@@ -38,11 +37,7 @@ export default () => {
         options={{
           tabBarLabel: 'Home',
           tabBarIcon: ({ color, size }) => (
-            <MaterialIcons
-              name="music-note"
-              size={size}
-              color={color}
-            />
+            <MaterialIcons name="music-note" size={size} color={color} />
           ),
           headerShown: false,
         }}
@@ -52,11 +47,7 @@ export default () => {
         options={{
           tabBarLabel: 'Settings',
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons
-              name="cog"
-              size={size}
-              color={color}
-            />
+            <MaterialCommunityIcons name="cog" size={size} color={color} />
           ),
           headerShown: false,
         }}

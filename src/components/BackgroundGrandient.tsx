@@ -6,12 +6,9 @@ type BackgroundGrandientProps = {
   children: React.ReactNode
 }
 
-const BackgroundGrandient = ({
-  children,
-}: BackgroundGrandientProps) => {
+const BackgroundGrandient = ({ children }: BackgroundGrandientProps) => {
   const colorScheme = useColorScheme()
-  const colors =
-    colorPalette[colorScheme === 'dark' ? 'dark' : 'light']
+  const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light']
 
   return (
     <>
@@ -21,7 +18,6 @@ const BackgroundGrandient = ({
         end={{ x: 0.5, y: 1 }}
         style={{
           flex: 1,
-          justifyContent: 'center',
           alignItems: 'center',
         }}
       >
