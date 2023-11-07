@@ -22,7 +22,6 @@ const TabLabel = ({ labelText, icon }: TabLabelProps) => {
 
 const styles = StyleSheet.create({
   mainContainer: {
-    marginTop: '10%',
     width: '100%',
     height: 50,
     overflow: 'hidden',

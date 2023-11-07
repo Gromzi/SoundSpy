@@ -66,7 +66,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Kanit-Medium',
   },
   inputContainer: {
-    marginTop: '30%',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -75,7 +74,7 @@ const styles = StyleSheet.create({
     width: '100%',
     paddingLeft: 35,
     paddingRight: 35,
-    paddingTop: 50,
+    paddingTop: 90,
     paddingBottom: 20,
   },
 })
