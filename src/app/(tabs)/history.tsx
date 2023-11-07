@@ -1,6 +1,5 @@
 import { View, Text, StyleSheet, useColorScheme } from 'react-native'
 import React from 'react'
-import Loader from '../../components/Loader'
 import { BackgroundGrandient } from '../../components/BackgroundGrandient'
 import TabLabel from '../../components/TabLabel'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
