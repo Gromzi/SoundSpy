@@ -12,7 +12,7 @@ const Logo = () => {
         style={styles.gradient}
       >
         <Text style={[styles.text, { color: colorPalette.dark.text }]}>
-          SoundSpy
+          SoundSet
         </Text>
       </LinearGradient>
     </View>
