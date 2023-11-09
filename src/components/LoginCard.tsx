@@ -1,13 +1,25 @@
 import { View, StyleSheet, useColorScheme, Text, Pressable } from 'react-native'
 import { colorPalette } from '../theme/colors'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
+import { login } from '../auth/auth'
+import { useRouter } from 'expo-router'
+import * as Animatable from 'react-native-animatable'
 
 const LoginCard = () => {
   const colorScheme = useColorScheme()
   const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light']
 
+  const router = useRouter()
+
+  const onLoginPressHandler = () => {
+    login()
+    router.back()
+  }
+
   return (
-    <View
+    <Animatable.View
+      animation={'fadeInUpBig'}
+      duration={500}
       style={[
         styles.card,
         styles.iosShadow,
@@ -69,6 +81,7 @@ const LoginCard = () => {
       <View style={{ height: 30 }}></View>
 
       <Pressable
+        onPress={onLoginPressHandler}
         style={[
           styles.button,
           styles.iosShadow,
@@ -84,7 +97,7 @@ const LoginCard = () => {
           Log in with email
         </Text>
       </Pressable>
-    </View>
+    </Animatable.View>
   )
 }
 

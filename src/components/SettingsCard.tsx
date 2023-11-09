@@ -2,11 +2,12 @@ import { View, StyleSheet, useColorScheme, Text, Pressable } from 'react-native'
 import { colorPalette } from '../theme/colors'
 import { Avatar } from 'react-native-paper'
 import { MaterialIcons } from '@expo/vector-icons'
-import { login, logout } from '../auth/auth'
+import { logout } from '../auth/auth'
 import { IUser } from '../auth/interfaces/IUser'
 import { useAuthStore } from '../auth/store/authStore'
 import React from 'react'
-import { Link, useRouter } from 'expo-router'
+import { Link } from 'expo-router'
+import * as Animatable from 'react-native-animatable'
 
 const SettingsCard = () => {
   const user: IUser | null = useAuthStore((state) => state.user)
@@ -15,7 +16,9 @@ const SettingsCard = () => {
   const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light']
 
   return (
-    <View
+    <Animatable.View
+      animation={'fadeInUpBig'}
+      duration={500}
       style={[
         styles.card,
         styles.iosShadow,
@@ -129,7 +132,7 @@ const SettingsCard = () => {
           />
         </Pressable>
       </View>
-    </View>
+    </Animatable.View>
   )
 }
 

@@ -1,36 +1,48 @@
-import { Text, Pressable, StyleSheet, View } from "react-native";
-import { SplashScreen, useRouter } from "expo-router";
-import { useAuthStore } from "../auth/store/authStore";
-import { IUser } from "../auth/interfaces/IUser";
-import { login } from "../auth/auth";
-import { BackgroundGrandient } from "../components/BackgroundGrandient";
-import Logo from "../components/Logo";
-import { colorPalette } from "../theme/colors";
-
-SplashScreen.preventAutoHideAsync();
+import { Text, Pressable, StyleSheet, View } from 'react-native'
+import { SplashScreen, useRouter } from 'expo-router'
+import { useAuthStore } from '../auth/store/authStore'
+import { IUser } from '../auth/interfaces/IUser'
+import { login } from '../auth/auth'
+import { BackgroundGrandient } from '../components/BackgroundGrandient'
+import Logo from '../components/Logo'
+import { colorPalette } from '../theme/colors'
+import { useState } from 'react'
+import * as Animatable from 'react-native-animatable'
 
 export default function WelcomeScreen() {
-  const user: IUser | null = useAuthStore((state) => state.user);
+  const user: IUser | null = useAuthStore((state) => state.user)
+
+  const [animationEnded, setAnimationEnded] = useState(false)
 
   const handleContinueClick = () => {
-    const router = useRouter();
-    router.replace("/home");
-  };
+    const router = useRouter()
+    router.replace('/home')
+  }
 
   return (
     <BackgroundGrandient>
       <View style={styles.mainContainer}>
         <Logo />
         <View style={styles.inputContainer}>
-          <Pressable onPress={handleContinueClick}>
+          <Pressable android_ripple={{}} onPress={handleContinueClick}>
             {user ? (
-              <Text style={[styles.text, { fontSize: 24 }]}>
+              <Animatable.Text
+                animation={'pulse'}
+                iterationCount={'infinite'}
+                duration={2000}
+                style={[styles.text, { fontSize: 24 }]}
+              >
                 Continue as {user.username}
-              </Text>
+              </Animatable.Text>
             ) : (
-              <Text style={[styles.text, { fontSize: 24 }]}>
+              <Animatable.Text
+                animation={'pulse'}
+                iterationCount={'infinite'}
+                duration={2000}
+                style={[styles.text, { fontSize: 24 }]}
+              >
                 Continue as guest
-              </Text>
+              </Animatable.Text>
             )}
           </Pressable>
 
@@ -44,21 +56,21 @@ export default function WelcomeScreen() {
         </View>
       </View>
     </BackgroundGrandient>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
   text: {
     color: colorPalette.dark.text,
-    fontFamily: "Kanit-Medium",
+    fontFamily: 'Kanit-Medium',
   },
   inputContainer: {
     marginTop: '30%',
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   mainContainer: {
     flex: 1,
-    alignItems: "center",
-  }
-});
+    alignItems: 'center',
+  },
+})

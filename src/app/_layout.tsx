@@ -1,13 +1,13 @@
 import { SplashScreen, Stack } from 'expo-router'
 import { AppAuthInitializer } from '../utils/AppAuthInitializer'
 import { useFonts } from 'expo-font'
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import {
   ThemeProvider,
   DarkTheme,
   DefaultTheme,
 } from '@react-navigation/native'
-import { useColorScheme } from 'react-native'
+import { Platform, useColorScheme } from 'react-native'
 import * as NavigationBar from 'expo-navigation-bar'
 import { colorPalette } from '../theme/colors'
 
@@ -23,6 +23,12 @@ export default () => {
     NavigationBar.setBackgroundColorAsync(colorPalette.light.contrast)
     NavigationBar.setButtonStyleAsync('dark')
   }
+
+  const isWeb = useMemo(() => Platform.OS === 'web', [])
+  useEffect(() => {
+    if (isWeb)
+      document.body.style.cssText = `height: ${window.innerHeight * 0.01}px};`
+  }, [])
 
   const [fontsLoaded, fontError] = useFonts({
     'Kanit-Regular': require('../../assets/fonts/Kanit-Regular.ttf'),
@@ -40,18 +46,10 @@ export default () => {
 
   return (
     <AppAuthInitializer>
-      <ThemeProvider
-        value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
-      >
+      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
         <Stack>
-          <Stack.Screen
-            name="index"
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="(tabs)"
-            options={{ headerShown: false }}
-          />
+          <Stack.Screen name="index" options={{ headerShown: false }} />
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         </Stack>
       </ThemeProvider>
     </AppAuthInitializer>
