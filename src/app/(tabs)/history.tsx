@@ -4,6 +4,7 @@ import { BackgroundGrandient } from '../../components/BackgroundGrandient'
 import TabLabel from '../../components/TabLabel'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { colorPalette } from '../../theme/colors'
+import HistoryCard from '../../components/HistoryCard'
 
 export default function HistoryScreen() {
   const colorScheme = useColorScheme()
@@ -22,9 +23,8 @@ export default function HistoryScreen() {
             />
           }
         />
-
-        <Text>History screen</Text>
       </View>
+      <HistoryCard />
     </BackgroundGrandient>
   )
 }
@@ -41,9 +41,9 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     width: '100%',
+    justifyContent: 'space-between',
     paddingLeft: 35,
     paddingRight: 35,
     paddingTop: 90,
-    paddingBottom: 20,
   },
 })

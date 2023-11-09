@@ -1,4 +1,10 @@
-import { View, StyleSheet, useColorScheme, Text, Pressable } from 'react-native'
+import {
+  View,
+  StyleSheet,
+  useColorScheme,
+  Text,
+  TouchableOpacity,
+} from 'react-native'
 import { colorPalette } from '../theme/colors'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { login } from '../auth/auth'
@@ -32,7 +38,12 @@ const LoginCard = () => {
           size={100}
           color={colors.secondary}
         />
-        <Text style={[styles.text, { fontSize: 38, color: colors.cardText }]}>
+        <Text
+          style={[
+            styles.text,
+            { fontSize: 38, color: colors.cardText, textAlign: 'center' },
+          ]}
+        >
           Save your data
         </Text>
         <Text
@@ -45,23 +56,7 @@ const LoginCard = () => {
         </Text>
       </View>
 
-      {/* <ButtonWithIcon
-        text="Log In with Google"
-        icon={
-          <MaterialCommunityIcons name="google" size={32} color={'black'} />
-        }
-        color={colors.text}
-      />
-
-      <View style={{ height: 30 }}></View>
-
-      <ButtonWithIcon
-        text="Log In with email"
-        icon={<MaterialCommunityIcons name="email" size={32} color={'black'} />}
-        color={colors.secondary}
-      /> */}
-
-      <Pressable
+      <TouchableOpacity
         style={[
           styles.button,
           styles.iosShadow,
@@ -76,11 +71,11 @@ const LoginCard = () => {
         <Text style={[styles.text, { color: colors.contrast }]}>
           Log in with Google
         </Text>
-      </Pressable>
+      </TouchableOpacity>
 
       <View style={{ height: 30 }}></View>
 
-      <Pressable
+      <TouchableOpacity
         onPress={onLoginPressHandler}
         style={[
           styles.button,
@@ -96,7 +91,7 @@ const LoginCard = () => {
         <Text style={[styles.text, { color: colors.contrast }]}>
           Log in with email
         </Text>
-      </Pressable>
+      </TouchableOpacity>
     </Animatable.View>
   )
 }

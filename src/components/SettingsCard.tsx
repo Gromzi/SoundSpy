@@ -1,4 +1,10 @@
-import { View, StyleSheet, useColorScheme, Text, Pressable } from 'react-native'
+import {
+  View,
+  StyleSheet,
+  useColorScheme,
+  Text,
+  TouchableOpacity,
+} from 'react-native'
 import { colorPalette } from '../theme/colors'
 import { Avatar } from 'react-native-paper'
 import { MaterialIcons } from '@expo/vector-icons'
@@ -52,7 +58,9 @@ const SettingsCard = () => {
 
         {user ? (
           <React.Fragment>
-            <Pressable style={[styles.buttonContainer, { marginBottom: 20 }]}>
+            <TouchableOpacity
+              style={[styles.buttonContainer, { marginBottom: 20 }]}
+            >
               <Text style={[styles.text, { color: colors.cardText }]}>
                 Edit account
               </Text>
@@ -61,8 +69,8 @@ const SettingsCard = () => {
                 size={32}
                 color={colors.cardText}
               />
-            </Pressable>
-            <Pressable
+            </TouchableOpacity>
+            <TouchableOpacity
               onPress={logout}
               hitSlop={10}
               style={[styles.buttonContainer, { marginBottom: 20 }]}
@@ -75,8 +83,10 @@ const SettingsCard = () => {
                 size={32}
                 color={colors.cardText}
               />
-            </Pressable>
-            <Pressable style={[styles.buttonContainer, { marginBottom: 30 }]}>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.buttonContainer, { marginBottom: 30 }]}
+            >
               <Text style={[styles.text, { color: colors.error }]}>
                 Delete account
               </Text>
@@ -85,7 +95,7 @@ const SettingsCard = () => {
                 size={32}
                 color={colors.error}
               />
-            </Pressable>
+            </TouchableOpacity>
           </React.Fragment>
         ) : (
           <React.Fragment>
@@ -94,7 +104,7 @@ const SettingsCard = () => {
               href={'/login'}
               asChild
             >
-              <Pressable hitSlop={10}>
+              <TouchableOpacity hitSlop={10}>
                 <Text style={[styles.text, { color: colors.cardText }]}>
                   Login
                 </Text>
@@ -103,7 +113,7 @@ const SettingsCard = () => {
                   size={32}
                   color={colors.cardText}
                 />
-              </Pressable>
+              </TouchableOpacity>
             </Link>
           </React.Fragment>
         )}
@@ -121,7 +131,7 @@ const SettingsCard = () => {
           App configuration
         </Text>
 
-        <Pressable style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.buttonContainer}>
           <Text style={[styles.text, { color: colors.cardText }]}>
             Duration of recording
           </Text>
@@ -130,7 +140,7 @@ const SettingsCard = () => {
             size={32}
             color={colors.cardText}
           />
-        </Pressable>
+        </TouchableOpacity>
       </View>
     </Animatable.View>
   )

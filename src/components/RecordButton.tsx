@@ -1,15 +1,14 @@
-import { View, StyleSheet, useColorScheme, Pressable } from 'react-native'
+import { StyleSheet, useColorScheme, TouchableOpacity } from 'react-native'
 import { colorPalette } from '../theme/colors'
 import { MaterialIcons } from '@expo/vector-icons'
 import * as Animatable from 'react-native-animatable'
-import { useState } from 'react'
 
 const RecordButton = () => {
   const colorScheme = useColorScheme()
   const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light']
 
   return (
-    <Pressable>
+    <TouchableOpacity>
       <Animatable.View
         animation={'pulse'}
         iterationCount={'infinite'}
@@ -22,7 +21,7 @@ const RecordButton = () => {
       >
         <MaterialIcons name="music-note" size={175} color={colors.primary} />
       </Animatable.View>
-    </Pressable>
+    </TouchableOpacity>
   )
 }
 

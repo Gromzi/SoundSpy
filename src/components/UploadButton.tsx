@@ -1,4 +1,10 @@
-import { View, Text, StyleSheet, useColorScheme } from 'react-native'
+import {
+  View,
+  Text,
+  StyleSheet,
+  useColorScheme,
+  TouchableOpacity,
+} from 'react-native'
 import { colorPalette } from '../theme/colors'
 import { MaterialIcons } from '@expo/vector-icons'
 import * as Animatable from 'react-native-animatable'
@@ -8,17 +14,19 @@ const UploadButton = () => {
   const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light']
 
   return (
-    <Animatable.View
-      animation={'fadeInUpBig'}
-      duration={1500}
-      style={[
-        styles.circle,
-        styles.iosShadow,
-        { backgroundColor: colors.secondary },
-      ]}
-    >
-      <MaterialIcons name="file-upload" size={30} color={colors.primary} />
-    </Animatable.View>
+    <TouchableOpacity>
+      <Animatable.View
+        animation={'fadeInUpBig'}
+        duration={1500}
+        style={[
+          styles.circle,
+          styles.iosShadow,
+          { backgroundColor: colors.secondary },
+        ]}
+      >
+        <MaterialIcons name="file-upload" size={30} color={colors.primary} />
+      </Animatable.View>
+    </TouchableOpacity>
   )
 }
 
