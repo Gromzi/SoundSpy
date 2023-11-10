@@ -8,12 +8,16 @@ import {
 import { colorPalette } from '../theme/colors'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { login } from '../auth/auth'
-import { useRouter } from 'expo-router'
+import { Link, useRouter } from 'expo-router'
 import * as Animatable from 'react-native-animatable'
+import { useState } from 'react'
+import LoginModal from './LoginModal'
 
 const LoginCard = () => {
   const colorScheme = useColorScheme()
   const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light']
+
+  const [modalVisible, setModalVisible] = useState(false)
 
   const router = useRouter()
 
@@ -32,6 +36,8 @@ const LoginCard = () => {
         { backgroundColor: colors.contrast },
       ]}
     >
+      <LoginModal visible={modalVisible} setVisible={setModalVisible} />
+
       <View style={styles.headerContainer}>
         <MaterialCommunityIcons
           name="cloud-check"
@@ -57,6 +63,7 @@ const LoginCard = () => {
       </View>
 
       <TouchableOpacity
+        onPress={onLoginPressHandler}
         style={[
           styles.button,
           styles.iosShadow,
@@ -75,23 +82,26 @@ const LoginCard = () => {
 
       <View style={{ height: 30 }}></View>
 
-      <TouchableOpacity
-        onPress={onLoginPressHandler}
+      <Link
+        href={'/login'}
         style={[
           styles.button,
           styles.iosShadow,
           { backgroundColor: colors.secondary },
         ]}
+        asChild
       >
-        <MaterialCommunityIcons
-          name="email"
-          size={32}
-          color={colors.contrast}
-        />
-        <Text style={[styles.text, { color: colors.contrast }]}>
-          Log in with email
-        </Text>
-      </TouchableOpacity>
+        <TouchableOpacity>
+          <MaterialCommunityIcons
+            name="email"
+            size={32}
+            color={colors.contrast}
+          />
+          <Text style={[styles.text, { color: colors.contrast }]}>
+            Log in with email
+          </Text>
+        </TouchableOpacity>
+      </Link>
     </Animatable.View>
   )
 }

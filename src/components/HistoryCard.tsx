@@ -1,8 +1,5 @@
-import { View, StyleSheet, useColorScheme, Text, Image } from 'react-native'
+import { StyleSheet, useColorScheme, Text, Image } from 'react-native'
 import { colorPalette } from '../theme/colors'
-import { MaterialCommunityIcons } from '@expo/vector-icons'
-import { login } from '../auth/auth'
-import { useRouter } from 'expo-router'
 import * as Animatable from 'react-native-animatable'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { ScrollView } from 'react-native-gesture-handler'
@@ -11,13 +8,6 @@ import AccordionItem from './AccordionItem'
 const HistoryCard = () => {
   const colorScheme = useColorScheme()
   const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light']
-
-  const router = useRouter()
-
-  const onLoginPressHandler = () => {
-    login()
-    router.back()
-  }
 
   return (
     <Animatable.View

@@ -101,7 +101,7 @@ const SettingsCard = () => {
           <React.Fragment>
             <Link
               style={[styles.buttonContainer, { marginBottom: 20 }]}
-              href={'/login'}
+              href={'/auth'}
               asChild
             >
               <TouchableOpacity hitSlop={10}>
