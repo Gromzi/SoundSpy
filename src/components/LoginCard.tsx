@@ -4,6 +4,7 @@ import {
   useColorScheme,
   Text,
   TouchableOpacity,
+  Platform,
 } from 'react-native'
 import { colorPalette } from '../theme/colors'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
@@ -12,16 +13,30 @@ import { Link, useRouter } from 'expo-router'
 import * as Animatable from 'react-native-animatable'
 import { useState } from 'react'
 import LoginModal from './LoginModal'
+import * as WebBrowser from 'expo-web-browser'
+import * as Google from 'expo-auth-session/providers/google'
+import { IUser } from '../auth/interfaces/IUser'
+import { useAuthStore } from '../auth/store/authStore'
 
 const LoginCard = () => {
   const colorScheme = useColorScheme()
   const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light']
+
+  // const user: IUser | null = useAuthStore((state) => state.user)
+
+  // Platform.OS === 'web' && WebBrowser.maybeCompleteAuthSession()
+  // const [request, response, promptAsync] = Google.useAuthRequest({
+  //   androidClientId:
+  //     '859237873642-h8phdeqtoqicf2vcr714ofg5bcn6n79f.apps.googleusercontent.com',
+  //   ...{ useProxy: true },
+  // })
 
   const [modalVisible, setModalVisible] = useState(false)
 
   const router = useRouter()
 
   const onLoginPressHandler = () => {
+    // Platform.OS === 'android' && promptAsync()
     login()
     router.back()
   }

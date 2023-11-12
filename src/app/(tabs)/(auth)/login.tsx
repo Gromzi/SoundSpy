@@ -1,10 +1,4 @@
-import {
-  View,
-  Text,
-  useColorScheme,
-  StyleSheet,
-  TouchableOpacity,
-} from 'react-native'
+import { View, Text, useColorScheme, StyleSheet } from 'react-native'
 import React, { useState } from 'react'
 import { colorPalette } from '../../../theme/colors'
 import { Button, TextInput } from 'react-native-paper'

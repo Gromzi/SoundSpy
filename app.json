@@ -20,8 +20,9 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#8B1874"
       },
+      "package": "com.gromzi.SoundSet",
       "intentFilters": [
         {
           "action": "VIEW",
@@ -44,6 +45,14 @@
     "plugins": [
       "expo-router"
     ],
-    "scheme": "https"
+    "scheme": "https",
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "fdbd1d90-f651-4282-9c9a-ae8ada5a6ae8"
+      }
+    }
   }
 }
