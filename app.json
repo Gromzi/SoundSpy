@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "SoundSet",
-    "slug": "SoundSet",
+    "slug": "soundset",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -22,7 +22,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#8B1874"
       },
-      "package": "com.gromzi.SoundSet",
+      "package": "com.gromzi.soundset",
       "intentFilters": [
         {
           "action": "VIEW",
@@ -42,10 +42,11 @@
       "favicon": "./assets/favicon.png",
       "bundler": "metro"
     },
+    "scheme": "soundset",
     "plugins": [
-      "expo-router"
+      "expo-router",
+      "@react-native-google-signin/google-signin"
     ],
-    "scheme": "https",
     "extra": {
       "router": {
         "origin": false

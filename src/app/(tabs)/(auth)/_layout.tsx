@@ -12,7 +12,7 @@ export default () => {
       <Stack.Screen
         name="login"
         options={{
-          headerTitle: 'Log in with email',
+          headerTitle: 'Log in with E-Mail',
           headerTintColor: colors.cardText,
           headerStyle: { backgroundColor: colors.contrast },
         }}

@@ -81,9 +81,9 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace 'com.gromzi.SoundSet'
+    namespace 'com.gromzi.soundset'
     defaultConfig {
-        applicationId 'com.gromzi.SoundSet'
+        applicationId 'com.gromzi.soundset'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

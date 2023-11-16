@@ -8,37 +8,58 @@ import {
 } from 'react-native'
 import { colorPalette } from '../theme/colors'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
-import { login } from '../auth/auth'
+import { login, signInWithGoogle } from '../auth/auth'
 import { Link, useRouter } from 'expo-router'
 import * as Animatable from 'react-native-animatable'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import LoginModal from './LoginModal'
 import * as WebBrowser from 'expo-web-browser'
 import * as Google from 'expo-auth-session/providers/google'
 import { IUser } from '../auth/interfaces/IUser'
 import { useAuthStore } from '../auth/store/authStore'
+import { makeRedirectUri } from 'expo-auth-session'
+
+WebBrowser.maybeCompleteAuthSession()
 
 const LoginCard = () => {
   const colorScheme = useColorScheme()
   const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light']
 
-  // const user: IUser | null = useAuthStore((state) => state.user)
+  const user: IUser | null = useAuthStore((state) => state.user)
 
-  // Platform.OS === 'web' && WebBrowser.maybeCompleteAuthSession()
-  // const [request, response, promptAsync] = Google.useAuthRequest({
-  //   androidClientId:
-  //     '859237873642-h8phdeqtoqicf2vcr714ofg5bcn6n79f.apps.googleusercontent.com',
-  //   ...{ useProxy: true },
-  // })
+  const [request, response, promptAsync] = Google.useAuthRequest({
+    androidClientId:
+      '859237873642-h8phdeqtoqicf2vcr714ofg5bcn6n79f.apps.googleusercontent.com',
+    iosClientId: '', // need to use IOS to get iosClientId
+    webClientId: '', // need to host web app on https protocol
+
+    redirectUri: makeRedirectUri({
+      scheme: 'com.gromzi.SoundSet',
+      path: '/settings',
+    }),
+  })
 
   const [modalVisible, setModalVisible] = useState(false)
 
   const router = useRouter()
 
-  const onLoginPressHandler = () => {
-    // Platform.OS === 'android' && promptAsync()
-    login()
-    router.back()
+  // const onLoginPressHandler = () => {
+  //   Platform.OS === 'android' && promptAsync()
+  //   login()
+  //   router.back()
+  // }
+
+  useEffect(() => {
+    handleSignInWithGoogle()
+  }, [response])
+
+  const handleSignInWithGoogle = async () => {
+    if (response?.type === 'success') {
+      console.log('response type: ', response?.type)
+      await signInWithGoogle(response.authentication?.accessToken)
+    } else {
+      console.log('response type: ', response?.type)
+    }
   }
 
   return (
@@ -78,7 +99,15 @@ const LoginCard = () => {
       </View>
 
       <TouchableOpacity
-        onPress={onLoginPressHandler}
+        disabled={user ? true : false}
+        onPress={() => {
+          if (Platform.OS === 'android') promptAsync()
+          else {
+            console.log('Only available on Android')
+            return
+          }
+          // router.replace('/settings')
+        }}
         style={[
           styles.button,
           styles.iosShadow,
@@ -98,6 +127,7 @@ const LoginCard = () => {
       <View style={{ height: 30 }}></View>
 
       <Link
+        disabled={user ? true : false}
         href={'/login'}
         style={[
           styles.button,
@@ -113,7 +143,7 @@ const LoginCard = () => {
             color={colors.contrast}
           />
           <Text style={[styles.text, { color: colors.contrast }]}>
-            Log in with email
+            Log in with E-Mail
           </Text>
         </TouchableOpacity>
       </Link>

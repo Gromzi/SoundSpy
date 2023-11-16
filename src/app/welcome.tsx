@@ -28,7 +28,7 @@ export default function WelcomeScreen() {
                 duration={2000}
                 style={[styles.text, { fontSize: 24 }]}
               >
-                Continue as {user.username}
+                Continue as {user.name}
               </Animatable.Text>
             ) : (
               <Animatable.Text

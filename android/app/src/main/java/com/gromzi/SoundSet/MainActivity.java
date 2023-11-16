@@ -1,4 +1,4 @@
-package com.gromzi.SoundSet;
+package com.gromzi.soundset;
 
 import android.os.Build;
 import android.os.Bundle;

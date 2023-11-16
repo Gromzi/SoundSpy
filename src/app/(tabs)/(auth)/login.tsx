@@ -3,6 +3,8 @@ import React, { useState } from 'react'
 import { colorPalette } from '../../../theme/colors'
 import { Button, TextInput } from 'react-native-paper'
 import { Controller, useForm } from 'react-hook-form'
+import { login } from '../../../auth/auth'
+import { router } from 'expo-router'
 
 type FormData = {
   email: string
@@ -122,6 +124,15 @@ export default function LoginScreen() {
         style={{ width: '100%', maxWidth: 400, borderRadius: 4, marginTop: 20 }}
       >
         Sign in
+      </Button>
+
+      <Button
+        onPress={() => {
+          login()
+          router.replace('/settings')
+        }}
+      >
+        Test login
       </Button>
     </View>
   )

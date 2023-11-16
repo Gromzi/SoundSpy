@@ -38,7 +38,7 @@ const SettingsCard = () => {
         />
         {user ? (
           <Text style={[styles.text, { color: colors.cardText }]}>
-            {user.username}
+            {user.name}
           </Text>
         ) : (
           <Text style={[styles.text, { color: colors.cardText }]}>Guest</Text>
