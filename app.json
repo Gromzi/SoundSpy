@@ -1,15 +1,15 @@
 {
   "expo": {
-    "name": "SoundSpy",
-    "slug": "SoundSpy",
+    "name": "SoundSet",
+    "slug": "soundset",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/splashscreen.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#8B1874"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -20,8 +20,9 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#8B1874"
       },
+      "package": "com.gromzi.soundset",
       "intentFilters": [
         {
           "action": "VIEW",
@@ -41,9 +42,18 @@
       "favicon": "./assets/favicon.png",
       "bundler": "metro"
     },
+    "scheme": "soundset",
     "plugins": [
-      "expo-router"
+      "expo-router",
+      "@react-native-google-signin/google-signin"
     ],
-    "scheme": "https"
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "fdbd1d90-f651-4282-9c9a-ae8ada5a6ae8"
+      }
+    }
   }
 }
