@@ -1,14 +1,78 @@
-import { StyleSheet, useColorScheme, TouchableOpacity } from 'react-native'
+import {
+  StyleSheet,
+  useColorScheme,
+  TouchableOpacity,
+  Alert,
+  Platform,
+} from 'react-native'
 import { colorPalette } from '../theme/colors'
 import { MaterialIcons } from '@expo/vector-icons'
 import * as Animatable from 'react-native-animatable'
 
-const RecordButton = () => {
+type Props = {
+  recording: boolean
+  setRecording: React.Dispatch<React.SetStateAction<boolean>>
+
+  waitingForResponse: boolean
+}
+
+const RecordButton = ({
+  recording,
+  setRecording,
+  waitingForResponse,
+}: Props) => {
   const colorScheme = useColorScheme()
   const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light']
 
-  return (
-    <TouchableOpacity>
+  const showAlert = () =>
+    Alert.alert(
+      'Cancel Recording',
+      'Are you sure you want to cancel recording?',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => setRecording(false),
+          style: 'destructive',
+        },
+        {
+          text: 'Keep recording',
+        },
+      ],
+      {
+        cancelable: true,
+      }
+    )
+
+  const handleRecordPress = () => {
+    if (recording) {
+      if (Platform.OS === 'web') {
+        if (confirm('Are you sure you want to cancel recording?')) {
+          setRecording(false)
+        } else null
+      } else showAlert()
+    } else setRecording(true)
+  }
+
+  let recordButton: React.ReactNode = null
+
+  if (recording) {
+    recordButton = (
+      <Animatable.View
+        animation={'bounce'}
+        direction={'alternate'}
+        iterationCount={'infinite'}
+        duration={2000}
+        style={[
+          styles.circle,
+          styles.iosShadow,
+          { backgroundColor: colors.error },
+        ]}
+      >
+        <MaterialIcons name="music-note" size={175} color={colors.primary} />
+      </Animatable.View>
+    )
+  } else if (!recording) {
+    recordButton = (
       <Animatable.View
         animation={'pulse'}
         iterationCount={'infinite'}
@@ -21,6 +85,12 @@ const RecordButton = () => {
       >
         <MaterialIcons name="music-note" size={175} color={colors.primary} />
       </Animatable.View>
+    )
+  }
+
+  return (
+    <TouchableOpacity onPress={handleRecordPress} disabled={waitingForResponse}>
+      {recordButton}
     </TouchableOpacity>
   )
 }
