@@ -68,7 +68,7 @@ const RecordButton = ({
         style={[
           styles.circle,
           styles.iosShadow,
-          { backgroundColor: colors.error },
+          { backgroundColor: '#e80001' },
         ]}
       >
         <MaterialIcons name="music-note" size={175} color={colors.primary} />
