@@ -27,7 +27,7 @@ export default () => {
   const isWeb = useMemo(() => Platform.OS === 'web', [])
   useEffect(() => {
     if (isWeb)
-      document.body.style.cssText = `height: ${window.innerHeight * 0.01}px};`
+      document.body.style.cssText = `height: ${window.innerHeight * 0.01}px;`
   }, [])
 
   const [fontsLoaded, fontError] = useFonts({

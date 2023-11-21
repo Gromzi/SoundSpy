@@ -153,6 +153,7 @@ const LoginCard = () => {
 
 const styles = StyleSheet.create({
   card: {
+    top: 1,
     width: '100%',
     height: 520,
     maxWidth: 500,

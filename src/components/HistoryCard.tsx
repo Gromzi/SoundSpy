@@ -62,6 +62,7 @@ const HistoryCard = () => {
 
 const styles = StyleSheet.create({
   card: {
+    top: 1,
     width: '100%',
     height: 520,
     maxWidth: 500,
@@ -72,8 +73,8 @@ const styles = StyleSheet.create({
     elevation: 50,
 
     paddingTop: 15,
-    paddingLeft: 10,
-    paddingRight: 10,
+    paddingLeft: 15,
+    paddingRight: 15,
   },
   historyContainer: {
     margin: 10,

@@ -1,4 +1,5 @@
 import { Audio } from 'expo-av'
+import { MONO_PRESET } from './customRecordingPresets'
 
 const useRecordSound = (
   setIsRecording: React.Dispatch<React.SetStateAction<boolean>>
@@ -17,9 +18,7 @@ const useRecordSound = (
 
       console.log('Starting recording..')
 
-      const { recording } = await Audio.Recording.createAsync(
-        Audio.RecordingOptionsPresets.HIGH_QUALITY
-      )
+      const { recording } = await Audio.Recording.createAsync(MONO_PRESET)
       recordingVar = recording
       console.log('Recording started')
       setIsRecording(true)
