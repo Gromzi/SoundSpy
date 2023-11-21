@@ -8,21 +8,24 @@ import {
 import { colorPalette } from '../theme/colors'
 import { MaterialIcons } from '@expo/vector-icons'
 import * as Animatable from 'react-native-animatable'
+import useRecordSound from '../utils/useRecordSound'
 
 type Props = {
-  recording: boolean
-  setRecording: React.Dispatch<React.SetStateAction<boolean>>
+  isRecording: boolean
+  setIsRecording: React.Dispatch<React.SetStateAction<boolean>>
 
   waitingForResponse: boolean
 }
 
 const RecordButton = ({
-  recording,
-  setRecording,
+  isRecording,
+  setIsRecording,
   waitingForResponse,
 }: Props) => {
   const colorScheme = useColorScheme()
   const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light']
+
+  const { startRecording, stopRecording } = useRecordSound(setIsRecording)
 
   const showAlert = () =>
     Alert.alert(
@@ -31,7 +34,7 @@ const RecordButton = ({
       [
         {
           text: 'Cancel',
-          onPress: () => setRecording(false),
+          onPress: () => stopRecording(),
           style: 'destructive',
         },
         {
@@ -44,18 +47,18 @@ const RecordButton = ({
     )
 
   const handleRecordPress = () => {
-    if (recording) {
+    if (isRecording) {
       if (Platform.OS === 'web') {
         if (confirm('Are you sure you want to cancel recording?')) {
-          setRecording(false)
+          stopRecording()
         } else null
       } else showAlert()
-    } else setRecording(true)
+    } else startRecording()
   }
 
   let recordButton: React.ReactNode = null
 
-  if (recording) {
+  if (isRecording) {
     recordButton = (
       <Animatable.View
         animation={'bounce'}
@@ -71,7 +74,7 @@ const RecordButton = ({
         <MaterialIcons name="music-note" size={175} color={colors.primary} />
       </Animatable.View>
     )
-  } else if (!recording) {
+  } else if (!isRecording) {
     recordButton = (
       <Animatable.View
         animation={'pulse'}

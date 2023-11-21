@@ -6,12 +6,12 @@ import UploadButton from '../../components/UploadButton'
 import * as Animatable from 'react-native-animatable'
 
 export default function HomeScreen() {
-  const [recording, setRecording] = useState<boolean>(false)
-  const [waitingForResponse, setWaitingForResponse] = useState<boolean>(true)
+  const [isRecording, setIsRecording] = useState<boolean>(false)
+  const [waitingForResponse, setWaitingForResponse] = useState<boolean>(false)
 
   let bottomText: ReactNode = null
 
-  if (recording && !waitingForResponse) {
+  if (isRecording && !waitingForResponse) {
     bottomText = (
       <Animatable.Text
         animation={'shake'}
@@ -22,7 +22,7 @@ export default function HomeScreen() {
         Now recording . . .
       </Animatable.Text>
     )
-  } else if (!recording && !waitingForResponse) {
+  } else if (!isRecording && !waitingForResponse) {
     bottomText = (
       <Animatable.Text
         animation={'pulse'}
@@ -33,7 +33,7 @@ export default function HomeScreen() {
         Press the big button to start recording sound!
       </Animatable.Text>
     )
-  } else if (!recording && waitingForResponse) {
+  } else if (!isRecording && waitingForResponse) {
     bottomText = (
       <Animatable.Text
         animation={'swing'}
@@ -50,8 +50,8 @@ export default function HomeScreen() {
     <BackgroundGrandient>
       <View style={styles.mainContainer}>
         <RecordButton
-          recording={recording}
-          setRecording={setRecording}
+          isRecording={isRecording}
+          setIsRecording={setIsRecording}
           waitingForResponse={waitingForResponse}
         />
         <UploadButton />

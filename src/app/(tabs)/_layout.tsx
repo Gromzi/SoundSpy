@@ -21,6 +21,7 @@ export default () => {
       <Tabs.Screen
         name="history"
         options={{
+          // tabBarShowLabel: false,
           tabBarLabel: 'History',
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons
@@ -35,6 +36,7 @@ export default () => {
       <Tabs.Screen
         name="home"
         options={{
+          // tabBarShowLabel: false,
           tabBarLabel: 'Home',
           tabBarIcon: ({ color, size }) => (
             <MaterialIcons name="music-note" size={size} color={color} />
@@ -45,6 +47,7 @@ export default () => {
       <Tabs.Screen
         name="settings"
         options={{
+          // tabBarShowLabel: false,
           tabBarLabel: 'Settings',
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="cog" size={size} color={color} />
