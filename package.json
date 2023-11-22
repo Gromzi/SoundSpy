@@ -36,7 +36,8 @@
     "react-native-screens": "~3.22.0",
     "react-native-web": "~0.19.6",
     "zustand": "^4.4.1",
-    "expo-av": "~13.4.1"
+    "expo-av": "~13.4.1",
+    "expo-file-system": "~15.4.5"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

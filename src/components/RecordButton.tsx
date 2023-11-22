@@ -24,14 +24,14 @@ const RecordButton = ({
   const colorScheme = useColorScheme()
   const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light']
 
-  const { startRecording, stopRecording, showAlert } =
+  const { startRecording, abortRecording, showAlert } =
     useRecordSound(setIsRecording)
 
   const handleRecordPress = () => {
     if (isRecording) {
       if (Platform.OS === 'web') {
         if (confirm('Are you sure you want to cancel recording?')) {
-          stopRecording()
+          abortRecording()
         } else null
       } else {
         showAlert()

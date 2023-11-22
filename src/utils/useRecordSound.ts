@@ -1,14 +1,18 @@
 import { Audio } from 'expo-av'
 import { MONO_PRESET } from './customRecordingPresets'
 import { Alert } from 'react-native'
+import { useState } from 'react'
 
 const useRecordSound = (
   setIsRecording: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
   let recording: Audio.Recording | null = null
+  const [recordingState, setRecordingState] = useState<Audio.Recording | null>(
+    null
+  )
+  // const [recording, setRecording] = useState<Audio.Recording | null>(null)
+  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null)
   let uri: string | null = null
-  let isAborted: boolean = false
-  let timeoutId: NodeJS.Timeout | null = null
 
   const startRecording = async () => {
     try {
@@ -24,15 +28,22 @@ const useRecordSound = (
       const { recording: newRecording } = await Audio.Recording.createAsync(
         MONO_PRESET
       )
+      // setRecording(newRecording)
+      setRecordingState(newRecording)
       recording = newRecording
       console.log('Recording setup complete')
 
       // Automatically stop recording after 5 seconds
-      timeoutId = setTimeout(() => {
-        if (!isAborted) {
-          stopRecording()
-        }
-      }, 5150)
+
+      setTimeoutId(
+        setTimeout(() => {
+          console.log(
+            'Recording state in timeout: ',
+            recording ? 'jest' : 'nie ma'
+          )
+          stopRecordingAutomatically(recording)
+        }, 5150)
+      )
 
       setIsRecording(true)
 
@@ -43,14 +54,16 @@ const useRecordSound = (
     }
   }
 
-  const stopRecording = async () => {
+  const stopRecordingAutomatically = async (
+    recording: Audio.Recording | null
+  ) => {
     try {
       if (!recording) {
         console.log('No recording to stop')
         return
       }
 
-      console.log('Stopping recording...')
+      console.log('Stopping recording automatically...')
 
       await recording.stopAndUnloadAsync()
       await Audio.setAudioModeAsync({
@@ -61,22 +74,53 @@ const useRecordSound = (
 
       const recordingStatus = await recording.getStatusAsync()
       const recordingDuration = recordingStatus.durationMillis
+      console.log('Time of recording: ', recordingDuration)
 
-      if (recordingDuration >= 5000) {
-        console.log('Time of recording: ', recordingDuration)
+      uri = recording.getURI()
+      console.log('Recording finished and stored at', uri)
+      // SEND RECORDING TO SERVER
 
-        uri = recording.getURI()
-        console.log('Recording finished and stored at', uri)
-        // SEND RECORDING TO SERVER
-      } else {
-        console.log('Recording aborted. Duration: ', recordingDuration)
-        console.log('Aborted recording state: ', recording)
+      if (uri) {
+        console.log('Playing back recorded sound..')
+        const playbackObject = new Audio.Sound()
+        await playbackObject.loadAsync({ uri: uri })
+        await playbackObject.playAsync()
+        console.log('Playback complete')
       }
 
       recording = null
+
       setIsRecording(false)
     } catch (error) {
       console.error('Failed to stop recording', error)
+    }
+  }
+
+  const abortRecording = async () => {
+    try {
+      if (!recordingState || recordingState._isDoneRecording) {
+        console.log('No recording to stop')
+        return
+      }
+
+      console.log('Aborting recording...')
+
+      await recordingState.stopAndUnloadAsync()
+      await Audio.setAudioModeAsync({
+        allowsRecordingIOS: false,
+      })
+
+      console.log('Recording state: ', recording)
+
+      const recordingStatus = await recordingState.getStatusAsync()
+      const recordingDuration = recordingStatus.durationMillis
+      console.log('Recording aborted. Duration: ', recordingDuration)
+
+      setRecordingState(null)
+
+      setIsRecording(false)
+    } catch (error) {
+      console.error('Failed to abort recording', error)
     }
   }
 
@@ -88,15 +132,13 @@ const useRecordSound = (
         {
           text: 'Cancel',
           onPress: () => {
-            clearTimeout(timeoutId!)
-            isAborted = true
-            stopRecording()
+            clearTimeout(timeoutId as NodeJS.Timeout)
+            abortRecording()
           },
           style: 'destructive',
         },
         {
           text: 'Keep recording',
-          onPress: () => (isAborted = false),
         },
       ],
       {
@@ -104,7 +146,7 @@ const useRecordSound = (
       }
     )
 
-  return { startRecording, stopRecording, showAlert, getUri: () => uri }
+  return { startRecording, abortRecording, showAlert, getUri: () => uri }
 }
 
 export default useRecordSound
