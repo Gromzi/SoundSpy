@@ -27,7 +27,8 @@ export default function HomeScreen() {
       <Animatable.Text
         animation={'pulse'}
         iterationCount={'infinite'}
-        duration={2000}
+        direction={'alternate'}
+        duration={3000}
         style={styles.text}
       >
         Press the big button to start recording sound!
