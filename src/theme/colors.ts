@@ -7,6 +7,7 @@ const colorPalette = {
     text: '#FCECDD',
     cardText: '#FCECDD',
     error: '#D43232',
+    darkerPrimary: "#731460",
   },
   light: {
     primary: '#F79540',
@@ -16,6 +17,7 @@ const colorPalette = {
     text: '#FCECDD',
     cardText: '#2F3033',
     error: '#D43232',
+    darkerPrimary: "#cf7d36",
   },
 }
 

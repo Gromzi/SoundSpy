@@ -11,7 +11,7 @@ const useSendRecording = ({ audioUri }: Props) => {
 
       // Generate a unique filename (e.g., timestamp + original filename)
       const timestamp = Date.now()
-      const filename = `recording_${timestamp}.wav`
+      const filename = `recording_${timestamp}.wav` //do poprawy rozszerzenie
 
       // Create FormData and append the Blob
       const formData = new FormData()
