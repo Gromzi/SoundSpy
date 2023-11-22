@@ -13,7 +13,6 @@ import useRecordSound from '../utils/useRecordSound'
 type Props = {
   isRecording: boolean
   setIsRecording: React.Dispatch<React.SetStateAction<boolean>>
-
   waitingForResponse: boolean
 }
 
@@ -25,26 +24,8 @@ const RecordButton = ({
   const colorScheme = useColorScheme()
   const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light']
 
-  const { startRecording, stopRecording } = useRecordSound(setIsRecording)
-
-  const showAlert = () =>
-    Alert.alert(
-      'Cancel Recording',
-      'Are you sure you want to cancel recording?',
-      [
-        {
-          text: 'Cancel',
-          onPress: () => stopRecording(),
-          style: 'destructive',
-        },
-        {
-          text: 'Keep recording',
-        },
-      ],
-      {
-        cancelable: true,
-      }
-    )
+  const { startRecording, stopRecording, showAlert } =
+    useRecordSound(setIsRecording)
 
   const handleRecordPress = () => {
     if (isRecording) {
@@ -52,48 +33,29 @@ const RecordButton = ({
         if (confirm('Are you sure you want to cancel recording?')) {
           stopRecording()
         } else null
-      } else showAlert()
-    } else startRecording()
-  }
-
-  let recordButton: React.ReactNode = null
-
-  if (isRecording) {
-    recordButton = (
-      <Animatable.View
-        animation={'bounce'}
-        direction={'alternate'}
-        iterationCount={'infinite'}
-        duration={2000}
-        style={[
-          styles.circle,
-          styles.iosShadow,
-          { backgroundColor: '#e80001' },
-        ]}
-      >
-        <MaterialIcons name="music-note" size={175} color={colors.primary} />
-      </Animatable.View>
-    )
-  } else if (!isRecording) {
-    recordButton = (
-      <Animatable.View
-        animation={'pulse'}
-        iterationCount={'infinite'}
-        duration={3000}
-        style={[
-          styles.circle,
-          styles.iosShadow,
-          { backgroundColor: colors.secondary },
-        ]}
-      >
-        <MaterialIcons name="music-note" size={175} color={colors.primary} />
-      </Animatable.View>
-    )
+      } else {
+        showAlert()
+      }
+    } else {
+      startRecording()
+    }
   }
 
   return (
     <TouchableOpacity onPress={handleRecordPress} disabled={waitingForResponse}>
-      {recordButton}
+      <Animatable.View
+        animation={isRecording ? 'bounce' : 'pulse'}
+        direction={'alternate'}
+        iterationCount={'infinite'}
+        duration={isRecording ? 2000 : 3000}
+        style={[
+          styles.circle,
+          styles.iosShadow,
+          { backgroundColor: isRecording ? '#e80001' : colors.secondary },
+        ]}
+      >
+        <MaterialIcons name="music-note" size={175} color={colors.primary} />
+      </Animatable.View>
     </TouchableOpacity>
   )
 }

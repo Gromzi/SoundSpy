@@ -1,11 +1,14 @@
 import { Audio } from 'expo-av'
 import { MONO_PRESET } from './customRecordingPresets'
+import { Alert } from 'react-native'
 
 const useRecordSound = (
   setIsRecording: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
-  let recordingVar: Audio.Recording | null = null
+  let recording: Audio.Recording | null = null
   let uri: string | null = null
+  let isAborted: boolean = false
+  let timeoutId: NodeJS.Timeout | null = null
 
   const startRecording = async () => {
     try {
@@ -16,58 +19,92 @@ const useRecordSound = (
         playsInSilentModeIOS: true,
       })
 
-      console.log('Starting recording..')
+      console.log('Starting recording setup..')
 
-      const { recording } = await Audio.Recording.createAsync(MONO_PRESET)
-      recordingVar = recording
-      console.log('Recording started')
-      setIsRecording(true)
+      const { recording: newRecording } = await Audio.Recording.createAsync(
+        MONO_PRESET
+      )
+      recording = newRecording
+      console.log('Recording setup complete')
 
       // Automatically stop recording after 5 seconds
-      setTimeout(() => {
-        stopRecording()
+      timeoutId = setTimeout(() => {
+        if (!isAborted) {
+          stopRecording()
+        }
       }, 5150)
+
+      setIsRecording(true)
+
+      console.log('Starting recording..')
     } catch (error) {
       console.error('Failed to start recording', error)
+      setIsRecording(false)
     }
   }
 
   const stopRecording = async () => {
     try {
-      if (recordingVar) {
-        console.log('Stopping recording...')
+      if (!recording) {
+        console.log('No recording to stop')
+        return
+      }
 
-        setIsRecording(false)
-        await recordingVar.stopAndUnloadAsync()
-        await Audio.setAudioModeAsync({
-          allowsRecordingIOS: false,
-        })
+      console.log('Stopping recording...')
 
-        console.log('Recording state: ', recordingVar)
+      await recording.stopAndUnloadAsync()
+      await Audio.setAudioModeAsync({
+        allowsRecordingIOS: false,
+      })
 
-        const recordingDuration = await recordingVar
-          .getStatusAsync()
-          .then((result) => result.durationMillis)
+      console.log('Recording state: ', recording)
 
-        if (recordingDuration >= 5000) {
-          console.log('Time of recording: ', recordingDuration)
+      const recordingStatus = await recording.getStatusAsync()
+      const recordingDuration = recordingStatus.durationMillis
 
-          uri = recordingVar.getURI()
-          console.log('Recording finished and stored at', uri)
-          // SEND RECORDING TO SERVER
-        } else {
-          console.log('Recording aborted. Duration: ', recordingDuration)
-          console.log('Aborted recording state: ', recordingVar)
-        }
+      if (recordingDuration >= 5000) {
+        console.log('Time of recording: ', recordingDuration)
 
-        recordingVar = null
-      } else console.log('No recording to stop')
+        uri = recording.getURI()
+        console.log('Recording finished and stored at', uri)
+        // SEND RECORDING TO SERVER
+      } else {
+        console.log('Recording aborted. Duration: ', recordingDuration)
+        console.log('Aborted recording state: ', recording)
+      }
+
+      recording = null
+      setIsRecording(false)
     } catch (error) {
       console.error('Failed to stop recording', error)
     }
   }
 
-  return { startRecording, stopRecording, uri }
+  const showAlert = () =>
+    Alert.alert(
+      'Cancel Recording',
+      'Are you sure you want to cancel recording?',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => {
+            clearTimeout(timeoutId!)
+            isAborted = true
+            stopRecording()
+          },
+          style: 'destructive',
+        },
+        {
+          text: 'Keep recording',
+          onPress: () => (isAborted = false),
+        },
+      ],
+      {
+        cancelable: true,
+      }
+    )
+
+  return { startRecording, stopRecording, showAlert, getUri: () => uri }
 }
 
 export default useRecordSound
