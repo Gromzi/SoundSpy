@@ -8,13 +8,22 @@ import {
 import { colorPalette } from '../theme/colors'
 import { MaterialIcons } from '@expo/vector-icons'
 import * as Animatable from 'react-native-animatable'
+import { pickFile } from '../utils/pickFile'
 
-const UploadButton = () => {
+type Props = {
+  isRecording: boolean
+  waitingForResponse: boolean
+}
+
+const UploadButton = ({ isRecording, waitingForResponse }: Props) => {
   const colorScheme = useColorScheme()
   const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light']
 
   return (
-    <TouchableOpacity>
+    <TouchableOpacity
+      onPress={pickFile}
+      disabled={isRecording || waitingForResponse}
+    >
       <Animatable.View
         animation={'fadeInUpBig'}
         duration={1500}

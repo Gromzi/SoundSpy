@@ -55,7 +55,10 @@ export default function HomeScreen() {
           setIsRecording={setIsRecording}
           waitingForResponse={waitingForResponse}
         />
-        <UploadButton />
+        <UploadButton
+          isRecording={isRecording}
+          waitingForResponse={waitingForResponse}
+        />
 
         {bottomText}
       </View>
