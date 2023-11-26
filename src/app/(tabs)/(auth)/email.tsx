@@ -35,7 +35,7 @@ export default function LoginScreen() {
     })
       .then((response) => response.json())
       .then((json) => {
-        // console.log(json);
+        console.log(json);
         return json.exist;
       })
       .catch((error) => {
