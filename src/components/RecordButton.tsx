@@ -52,6 +52,7 @@ const RecordButton = ({
           styles.circle,
           styles.iosShadow,
           { backgroundColor: isRecording ? '#e80001' : colors.secondary },
+          waitingForResponse ? styles.opacity : null,
         ]}
       >
         <MaterialIcons name="music-note" size={175} color={colors.primary} />
@@ -88,6 +89,9 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.5,
     shadowRadius: 50,
+  },
+  opacity: {
+    opacity: 0.5,
   },
 })
 

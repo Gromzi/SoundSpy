@@ -1,31 +1,41 @@
 type Props = {
   audioUri: string
+  setIsWaitingForResponse: React.Dispatch<React.SetStateAction<boolean>>
+  fileName?: string
 }
 
-const useSendRecording = ({ audioUri }: Props) => {
+const useSendRecording = ({
+  audioUri,
+  setIsWaitingForResponse,
+  fileName,
+}: Props) => {
   const sendRecording = async () => {
     try {
-      // Fetch the audio content
-      const response = await fetch(audioUri)
-      const blob = await response.blob()
+      let filename: string
 
-      // Generate a unique filename (e.g., timestamp + original filename)
-      const timestamp = Date.now()
-      const filename = `recording_${timestamp}.wav` //do poprawy rozszerzenie
+      if (!fileName) {
+        const extension = audioUri.split('.').pop()
+        const timestamp = Date.now()
+        filename = `recording_${timestamp}.${extension}`
+      } else {
+        filename = fileName
+      }
 
-      // Create FormData and append the Blob
+      const fileContent = await fetch(audioUri).then((res) => res.blob())
+
       const formData = new FormData()
-      formData.append('audio', blob, filename)
+      formData.append('audio', fileContent, filename)
 
-      // Make a POST request to the server
+      setIsWaitingForResponse(true)
       const serverResponse = await fetch('YOUR_ENDPOINT_URL', {
         method: 'POST',
         body: formData,
       })
 
       if (serverResponse.ok) {
+        setIsWaitingForResponse(false)
         console.log('Recording sent successfully')
-        // Handle the server response if needed
+        // Handle the server response
       } else {
         console.error('Failed to send recording to the server')
       }
