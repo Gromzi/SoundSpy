@@ -22,40 +22,38 @@ export default function LoginScreen() {
   });
   const onSubmit = async (data: FormData) => {
     console.log(data);
+    try {
+      const response = await fetch(
+        `https://soundspy.test/api/auth/exist?email=${encodeURIComponent(
+          data.email
+        )}`,
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const json = await response.json();
+      const exist = json.exist;
 
-    const exist = await fetch("https://soundspy.test/api/auth/exist", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: data.email,
-      }),
-    })
-      .then((response) => response.json())
-      .then((json) => {
-        console.log(json);
-        return json.exist;
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-
-    if (exist) {
-      router.push({
-        pathname: "/login",
-        params: {
-          email: data.email,
-        },
-      });
-    } else {
-      router.push({
-        pathname: "/register",
-        params: {
-          email: data.email,
-        },
-      });
+      if (exist) {
+        router.push({
+          pathname: "/login",
+          params: {
+            email: data.email,
+          },
+        });
+      } else {
+        router.push({
+          pathname: "/register",
+          params: {
+            email: data.email,
+          },
+        });
+      }
+    } catch (error) {
+      console.error(error);
     }
   };
 
