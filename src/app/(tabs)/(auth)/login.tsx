@@ -1,11 +1,11 @@
-import { View, Text, useColorScheme, StyleSheet } from "react-native";
-import React, { useEffect, useState } from "react";
-import { colorPalette } from "../../../theme/colors";
-import { Avatar, Button, TextInput } from "react-native-paper";
-import { Controller, useForm } from "react-hook-form";
-import { login } from "../../../auth/auth";
-import { router, useLocalSearchParams } from "expo-router";
-import Loader from "../../../components/Loader";
+import { View, Text, useColorScheme, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { colorPalette } from '../../../theme/colors';
+import { Avatar, Button, TextInput } from 'react-native-paper';
+import { Controller, useForm } from 'react-hook-form';
+import { login } from '../../../auth/auth';
+import { router, useLocalSearchParams } from 'expo-router';
+import Loader from '../../../components/Loader';
 
 type FormData = {
   email: string;
@@ -29,7 +29,7 @@ export default function LoginScreen() {
   } = useForm<FormData>({
     defaultValues: {
       email: email?.toString(),
-      password: "",
+      password: '',
     },
   });
 
@@ -39,11 +39,11 @@ export default function LoginScreen() {
     console.log(data);
 
     try {
-      const response = await fetch("https://soundspy.test/api/auth/login", {
-        method: "POST",
+      const response = await fetch('https://soundspy.test/api/auth/login', {
+        method: 'POST',
         headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           email: data.email,
@@ -74,8 +74,8 @@ export default function LoginScreen() {
         )}`,
         {
           headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
           },
         }
       );
@@ -91,7 +91,7 @@ export default function LoginScreen() {
   }, []);
 
   const colorScheme = useColorScheme();
-  const colors = colorPalette[colorScheme === "dark" ? "dark" : "light"];
+  const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light'];
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -102,10 +102,10 @@ export default function LoginScreen() {
           {loginData?.picture ? (
             <Avatar.Image source={{ uri: loginData?.picture }} size={120} />
           ) : (
-            <Avatar.Icon size={120} icon="account" />
+            <Avatar.Icon size={120} icon='account' />
           )}
 
-          <View style={{ width: "100%", alignItems: "center" }}>
+          <View style={{ width: '100%', alignItems: 'center' }}>
             <Text
               style={{ color: colors.secondary, fontSize: 35, marginEnd: 0 }}
             >
@@ -128,23 +128,23 @@ export default function LoginScreen() {
             rules={{
               required: {
                 value: true,
-                message: "Email is required",
+                message: 'Email is required',
               },
               pattern: {
                 value: /\S+@\S+\.\S+/,
-                message: "Entered value does not match email format",
+                message: 'Entered value does not match email format',
               },
             }}
             render={({ field: { onChange, onBlur, value } }) => (
               <TextInput
-                label="E-Mail"
-                mode="outlined"
+                label='E-Mail'
+                mode='outlined'
                 editable={false}
-                style={{ width: "100%", maxWidth: 400, display: "none" }}
+                style={{ width: '100%', maxWidth: 400, display: 'none' }}
                 error={errors.email ? true : false}
                 left={
                   <TextInput.Icon
-                    icon={"email"}
+                    icon={'email'}
                     color={colors.disabledCardContrast}
                   />
                 }
@@ -160,7 +160,7 @@ export default function LoginScreen() {
                 value={value}
               />
             )}
-            name="email"
+            name='email'
           />
           {errors.email && (
             <Text style={styles.errorText}>{errors.email.message}</Text>
@@ -171,28 +171,28 @@ export default function LoginScreen() {
             rules={{
               required: {
                 value: true,
-                message: "Password is required",
+                message: 'Password is required',
               },
               pattern: {
                 value:
                   /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
                 message:
-                  "Password must be at least 8 characters long, one uppercase letter, one lowercase letter, one number and one special character",
+                  'Password must be at least 8 characters long, one uppercase letter, one lowercase letter, one number and one special character',
               },
             }}
             render={({ field: { onChange, onBlur, value } }) => (
               <TextInput
-                label="Password"
-                mode="outlined"
-                style={{ width: "100%", maxWidth: 400 }}
+                label='Password'
+                mode='outlined'
+                style={{ width: '100%', maxWidth: 400 }}
                 error={errors.password ? true : false}
                 left={
-                  <TextInput.Icon icon={"lock"} color={colors.cardContrast} />
+                  <TextInput.Icon icon={'lock'} color={colors.cardContrast} />
                 }
                 right={
                   <TextInput.Icon
                     onPress={() => setShowPassword(!showPassword)}
-                    icon={showPassword ? "eye-off" : "eye"}
+                    icon={showPassword ? 'eye-off' : 'eye'}
                     color={colors.cardText}
                   />
                 }
@@ -209,20 +209,20 @@ export default function LoginScreen() {
                 value={value}
               />
             )}
-            name="password"
+            name='password'
           />
           {errors.password && (
             <Text style={[styles.errorText]}>{errors.password.message}</Text>
           )}
 
           <Button
-            icon="login"
-            mode="outlined"
+            icon='login'
+            mode='outlined'
             onPress={handleSubmit(onSubmit)}
             buttonColor={colors.secondary}
             textColor={colors.contrast}
             style={{
-              width: "100%",
+              width: '100%',
               maxWidth: 400,
               borderRadius: 4,
               marginTop: 20,
@@ -242,7 +242,7 @@ export default function LoginScreen() {
         </>
       ) : (
         <>
-          <Loader color={colors.secondary} size={"large"} centered={true} />
+          <Loader color={colors.secondary} size={'large'} centered={true} />
         </>
       )}
     </View>
@@ -252,8 +252,8 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    width: "100%",
-    alignItems: "center",
+    width: '100%',
+    alignItems: 'center',
     paddingLeft: 35,
     paddingRight: 35,
     paddingTop: 40,
@@ -261,14 +261,14 @@ const styles = StyleSheet.create({
   },
 
   text: {
-    fontFamily: "Kanit-Regular",
+    fontFamily: 'Kanit-Regular',
   },
 
   errorText: {
     marginTop: -10,
     marginLeft: 5,
-    color: "#D43232",
-    width: "100%",
+    color: '#D43232',
+    width: '100%',
     maxWidth: 400,
   },
 });

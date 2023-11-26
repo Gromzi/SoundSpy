@@ -6,6 +6,8 @@ type Auth = {
 
 }
 
+
+
 const login = async () => {
   // mock data
   const email: string = 'ayo@gmail.com'

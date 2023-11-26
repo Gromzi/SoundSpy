@@ -1,10 +1,10 @@
-import { View, Text, useColorScheme, StyleSheet } from "react-native";
-import React, { useState } from "react";
-import { colorPalette } from "../../../theme/colors";
-import { Button, TextInput } from "react-native-paper";
-import { Controller, useForm } from "react-hook-form";
-import { login } from "../../../auth/auth";
-import { router } from "expo-router";
+import { View, Text, useColorScheme, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { colorPalette } from '../../../theme/colors';
+import { Button, TextInput } from 'react-native-paper';
+import { Controller, useForm } from 'react-hook-form';
+import { login } from '../../../auth/auth';
+import { router } from 'expo-router';
 
 type FormData = {
   email: string;
@@ -17,7 +17,7 @@ export default function LoginScreen() {
     formState: { errors },
   } = useForm<FormData>({
     defaultValues: {
-      email: "",
+      email: '',
     },
   });
   const onSubmit = async (data: FormData) => {
@@ -29,8 +29,8 @@ export default function LoginScreen() {
         )}`,
         {
           headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
           },
         }
       );
@@ -39,14 +39,14 @@ export default function LoginScreen() {
 
       if (exist) {
         router.push({
-          pathname: "/login",
+          pathname: '/login',
           params: {
             email: data.email,
           },
         });
       } else {
         router.push({
-          pathname: "/register",
+          pathname: '/register',
           params: {
             email: data.email,
           },
@@ -58,7 +58,7 @@ export default function LoginScreen() {
   };
 
   const colorScheme = useColorScheme();
-  const colors = colorPalette[colorScheme === "dark" ? "dark" : "light"];
+  const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light'];
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -69,20 +69,20 @@ export default function LoginScreen() {
         rules={{
           required: {
             value: true,
-            message: "Email is required",
+            message: 'Email is required',
           },
           pattern: {
             value: /\S+@\S+\.\S+/,
-            message: "Entered value does not match email format",
+            message: 'Entered value does not match email format',
           },
         }}
         render={({ field: { onChange, onBlur, value } }) => (
           <TextInput
-            label="E-Mail"
-            mode="outlined"
-            style={{ width: "100%", maxWidth: 400 }}
+            label='E-Mail'
+            mode='outlined'
+            style={{ width: '100%', maxWidth: 400 }}
             error={errors.email ? true : false}
-            left={<TextInput.Icon icon={"email"} color={colors.cardContrast} />}
+            left={<TextInput.Icon icon={'email'} color={colors.cardContrast} />}
             textColor={colors.cardText}
             theme={{
               colors: {
@@ -95,7 +95,7 @@ export default function LoginScreen() {
             value={value}
           />
         )}
-        name="email"
+        name='email'
       />
       {errors.email && (
         <Text style={styles.errorText}>{errors.email.message}</Text>
@@ -149,12 +149,12 @@ export default function LoginScreen() {
       )} */}
 
       <Button
-        icon="login"
-        mode="outlined"
+        icon='login'
+        mode='outlined'
         onPress={handleSubmit(onSubmit)}
         buttonColor={colors.secondary}
         textColor={colors.contrast}
-        style={{ width: "100%", maxWidth: 400, borderRadius: 4, marginTop: 20 }}
+        style={{ width: '100%', maxWidth: 400, borderRadius: 4, marginTop: 20 }}
       >
         Sign in/Register
       </Button>
@@ -174,8 +174,8 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    width: "100%",
-    alignItems: "center",
+    width: '100%',
+    alignItems: 'center',
     paddingLeft: 35,
     paddingRight: 35,
     paddingTop: 40,
@@ -183,14 +183,14 @@ const styles = StyleSheet.create({
   },
 
   text: {
-    fontFamily: "Kanit-Regular",
+    fontFamily: 'Kanit-Regular',
   },
 
   errorText: {
     marginTop: -10,
     marginLeft: 5,
-    color: "#D43232",
-    width: "100%",
+    color: '#D43232',
+    width: '100%',
     maxWidth: 400,
   },
 });
