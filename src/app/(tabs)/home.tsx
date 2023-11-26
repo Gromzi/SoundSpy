@@ -1,13 +1,15 @@
-import { View, StyleSheet, Text } from 'react-native'
+import { View, StyleSheet, Text, Button } from 'react-native'
 import React, { ReactNode, useState } from 'react'
 import { BackgroundGrandient } from '../../components/BackgroundGrandient'
 import RecordButton from '../../components/RecordButton'
 import UploadButton from '../../components/UploadButton'
 import * as Animatable from 'react-native-animatable'
+import ResultModal from '../../components/ResultModal'
 
 export default function HomeScreen() {
   const [isRecording, setIsRecording] = useState<boolean>(false)
   const [waitingForResponse, setWaitingForResponse] = useState<boolean>(false)
+  const [resultModalVisible, setResultModalVisible] = useState<boolean>(false)
 
   let bottomText: ReactNode = null
 
@@ -49,6 +51,11 @@ export default function HomeScreen() {
 
   return (
     <BackgroundGrandient>
+      <ResultModal
+        visible={resultModalVisible}
+        setVisible={setResultModalVisible}
+      />
+
       <View style={styles.mainContainer}>
         <RecordButton
           isRecording={isRecording}
@@ -58,6 +65,10 @@ export default function HomeScreen() {
         <UploadButton
           isRecording={isRecording}
           waitingForResponse={waitingForResponse}
+        />
+        <Button
+          onPress={() => setResultModalVisible(true)}
+          title="Show Modal"
         />
 
         {bottomText}
