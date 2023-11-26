@@ -1,7 +1,7 @@
 import { View, Text, useColorScheme, StyleSheet } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { colorPalette } from "../../../theme/colors";
-import { Avatar, Button, TextInput } from "react-native-paper";
+import { Button, TextInput } from "react-native-paper";
 import { Controller, useForm } from "react-hook-form";
 import { login } from "../../../auth/auth";
 import { router, useLocalSearchParams } from "expo-router";
@@ -9,11 +9,6 @@ import { router, useLocalSearchParams } from "expo-router";
 type FormData = {
   email: string;
   password: string;
-};
-
-type LoginData = {
-  name: string;
-  picture: string;
 };
 
 export default function LoginScreen() {
@@ -24,24 +19,17 @@ export default function LoginScreen() {
     control,
     handleSubmit,
     formState: { errors },
-    getValues,
   } = useForm<FormData>({
     defaultValues: {
       email: email?.toString(),
       password: "",
     },
   });
-
-  const [loginData, setLoginData] = useState<LoginData>({
-    name: "",
-    picture: "",
-  });
-
   const onSubmit = async (data: FormData) => {
     console.log(data);
 
     try {
-      const response = await fetch("https://soundspy.test/api/auth/login", {
+      const response = await fetch("https://soundspy.test/api/auth/register", {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -68,30 +56,6 @@ export default function LoginScreen() {
     }
   };
 
-  const getLoginData = async (data: FormData) => {
-    try {
-      const response = await fetch(
-        `https://soundspy.test/api/auth/logindata?email=${encodeURIComponent(
-          data.email
-        )}`,
-        {
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      const json = await response.json();
-      setLoginData(json);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  useEffect(() => {
-    getLoginData(getValues());
-  }, []);
-
   const colorScheme = useColorScheme();
   const colors = colorPalette[colorScheme === "dark" ? "dark" : "light"];
 
@@ -99,22 +63,6 @@ export default function LoginScreen() {
 
   return (
     <View style={[styles.mainContainer, { backgroundColor: colors.contrast }]}>
-      <Avatar.Image
-        source={{ uri: loginData.picture ? loginData.picture : "????????????" }}
-        size={120}
-      />
-      <View style={{ width: "100%", alignItems: "center" }}>
-        <Text style={{ color: colors.secondary, fontSize: 35, marginEnd: 0 }}>
-          Welcome back
-        </Text>
-        <Text style={{ color: colors.secondary, fontSize: 45, marginEnd: 0 }}>
-          {loginData?.name}
-        </Text>
-        <Text style={{ color: colors.secondary, fontSize: 15, marginStart: 0 }}>
-          Nice to see you
-        </Text>
-      </View>
-
       <Controller
         control={control}
         rules={{
@@ -132,7 +80,7 @@ export default function LoginScreen() {
             label="E-Mail"
             mode="outlined"
             editable={false}
-            style={{ width: "100%", maxWidth: 400, display: "none" }}
+            style={{ width: "100%", maxWidth: 400 }}
             error={errors.email ? true : false}
             left={
               <TextInput.Icon
@@ -213,7 +161,7 @@ export default function LoginScreen() {
         textColor={colors.contrast}
         style={{ width: "100%", maxWidth: 400, borderRadius: 4, marginTop: 20 }}
       >
-        Sign in
+        Register
       </Button>
 
       {/* <Button

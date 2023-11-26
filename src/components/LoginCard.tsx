@@ -5,43 +5,43 @@ import {
   Text,
   TouchableOpacity,
   Platform,
-} from 'react-native'
-import { colorPalette } from '../theme/colors'
-import { MaterialCommunityIcons } from '@expo/vector-icons'
-import { login, signInWithGoogle } from '../auth/auth'
-import { Link, useRouter } from 'expo-router'
-import * as Animatable from 'react-native-animatable'
-import { useEffect, useState } from 'react'
-import LoginModal from './LoginModal'
-import * as WebBrowser from 'expo-web-browser'
-import * as Google from 'expo-auth-session/providers/google'
-import { IUser } from '../auth/interfaces/IUser'
-import { useAuthStore } from '../auth/store/authStore'
-import { makeRedirectUri } from 'expo-auth-session'
+} from "react-native";
+import { colorPalette } from "../theme/colors";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { login, signInWithGoogle } from "../auth/auth";
+import { Link, useRouter } from "expo-router";
+import * as Animatable from "react-native-animatable";
+import { useEffect, useState } from "react";
+import LoginModal from "./LoginModal";
+import * as WebBrowser from "expo-web-browser";
+import * as Google from "expo-auth-session/providers/google";
+import { IUser } from "../auth/interfaces/IUser";
+import { useAuthStore } from "../auth/store/authStore";
+import { makeRedirectUri } from "expo-auth-session";
 
-WebBrowser.maybeCompleteAuthSession()
+WebBrowser.maybeCompleteAuthSession();
 
 const LoginCard = () => {
-  const colorScheme = useColorScheme()
-  const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light']
+  const colorScheme = useColorScheme();
+  const colors = colorPalette[colorScheme === "dark" ? "dark" : "light"];
 
-  const user: IUser | null = useAuthStore((state) => state.user)
+  const user: IUser | null = useAuthStore((state) => state.user);
 
   const [request, response, promptAsync] = Google.useAuthRequest({
     androidClientId:
-      '859237873642-h8phdeqtoqicf2vcr714ofg5bcn6n79f.apps.googleusercontent.com',
-    iosClientId: '', // need to use IOS to get iosClientId
-    webClientId: '', // need to host web app on https protocol
+      "859237873642-h8phdeqtoqicf2vcr714ofg5bcn6n79f.apps.googleusercontent.com",
+    iosClientId: "", // need to use IOS to get iosClientId
+    webClientId: "", // need to host web app on https protocol
 
     redirectUri: makeRedirectUri({
-      scheme: 'com.gromzi.SoundSet',
-      path: '/settings',
+      scheme: "com.gromzi.SoundSet",
+      path: "/settings",
     }),
-  })
+  });
 
-  const [modalVisible, setModalVisible] = useState(false)
+  const [modalVisible, setModalVisible] = useState(false);
 
-  const router = useRouter()
+  const router = useRouter();
 
   // const onLoginPressHandler = () => {
   //   Platform.OS === 'android' && promptAsync()
@@ -50,21 +50,21 @@ const LoginCard = () => {
   // }
 
   useEffect(() => {
-    handleSignInWithGoogle()
-  }, [response])
+    handleSignInWithGoogle();
+  }, [response]);
 
   const handleSignInWithGoogle = async () => {
-    if (response?.type === 'success') {
-      console.log('response type: ', response?.type)
-      await signInWithGoogle(response.authentication?.accessToken)
+    if (response?.type === "success") {
+      console.log("response type: ", response?.type);
+      await signInWithGoogle(response.authentication?.accessToken);
     } else {
-      console.log('response type: ', response?.type)
+      console.log("response type: ", response?.type);
     }
-  }
+  };
 
   return (
     <Animatable.View
-      animation={'fadeInUpBig'}
+      animation={"fadeInUpBig"}
       duration={500}
       style={[
         styles.card,
@@ -83,7 +83,7 @@ const LoginCard = () => {
         <Text
           style={[
             styles.text,
-            { fontSize: 38, color: colors.cardText, textAlign: 'center' },
+            { fontSize: 38, color: colors.cardText, textAlign: "center" },
           ]}
         >
           Save your data
@@ -91,7 +91,7 @@ const LoginCard = () => {
         <Text
           style={[
             styles.text,
-            { fontSize: 18, color: colors.cardText, textAlign: 'center' },
+            { fontSize: 18, color: colors.cardText, textAlign: "center" },
           ]}
         >
           Access your predicted genres from any device
@@ -101,10 +101,10 @@ const LoginCard = () => {
       <TouchableOpacity
         disabled={user ? true : false}
         onPress={() => {
-          if (Platform.OS === 'android') promptAsync()
+          if (Platform.OS === "android") promptAsync();
           else {
-            console.log('Only available on Android')
-            return
+            console.log("Only available on Android");
+            return;
           }
           // router.replace('/settings')
         }}
@@ -128,7 +128,7 @@ const LoginCard = () => {
 
       <Link
         disabled={user ? true : false}
-        href={'/login'}
+        href={"/email"}
         style={[
           styles.button,
           styles.iosShadow,
@@ -145,22 +145,23 @@ const LoginCard = () => {
           <Text style={[styles.text, { color: colors.contrast }]}>
             Log in with E-Mail
           </Text>
+          {/* Register */}
         </TouchableOpacity>
       </Link>
     </Animatable.View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   card: {
     top: 1,
-    width: '100%',
+    width: "100%",
     height: 520,
     maxWidth: 500,
-    maxHeight: '70%',
+    maxHeight: "70%",
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
-    alignItems: 'center',
+    alignItems: "center",
     elevation: 50,
 
     paddingTop: 30,
@@ -169,15 +170,15 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     gap: 10,
-    alignItems: 'center',
+    alignItems: "center",
     marginBottom: 55,
   },
   text: {
     fontSize: 18,
-    fontFamily: 'Kanit-Regular',
+    fontFamily: "Kanit-Regular",
   },
   iosShadow: {
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.5,
     shadowRadius: 50,
@@ -185,16 +186,16 @@ const styles = StyleSheet.create({
   button: {
     height: 44,
     width: 270,
-    overflow: 'hidden',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    overflow: "hidden",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
     gap: 12,
     paddingLeft: 16,
     paddingRight: 16,
     elevation: 50,
     borderRadius: 10,
   },
-})
+});
 
-export default LoginCard
+export default LoginCard;

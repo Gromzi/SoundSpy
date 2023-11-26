@@ -1,96 +1,63 @@
 import { View, Text, useColorScheme, StyleSheet } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { colorPalette } from "../../../theme/colors";
-import { Avatar, Button, TextInput } from "react-native-paper";
+import { Button, TextInput } from "react-native-paper";
 import { Controller, useForm } from "react-hook-form";
 import { login } from "../../../auth/auth";
-import { router, useLocalSearchParams } from "expo-router";
+import { router } from "expo-router";
 
 type FormData = {
   email: string;
-  password: string;
-};
-
-type LoginData = {
-  name: string;
-  picture: string;
 };
 
 export default function LoginScreen() {
-  const params = useLocalSearchParams();
-  const { email } = params;
-
   const {
     control,
     handleSubmit,
     formState: { errors },
-    getValues,
   } = useForm<FormData>({
     defaultValues: {
-      email: email?.toString(),
-      password: "",
+      email: "",
     },
   });
-
-  const [loginData, setLoginData] = useState<LoginData>({
-    name: "",
-    picture: "",
-  });
-
   const onSubmit = async (data: FormData) => {
     console.log(data);
 
-    try {
-      const response = await fetch("https://soundspy.test/api/auth/login", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: data.email,
-          password: data.password,
-        }),
+    const exist = await fetch("https://soundspy.test/api/auth/exist", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: data.email,
+      }),
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        // console.log(json);
+        return json.exist;
+      })
+      .catch((error) => {
+        console.error(error);
       });
-      const code = await response.status;
-      const json = await response.json();
-      console.log(code, json);
 
-      if (code == 401) {
-        //cos
-      }
-
-      if (code == 200) {
-        //cos
-      }
-    } catch (error) {
-      console.error(error);
+    if (exist) {
+      router.push({
+        pathname: "/login",
+        params: {
+          email: data.email,
+        },
+      });
+    } else {
+      router.push({
+        pathname: "/register",
+        params: {
+          email: data.email,
+        },
+      });
     }
   };
-
-  const getLoginData = async (data: FormData) => {
-    try {
-      const response = await fetch(
-        `https://soundspy.test/api/auth/logindata?email=${encodeURIComponent(
-          data.email
-        )}`,
-        {
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      const json = await response.json();
-      setLoginData(json);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  useEffect(() => {
-    getLoginData(getValues());
-  }, []);
 
   const colorScheme = useColorScheme();
   const colors = colorPalette[colorScheme === "dark" ? "dark" : "light"];
@@ -99,22 +66,6 @@ export default function LoginScreen() {
 
   return (
     <View style={[styles.mainContainer, { backgroundColor: colors.contrast }]}>
-      <Avatar.Image
-        source={{ uri: loginData.picture ? loginData.picture : "????????????" }}
-        size={120}
-      />
-      <View style={{ width: "100%", alignItems: "center" }}>
-        <Text style={{ color: colors.secondary, fontSize: 35, marginEnd: 0 }}>
-          Welcome back
-        </Text>
-        <Text style={{ color: colors.secondary, fontSize: 45, marginEnd: 0 }}>
-          {loginData?.name}
-        </Text>
-        <Text style={{ color: colors.secondary, fontSize: 15, marginStart: 0 }}>
-          Nice to see you
-        </Text>
-      </View>
-
       <Controller
         control={control}
         rules={{
@@ -131,16 +82,10 @@ export default function LoginScreen() {
           <TextInput
             label="E-Mail"
             mode="outlined"
-            editable={false}
-            style={{ width: "100%", maxWidth: 400, display: "none" }}
+            style={{ width: "100%", maxWidth: 400 }}
             error={errors.email ? true : false}
-            left={
-              <TextInput.Icon
-                icon={"email"}
-                color={colors.disabledCardContrast}
-              />
-            }
-            textColor={colors.disabledCardText}
+            left={<TextInput.Icon icon={"email"} color={colors.cardContrast} />}
+            textColor={colors.cardText}
             theme={{
               colors: {
                 primary: colors.secondary,
@@ -158,7 +103,7 @@ export default function LoginScreen() {
         <Text style={styles.errorText}>{errors.email.message}</Text>
       )}
 
-      <Controller
+      {/* <Controller
         control={control}
         rules={{
           required: {
@@ -169,7 +114,7 @@ export default function LoginScreen() {
             value:
               /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
             message:
-              "Password must be at least 8 characters long, one uppercase letter, one lowercase letter, one number and one special character",
+              "<p>Password must be at least 8 characters long, one uppercase letter, one lowercase letter, one number and one special character</p>",
           },
         }}
         render={({ field: { onChange, onBlur, value } }) => (
@@ -203,7 +148,7 @@ export default function LoginScreen() {
       />
       {errors.password && (
         <Text style={[styles.errorText]}>{errors.password.message}</Text>
-      )}
+      )} */}
 
       <Button
         icon="login"
@@ -213,7 +158,7 @@ export default function LoginScreen() {
         textColor={colors.contrast}
         style={{ width: "100%", maxWidth: 400, borderRadius: 4, marginTop: 20 }}
       >
-        Sign in
+        Sign in/Register
       </Button>
 
       {/* <Button
