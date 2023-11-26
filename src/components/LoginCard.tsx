@@ -12,7 +12,6 @@ import { login, signInWithGoogle } from '../auth/auth'
 import { Link, useRouter } from 'expo-router'
 import * as Animatable from 'react-native-animatable'
 import { useEffect, useState } from 'react'
-import LoginModal from './LoginModal'
 import * as WebBrowser from 'expo-web-browser'
 import * as Google from 'expo-auth-session/providers/google'
 import { IUser } from '../auth/interfaces/IUser'
@@ -72,8 +71,6 @@ const LoginCard = () => {
         { backgroundColor: colors.contrast },
       ]}
     >
-      <LoginModal visible={modalVisible} setVisible={setModalVisible} />
-
       <View style={styles.headerContainer}>
         <MaterialCommunityIcons
           name="cloud-check"

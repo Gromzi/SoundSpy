@@ -1,13 +1,14 @@
-import { View, Text, Modal, StyleSheet, useColorScheme } from 'react-native'
+import { Text, Modal, StyleSheet, useColorScheme } from 'react-native'
 import React from 'react'
 import { colorPalette } from '../theme/colors'
+import * as Animatable from 'react-native-animatable'
 
-type LoginModalProps = {
+type ResultModalProps = {
   visible: boolean
   setVisible: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const LoginModal = ({ visible, setVisible }: LoginModalProps) => {
+const ResultModal = ({ visible, setVisible }: ResultModalProps) => {
   const colorScheme = useColorScheme()
   const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light']
 
@@ -15,14 +16,15 @@ const LoginModal = ({ visible, setVisible }: LoginModalProps) => {
     <Modal
       visible={visible}
       onRequestClose={() => setVisible(false)}
-      animationType="slide"
+      animationType={'fade'}
       transparent
     >
-      <View
+      <Animatable.View
+        animation={'fadeInDownBig'}
         style={[styles.modalContainer, { backgroundColor: colors.contrast }]}
       >
-        <Text>LoginModal</Text>
-      </View>
+        <Text>Result Modal</Text>
+      </Animatable.View>
     </Modal>
   )
 }
@@ -32,20 +34,15 @@ const styles = StyleSheet.create({
     fontFamily: 'Kanit-Medium',
   },
   modalContainer: {
-    height: 520,
+    height: 400,
+    width: '80%',
+    maxWidth: 500,
     marginTop: '30%',
     maxHeight: '70%',
-    borderTopLeftRadius: 16,
-    borderTopRightRadius: 16,
-    // alignSelf: 'center',
-    // marginTop: 'auto',
-    // width: '100%',
-    // maxWidth: 500,
-    // height: 670,
-    // padding: 20,
-    // borderRadius: 20,
-    // alignItems: 'center',
+    alignSelf: 'center',
+    borderRadius: 20,
+    alignItems: 'center',
   },
 })
 
-export default LoginModal
+export default ResultModal
