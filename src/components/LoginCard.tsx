@@ -12,6 +12,7 @@ import { login, signInWithGoogle } from '../auth/auth'
 import { Link, useRouter } from 'expo-router'
 import * as Animatable from 'react-native-animatable'
 import { useEffect, useState } from 'react'
+import LoginModal from './LoginModal'
 import * as WebBrowser from 'expo-web-browser'
 import * as Google from 'expo-auth-session/providers/google'
 import { IUser } from '../auth/interfaces/IUser'
@@ -125,7 +126,7 @@ const LoginCard = () => {
 
       <Link
         disabled={user ? true : false}
-        href={'/login'}
+        href={'/email'}
         style={[
           styles.button,
           styles.iosShadow,
@@ -142,6 +143,7 @@ const LoginCard = () => {
           <Text style={[styles.text, { color: colors.contrast }]}>
             Log in with E-Mail
           </Text>
+          {/* Register */}
         </TouchableOpacity>
       </Link>
     </Animatable.View>

@@ -2,6 +2,9 @@ import { Platform } from 'react-native'
 import { useAuthStore } from './store/authStore'
 import * as SecureStore from 'expo-secure-store'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+type Auth = {
+
+}
 
 const login = async () => {
   // mock data
