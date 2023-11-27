@@ -1,14 +1,13 @@
-import { View, Text, useColorScheme, StyleSheet } from 'react-native';
-import React, { useState } from 'react';
-import { colorPalette } from '../../../theme/colors';
-import { Button, TextInput } from 'react-native-paper';
-import { Controller, useForm } from 'react-hook-form';
-import { login } from '../../../auth/auth';
-import { router } from 'expo-router';
+import { View, Text, useColorScheme, StyleSheet } from 'react-native'
+import React, { useState } from 'react'
+import { colorPalette } from '../../../theme/colors'
+import { Button, TextInput } from 'react-native-paper'
+import { Controller, useForm } from 'react-hook-form'
+import { router } from 'expo-router'
 
 type FormData = {
-  email: string;
-};
+  email: string
+}
 
 export default function LoginScreen() {
   const {
@@ -19,9 +18,9 @@ export default function LoginScreen() {
     defaultValues: {
       email: '',
     },
-  });
+  })
   const onSubmit = async (data: FormData) => {
-    console.log(data);
+    console.log(data)
     try {
       const response = await fetch(
         `https://soundspy.test/api/auth/exist?email=${encodeURIComponent(
@@ -33,9 +32,9 @@ export default function LoginScreen() {
             'Content-Type': 'application/json',
           },
         }
-      );
-      const json = await response.json();
-      const exist = json.exist;
+      )
+      const json = await response.json()
+      const exist = json.exist
 
       if (exist) {
         router.push({
@@ -43,24 +42,24 @@ export default function LoginScreen() {
           params: {
             email: data.email,
           },
-        });
+        })
       } else {
         router.push({
           pathname: '/register',
           params: {
             email: data.email,
           },
-        });
+        })
       }
     } catch (error) {
-      console.error(error);
+      console.error(error)
     }
-  };
+  }
 
-  const colorScheme = useColorScheme();
-  const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light'];
+  const colorScheme = useColorScheme()
+  const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light']
 
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false)
 
   return (
     <View style={[styles.mainContainer, { backgroundColor: colors.contrast }]}>
@@ -78,8 +77,8 @@ export default function LoginScreen() {
         }}
         render={({ field: { onChange, onBlur, value } }) => (
           <TextInput
-            label='E-Mail'
-            mode='outlined'
+            label="E-Mail"
+            mode="outlined"
             style={{ width: '100%', maxWidth: 400 }}
             error={errors.email ? true : false}
             left={<TextInput.Icon icon={'email'} color={colors.cardContrast} />}
@@ -95,62 +94,15 @@ export default function LoginScreen() {
             value={value}
           />
         )}
-        name='email'
+        name="email"
       />
       {errors.email && (
         <Text style={styles.errorText}>{errors.email.message}</Text>
       )}
 
-      {/* <Controller
-        control={control}
-        rules={{
-          required: {
-            value: true,
-            message: "Password is required",
-          },
-          pattern: {
-            value:
-              /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
-            message:
-              "<p>Password must be at least 8 characters long, one uppercase letter, one lowercase letter, one number and one special character</p>",
-          },
-        }}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            label="Password"
-            mode="outlined"
-            style={{ width: "100%", maxWidth: 400 }}
-            error={errors.password ? true : false}
-            left={<TextInput.Icon icon={"lock"} color={colors.cardContrast} />}
-            right={
-              <TextInput.Icon
-                onPress={() => setShowPassword(!showPassword)}
-                icon={showPassword ? "eye-off" : "eye"}
-                color={colors.cardText}
-              />
-            }
-            secureTextEntry={!showPassword}
-            textColor={colors.cardText}
-            theme={{
-              colors: {
-                primary: colors.secondary,
-                background: colors.contrast,
-              },
-            }}
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
-          />
-        )}
-        name="password"
-      />
-      {errors.password && (
-        <Text style={[styles.errorText]}>{errors.password.message}</Text>
-      )} */}
-
       <Button
-        icon='login'
-        mode='outlined'
+        icon="login"
+        mode="outlined"
         onPress={handleSubmit(onSubmit)}
         buttonColor={colors.secondary}
         textColor={colors.contrast}
@@ -168,7 +120,7 @@ export default function LoginScreen() {
         Test login
       </Button> */}
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -193,4 +145,4 @@ const styles = StyleSheet.create({
     width: '100%',
     maxWidth: 400,
   },
-});
+})
