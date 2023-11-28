@@ -1,25 +1,32 @@
-import { View, Text, useColorScheme, StyleSheet } from 'react-native';
-import React, { useEffect, useState } from 'react';
-import { colorPalette } from '../../../theme/colors';
-import { Avatar, Button, TextInput } from 'react-native-paper';
-import { Controller, useForm } from 'react-hook-form';
-import { login } from '../../../auth/auth';
-import { router, useLocalSearchParams } from 'expo-router';
-import Loader from '../../../components/Loader';
+import { View, Text, useColorScheme, StyleSheet } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { colorPalette } from '../../../theme/colors'
+import { Avatar, Button, TextInput } from 'react-native-paper'
+import { Controller, useForm } from 'react-hook-form'
+import { router, useLocalSearchParams } from 'expo-router'
+import Loader from '../../../components/Loader'
+import * as Animatable from 'react-native-animatable'
 
 type FormData = {
-  email: string;
-  password: string;
-};
+  email: string
+  password: string
+}
 
 type LoginData = {
-  name: string;
-  picture: string;
-};
+  name: string
+  picture: string
+}
 
 export default function LoginScreen() {
-  const params = useLocalSearchParams();
-  const { email } = params;
+  const colorScheme = useColorScheme()
+  const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light']
+
+  const [showPassword, setShowPassword] = useState(true)
+  const [loginData, setLoginData] = useState<LoginData | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
+
+  const params = useLocalSearchParams()
+  const { email } = params
 
   const {
     control,
@@ -31,45 +38,47 @@ export default function LoginScreen() {
       email: email?.toString(),
       password: '',
     },
-  });
-
-  const [loginData, setLoginData] = useState<LoginData | null>(null);
+  })
 
   const onSubmit = async (data: FormData) => {
-    console.log(data);
-
+    console.log(data)
+    setIsLoading(true)
     try {
-      const response = await fetch('https://soundspy.test/api/auth/login', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: data.email,
-          password: data.password,
-        }),
-      });
-      const code = await response.status;
-      const json = await response.json();
-      console.log(code, json);
+      const response = await fetch(
+        'https://soundset.webitup.pl/api/auth/login',
+        {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: data.email,
+            password: data.password,
+          }),
+        }
+      )
+      const code = await response.status
+      const json = await response.json()
+      console.log(code, json)
 
       if (code == 401) {
         //cos
       }
 
       if (code == 200) {
-        //cos
+        router.replace('/settings')
       }
     } catch (error) {
-      console.error(error);
+      console.error(error)
     }
-  };
+    setIsLoading(false)
+  }
 
   const getLoginData = async (data: FormData) => {
     try {
       const response = await fetch(
-        `https://soundspy.test/api/auth/logindata?email=${encodeURIComponent(
+        `https://soundset.webitup.pl/api/auth/logindata?email=${encodeURIComponent(
           data.email
         )}`,
         {
@@ -78,48 +87,58 @@ export default function LoginScreen() {
             'Content-Type': 'application/json',
           },
         }
-      );
-      const json = await response.json();
-      setLoginData(json);
+      )
+      const json = await response.json()
+      setLoginData(json)
     } catch (error) {
-      console.error(error);
+      console.error(error)
     }
-  };
+  }
 
   useEffect(() => {
-    getLoginData(getValues());
-  }, []);
-
-  const colorScheme = useColorScheme();
-  const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light'];
-
-  const [showPassword, setShowPassword] = useState(false);
+    getLoginData(getValues())
+  }, [])
 
   return (
-    <View style={[styles.mainContainer, { backgroundColor: colors.contrast }]}>
-      {loginData ? (
-        <>
+    <View style={{ width: '100%', flex: 1, backgroundColor: colors.contrast }}>
+      {loginData && (
+        <Animatable.View
+          style={[styles.mainContainer, { backgroundColor: colors.contrast }]}
+          animation={'fadeInUpBig'}
+        >
           {loginData?.picture ? (
             <Avatar.Image source={{ uri: loginData?.picture }} size={120} />
           ) : (
-            <Avatar.Icon size={120} icon='account' />
+            <Avatar.Icon size={120} icon="account" />
           )}
 
-          <View style={{ width: '100%', alignItems: 'center' }}>
+          <View
+            style={{ width: '100%', alignItems: 'center', marginBottom: 40 }}
+          >
             <Text
-              style={{ color: colors.secondary, fontSize: 35, marginEnd: 0 }}
+              style={[{ color: colors.secondary, fontSize: 35 }, styles.text]}
             >
               Welcome back
             </Text>
             <Text
-              style={{ color: colors.secondary, fontSize: 45, marginEnd: 0 }}
+              style={[
+                { color: colors.secondary, fontSize: 45, marginBottom: 10 },
+                styles.text,
+              ]}
             >
-              {loginData?.name}
+              {loginData.name}
             </Text>
             <Text
-              style={{ color: colors.secondary, fontSize: 15, marginStart: 0 }}
+              style={[
+                {
+                  color: colors.secondary,
+                  fontSize: 15,
+                  marginStart: 0,
+                },
+                styles.text,
+              ]}
             >
-              Nice to see you
+              Nice to see you! :)
             </Text>
           </View>
 
@@ -137,8 +156,8 @@ export default function LoginScreen() {
             }}
             render={({ field: { onChange, onBlur, value } }) => (
               <TextInput
-                label='E-Mail'
-                mode='outlined'
+                label="E-Mail"
+                mode="outlined"
                 editable={false}
                 style={{ width: '100%', maxWidth: 400, display: 'none' }}
                 error={errors.email ? true : false}
@@ -160,7 +179,7 @@ export default function LoginScreen() {
                 value={value}
               />
             )}
-            name='email'
+            name="email"
           />
           {errors.email && (
             <Text style={styles.errorText}>{errors.email.message}</Text>
@@ -182,8 +201,8 @@ export default function LoginScreen() {
             }}
             render={({ field: { onChange, onBlur, value } }) => (
               <TextInput
-                label='Password'
-                mode='outlined'
+                label="Password"
+                mode="outlined"
                 style={{ width: '100%', maxWidth: 400 }}
                 error={errors.password ? true : false}
                 left={
@@ -209,15 +228,15 @@ export default function LoginScreen() {
                 value={value}
               />
             )}
-            name='password'
+            name="password"
           />
           {errors.password && (
             <Text style={[styles.errorText]}>{errors.password.message}</Text>
           )}
 
           <Button
-            icon='login'
-            mode='outlined'
+            icon="login"
+            mode="outlined"
             onPress={handleSubmit(onSubmit)}
             buttonColor={colors.secondary}
             textColor={colors.contrast}
@@ -230,23 +249,14 @@ export default function LoginScreen() {
           >
             Sign in
           </Button>
+        </Animatable.View>
+      )}
 
-          {/* <Button
-    onPress={() => {
-      login();
-      router.replace("/settings");
-    }}
-  >
-    Test login
-  </Button> */}
-        </>
-      ) : (
-        <>
-          <Loader color={colors.secondary} size={'large'} centered={true} />
-        </>
+      {(isLoading || !loginData) && (
+        <Loader color={colors.secondary} size={'large'} centered={true} />
       )}
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -256,8 +266,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingLeft: 35,
     paddingRight: 35,
-    paddingTop: 40,
-    gap: 20,
+    paddingTop: 30,
+    gap: 5,
   },
 
   text: {
@@ -271,4 +281,4 @@ const styles = StyleSheet.create({
     width: '100%',
     maxWidth: 400,
   },
-});
+})

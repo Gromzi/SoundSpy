@@ -4,12 +4,18 @@ import { colorPalette } from '../../../theme/colors'
 import { Button, TextInput } from 'react-native-paper'
 import { Controller, useForm } from 'react-hook-form'
 import { router } from 'expo-router'
+import Loader from '../../../components/Loader'
 
 type FormData = {
   email: string
 }
 
-export default function LoginScreen() {
+export default function EmailScreen() {
+  const colorScheme = useColorScheme()
+  const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light']
+
+  const [isLoading, setIsLoading] = useState(false)
+
   const {
     control,
     handleSubmit,
@@ -21,15 +27,17 @@ export default function LoginScreen() {
   })
   const onSubmit = async (data: FormData) => {
     console.log(data)
+    setIsLoading(true)
     try {
       const response = await fetch(
-        `https://soundspy.test/api/auth/exist?email=${encodeURIComponent(
+        `https://soundset.webitup.pl/api/auth/exist?email=${encodeURIComponent(
           data.email
         )}`,
         {
           headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
+            Authorization: 'Bearer token',
           },
         }
       )
@@ -54,72 +62,74 @@ export default function LoginScreen() {
     } catch (error) {
       console.error(error)
     }
+    setIsLoading(false)
   }
 
-  const colorScheme = useColorScheme()
-  const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light']
-
-  const [showPassword, setShowPassword] = useState(false)
-
   return (
-    <View style={[styles.mainContainer, { backgroundColor: colors.contrast }]}>
-      <Controller
-        control={control}
-        rules={{
-          required: {
-            value: true,
-            message: 'Email is required',
-          },
-          pattern: {
-            value: /\S+@\S+\.\S+/,
-            message: 'Entered value does not match email format',
-          },
-        }}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            label="E-Mail"
-            mode="outlined"
-            style={{ width: '100%', maxWidth: 400 }}
-            error={errors.email ? true : false}
-            left={<TextInput.Icon icon={'email'} color={colors.cardContrast} />}
-            textColor={colors.cardText}
-            theme={{
-              colors: {
-                primary: colors.secondary,
-                background: colors.contrast,
-              },
-            }}
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
-          />
+    <>
+      <View
+        style={[styles.mainContainer, { backgroundColor: colors.contrast }]}
+      >
+        <Controller
+          control={control}
+          rules={{
+            required: {
+              value: true,
+              message: 'Email is required',
+            },
+            pattern: {
+              value: /\S+@\S+\.\S+/,
+              message: 'Entered value does not match email format',
+            },
+          }}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextInput
+              label="E-Mail"
+              mode="outlined"
+              style={{ width: '100%', maxWidth: 400 }}
+              error={errors.email ? true : false}
+              left={
+                <TextInput.Icon icon={'email'} color={colors.cardContrast} />
+              }
+              textColor={colors.cardText}
+              theme={{
+                colors: {
+                  primary: colors.secondary,
+                  background: colors.contrast,
+                },
+              }}
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+            />
+          )}
+          name="email"
+        />
+        {errors.email && (
+          <Text style={styles.errorText}>{errors.email.message}</Text>
         )}
-        name="email"
-      />
-      {errors.email && (
-        <Text style={styles.errorText}>{errors.email.message}</Text>
+
+        <Button
+          icon="login"
+          mode="outlined"
+          onPress={handleSubmit(onSubmit)}
+          buttonColor={colors.secondary}
+          textColor={colors.contrast}
+          style={{
+            width: '100%',
+            maxWidth: 400,
+            borderRadius: 4,
+            marginTop: 20,
+          }}
+        >
+          Log in / Register
+        </Button>
+      </View>
+
+      {isLoading && (
+        <Loader color={colors.secondary} size={'large'} centered={true} />
       )}
-
-      <Button
-        icon="login"
-        mode="outlined"
-        onPress={handleSubmit(onSubmit)}
-        buttonColor={colors.secondary}
-        textColor={colors.contrast}
-        style={{ width: '100%', maxWidth: 400, borderRadius: 4, marginTop: 20 }}
-      >
-        Sign in/Register
-      </Button>
-
-      {/* <Button
-        onPress={() => {
-          login();
-          router.replace("/settings");
-        }}
-      >
-        Test login
-      </Button> */}
-    </View>
+    </>
   )
 }
 
