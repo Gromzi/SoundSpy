@@ -36,7 +36,7 @@ const AccordionItem = ({
   const [expanded, setExpanded] = useState(false)
 
   const toggleExpand = () => {
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
     setExpanded(!expanded)
   }
 
