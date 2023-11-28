@@ -23,66 +23,27 @@ const ResultModal = ({ visible, setVisible }: ResultModalProps) => {
   const colorScheme = useColorScheme()
   const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light']
 
-  const data: Array<any> = [
-    {
-      name: 'Rock',
-      prediction: 0.08,
-      color: colors.rock,
-      legendFontColor: colors.rock,
-      legendFontSize: 15,
-    },
-    {
-      name: 'Pop',
-      prediction: 0.25,
-      color: colors.pop,
-      legendFontColor: colors.pop,
-      legendFontSize: 15,
-    },
-    {
-      name: 'Rap',
-      prediction: 0.18,
-      color: colors.rap,
-      legendFontColor: colors.rap,
-      legendFontSize: 15,
-    },
-    {
-      name: 'Country',
-      prediction: 0.05,
-      color: colors.country,
-      legendFontColor: colors.country,
-      legendFontSize: 15,
-    },
-    {
-      name: 'EDM',
-      prediction: 0.12,
-      color: colors.edm,
-      legendFontColor: colors.edm,
-      legendFontSize: 15,
-    },
-    {
-      name: 'Metal',
-      prediction: 0.07,
-      color: colors.metal,
-      legendFontColor: colors.metal,
-      legendFontSize: 15,
-    },
-    {
-      name: 'Classical',
-      prediction: 0.1,
-      color: colors.classical,
-      legendFontColor: colors.classical,
-      legendFontSize: 15,
-    },
-    {
-      name: 'Jazz',
-      prediction: 0.15,
-      color: colors.jazz,
-      legendFontColor: colors.jazz,
-      legendFontSize: 15,
-    },
-  ]
+  const serverData = {
+    classical: 99.985,
+    jazz: 0.0056,
+    blues: 0.0027,
+    rock: 0.0021,
+    pop: 0.0013,
+  }
 
-  const sortedData = data.sort((a, b) => b.prediction - a.prediction)
+  const chartData = Object.keys(serverData).map((genre) => {
+    const prediction = serverData[genre as keyof typeof serverData].toFixed(3)
+
+    return {
+      name: genre.charAt(0).toUpperCase() + genre.slice(1), // Capitalize the genre name
+      prediction: parseFloat(prediction), // Convert percentage to decimal
+      color: colors[genre as keyof typeof colors],
+      legendFontColor: colors[genre as keyof typeof colors],
+      legendFontSize: Platform.OS === 'web' ? 18 : 14,
+    }
+  })
+
+  const sortedData = chartData.sort((a, b) => b.prediction - a.prediction)
 
   return (
     <Modal
@@ -131,7 +92,7 @@ const ResultModal = ({ visible, setVisible }: ResultModalProps) => {
             </Text>
           </View>
           <GenresPieChart
-            data={data}
+            data={sortedData}
             width={Platform.OS === 'web' ? 400 : 350}
             height={230}
           />
@@ -165,7 +126,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     margin: 'auto',
     height: 700,
-    width: '95%',
+    width: '98%',
     maxWidth: 500,
     marginTop: 120,
     maxHeight: '70%',
