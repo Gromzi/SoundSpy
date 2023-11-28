@@ -24,10 +24,10 @@ const ResultModal = ({ visible, setVisible }: ResultModalProps) => {
   const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light']
 
   const serverData = {
-    classical: 99.985,
+    classical: 0.0021,
     jazz: 0.0056,
     blues: 0.0027,
-    rock: 0.0021,
+    rock: 99.985,
     pop: 0.0013,
   }
 
@@ -106,7 +106,7 @@ const ResultModal = ({ visible, setVisible }: ResultModalProps) => {
             style={{
               width: '100%',
               maxWidth: 400,
-              borderRadius: 4,
+              borderRadius: 10,
               marginTop: Platform.OS === 'web' ? 10 : 40,
             }}
           >
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     margin: 'auto',
     height: 700,
-    width: '98%',
+    width: '95%',
     maxWidth: 500,
     marginTop: 120,
     maxHeight: '70%',

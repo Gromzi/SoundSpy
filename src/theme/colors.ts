@@ -1,4 +1,4 @@
-type ColorPalette = {
+type Colors = {
   primary: string
   secondary: string
   contrast: string
@@ -60,9 +60,9 @@ const colorPalette = {
     edm: '#3F0071',
     country: '#191919',
     metal: '#B3541E',
-    classical: '#472D2D',
+    classical: '#cf7d36',
     jazz: '#22092C',
   },
 }
 
-export { colorPalette, ColorPalette }
+export { colorPalette, Colors }
