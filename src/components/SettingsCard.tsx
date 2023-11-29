@@ -9,7 +9,7 @@ import { colorPalette } from '../theme/colors'
 import { Avatar } from 'react-native-paper'
 import { MaterialIcons } from '@expo/vector-icons'
 import { logout } from '../auth/auth'
-import { IUser } from '../auth/interfaces/IUser'
+import { IUser } from '../auth/interfaces/auth/IUser'
 import { useAuthStore } from '../auth/store/authStore'
 import React from 'react'
 import { Link } from 'expo-router'
@@ -34,7 +34,11 @@ const SettingsCard = () => {
       <View style={styles.userInfoContainer}>
         <Avatar.Image
           size={48}
-          source={require('../../assets/images/avatar.png')}
+          source={
+            user?.avatar
+              ? { uri: user.avatar }
+              : require('../../assets/images/avatar.png')
+          }
         />
         {user ? (
           <Text style={[styles.text, { color: colors.cardText }]}>

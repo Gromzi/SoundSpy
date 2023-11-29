@@ -1,7 +1,7 @@
 import { View, Text, Pressable, StyleSheet, useColorScheme } from 'react-native'
 import React from 'react'
 import { useAuthStore } from '../../auth/store/authStore'
-import { IUser } from '../../auth/interfaces/IUser'
+import { IUser } from '../../auth/interfaces/auth/IUser'
 import { colorPalette } from '../../theme/colors'
 import { BackgroundGrandient } from '../../components/BackgroundGrandient'
 import { MaterialCommunityIcons } from '@expo/vector-icons'

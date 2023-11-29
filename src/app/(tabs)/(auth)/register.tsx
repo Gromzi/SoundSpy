@@ -6,6 +6,7 @@ import { Controller, set, useForm } from 'react-hook-form'
 import { router, useLocalSearchParams } from 'expo-router'
 import Loader from '../../../components/Loader'
 import * as Animatable from 'react-native-animatable'
+import { login } from '../../../auth/auth'
 
 type FormData = {
   email: string
@@ -52,13 +53,14 @@ export default function RegisterScreen() {
       )
       const code = await response.status
       const json = await response.json()
-      console.log(code, json)
+      console.log('Code: ', code)
 
       if (code == 401) {
         //cos
       }
 
       if (code == 200) {
+        await login(json)
         router.replace('/settings')
       }
     } catch (error) {

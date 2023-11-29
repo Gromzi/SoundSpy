@@ -2,9 +2,10 @@ import { Platform, useColorScheme } from 'react-native'
 import React from 'react'
 import { PieChart } from 'react-native-chart-kit'
 import { colorPalette } from '../theme/colors'
+import { IPieChartData } from '../auth/interfaces/prediction/IPieChartData'
 
 type GenresPieChartProps = {
-  data: Array<any>
+  data: IPieChartData[]
   width: number
   height: number
 }

@@ -13,6 +13,8 @@ import GenresPieChart from './GenresPieChart'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { GenreIconsEnum } from '../utils/genreIconsEnum'
 import { Button } from 'react-native-paper'
+import { IPredictedGenres } from '../auth/interfaces/prediction/IPredictedGenres'
+import { IPieChartData } from '../auth/interfaces/prediction/IPieChartData'
 
 type ResultModalProps = {
   visible: boolean
@@ -23,7 +25,7 @@ const ResultModal = ({ visible, setVisible }: ResultModalProps) => {
   const colorScheme = useColorScheme()
   const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light']
 
-  const serverData = {
+  const serverData: IPredictedGenres = {
     classical: 0.0021,
     jazz: 0.0056,
     blues: 0.0027,
@@ -31,7 +33,7 @@ const ResultModal = ({ visible, setVisible }: ResultModalProps) => {
     pop: 0.0013,
   }
 
-  const chartData = Object.keys(serverData).map((genre) => {
+  const chartData: IPieChartData[] = Object.keys(serverData).map((genre) => {
     const prediction = serverData[genre as keyof typeof serverData].toFixed(3)
 
     return {

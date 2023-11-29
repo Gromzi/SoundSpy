@@ -2,7 +2,7 @@ import { IUser } from './IUser'
 
 export interface IAuthState {
   token: string | null
-  user: IUser | null | any
+  user: IUser | null
   googleToken: string | null
   googleUser: any
 

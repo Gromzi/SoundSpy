@@ -12,8 +12,8 @@ const AppAuthInitializer = ({ children }: AppAuthInitializerProps) => {
   const initializeAuthState = async () => {
     const token: Promise<string | null> =
       Platform.OS === 'web'
-        ? AsyncStorage.getItem('token')
-        : SecureStore.getItemAsync('token')
+        ? AsyncStorage.getItem('USER_TOKEN')
+        : SecureStore.getItemAsync('USER_TOKEN')
 
     const googleToken: Promise<string | null> =
       Platform.OS === 'web'
@@ -21,15 +21,39 @@ const AppAuthInitializer = ({ children }: AppAuthInitializerProps) => {
         : SecureStore.getItemAsync('googleToken')
 
     // Check if user is logged in
-    token.then((token) => {
-      if (token) {
-        login()
-        console.log('User logged in')
-        return
-      } else {
-        console.log('User not logged in')
-      }
-    })
+    // token.then(async (token) => {
+    //   if (token) {
+    //     // make request to api to check if token is valid
+    //     try {
+    //       const response = await fetch('https://soundset.webitup.pl/api/user', {
+    //         headers: {
+    //           Accept: 'application/json',
+    //           'Content-Type': 'application/json',
+    //           Authorization: 'Bearer TOKEN',
+    //         },
+    //       })
+    //       const code = await response.status
+    //       const json = await response.json()
+    //       console.log('Code: ', code)
+
+    //       if (code == 401) {
+    //         //cos
+    //       }
+
+    //       if (code == 200) {
+    //         await login(json)
+    //       }
+    //     }
+    //     catch (error) {
+    //       console.log('Error: ', error)
+    //     }
+
+    //     console.log('User logged in')
+    //     return
+    //   } else {
+    //     console.log('User not logged in')
+    //   }
+    // })
 
     googleToken.then((googleToken) => {
       if (googleToken) {

@@ -1,7 +1,7 @@
 import { Text, Pressable, StyleSheet, View } from 'react-native'
 import { router, useRouter } from 'expo-router'
 import { useAuthStore } from '../auth/store/authStore'
-import { IUser } from '../auth/interfaces/IUser'
+import { IUser } from '../auth/interfaces/auth/IUser'
 import { BackgroundGrandient } from '../components/BackgroundGrandient'
 import Logo from '../components/Logo'
 import { colorPalette } from '../theme/colors'

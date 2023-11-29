@@ -15,7 +15,7 @@ import { useEffect, useState } from 'react'
 import LoginModal from './LoginModal'
 import * as WebBrowser from 'expo-web-browser'
 import * as Google from 'expo-auth-session/providers/google'
-import { IUser } from '../auth/interfaces/IUser'
+import { IUser } from '../auth/interfaces/auth/IUser'
 import { useAuthStore } from '../auth/store/authStore'
 import { makeRedirectUri } from 'expo-auth-session'
 
