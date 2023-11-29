@@ -14,12 +14,15 @@ import { useAuthStore } from '../auth/store/authStore'
 import React from 'react'
 import { Link } from 'expo-router'
 import * as Animatable from 'react-native-animatable'
+import { useToast } from 'react-native-toast-notifications'
 
 const SettingsCard = () => {
   const user: IUser | null = useAuthStore((state) => state.user)
 
   const colorScheme = useColorScheme()
   const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light']
+
+  const toast = useToast()
 
   return (
     <Animatable.View
@@ -35,8 +38,8 @@ const SettingsCard = () => {
         <Avatar.Image
           size={48}
           source={
-            user?.avatar
-              ? { uri: user.avatar }
+            user?.picture
+              ? { uri: user.picture }
               : require('../../assets/images/avatar.png')
           }
         />
@@ -75,7 +78,14 @@ const SettingsCard = () => {
               />
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={logout}
+              onPress={() => {
+                logout()
+                toast.show('Successfully logged out!', {
+                  type: 'success',
+                  placement: 'bottom',
+                  animationType: 'slide-in',
+                })
+              }}
               hitSlop={10}
               style={[styles.buttonContainer, { marginBottom: 20 }]}
             >

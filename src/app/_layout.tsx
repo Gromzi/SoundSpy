@@ -10,11 +10,14 @@ import {
 import { Platform, useColorScheme } from 'react-native'
 import * as NavigationBar from 'expo-navigation-bar'
 import { colorPalette } from '../theme/colors'
+import { ToastProvider } from 'react-native-toast-notifications'
+import Loader from '../components/Loader'
 
 SplashScreen.preventAutoHideAsync()
 
 export default () => {
   const colorScheme = useColorScheme()
+  const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light']
 
   if (colorScheme === 'dark') {
     NavigationBar.setBackgroundColorAsync(colorPalette.dark.contrast)
@@ -45,13 +48,20 @@ export default () => {
   if (!fontsLoaded || fontError) return null
 
   return (
-    <AppAuthInitializer>
-      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <Stack>
-          <Stack.Screen name="index" options={{ headerShown: false }} />
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        </Stack>
-      </ThemeProvider>
-    </AppAuthInitializer>
+    <ToastProvider>
+      {!fontsLoaded && (
+        <Loader color={colors.secondary} size={'large'} centered={true} />
+      )}
+      <AppAuthInitializer>
+        <ThemeProvider
+          value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
+        >
+          <Stack>
+            <Stack.Screen name="index" options={{ headerShown: false }} />
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          </Stack>
+        </ThemeProvider>
+      </AppAuthInitializer>
+    </ToastProvider>
   )
 }

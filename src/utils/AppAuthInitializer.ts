@@ -2,14 +2,24 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Platform } from 'react-native'
 import { login, signInWithGoogle } from '../auth/auth'
 import * as SecureStore from 'expo-secure-store'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import { ToastProvider, useToast } from 'react-native-toast-notifications'
+import { router } from 'expo-router'
 
 type AppAuthInitializerProps = {
   children: React.ReactNode
 }
 
 const AppAuthInitializer = ({ children }: AppAuthInitializerProps) => {
+  const toast = useToast()
+  const [delayRender, setDelayRender] = useState(false)
+  const [tokenExpired, setTokenExpired] = useState(false)
+
   const initializeAuthState = async () => {
+    // Platform.OS === 'web'
+    //   ? AsyncStorage.removeItem('USER_TOKEN')
+    //   : SecureStore.deleteItemAsync('USER_TOKEN')
+
     const token: Promise<string | null> =
       Platform.OS === 'web'
         ? AsyncStorage.getItem('USER_TOKEN')
@@ -21,39 +31,41 @@ const AppAuthInitializer = ({ children }: AppAuthInitializerProps) => {
         : SecureStore.getItemAsync('googleToken')
 
     // Check if user is logged in
-    // token.then(async (token) => {
-    //   if (token) {
-    //     // make request to api to check if token is valid
-    //     try {
-    //       const response = await fetch('https://soundset.webitup.pl/api/user', {
-    //         headers: {
-    //           Accept: 'application/json',
-    //           'Content-Type': 'application/json',
-    //           Authorization: 'Bearer TOKEN',
-    //         },
-    //       })
-    //       const code = await response.status
-    //       const json = await response.json()
-    //       console.log('Code: ', code)
+    token.then(async (token) => {
+      if (token) {
+        console.log('Token: ', token)
+        console.log('Token parse: ', JSON.parse(token))
+        // make request to api to check if token is valid
+        try {
+          const response = await fetch('https://soundset.webitup.pl/api/user', {
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+              Authorization: 'Bearer ' + JSON.parse(token),
+            },
+          })
+          const code = await response.status
+          const json = await response.json()
+          console.log('Code: ', code)
 
-    //       if (code == 401) {
-    //         //cos
-    //       }
+          if (code == 401) {
+            setTokenExpired(true)
+            return
+          }
 
-    //       if (code == 200) {
-    //         await login(json)
-    //       }
-    //     }
-    //     catch (error) {
-    //       console.log('Error: ', error)
-    //     }
+          if (code == 200) {
+            await login(json)
+          }
+        } catch (error) {
+          console.log('Error: ', error)
+        }
 
-    //     console.log('User logged in')
-    //     return
-    //   } else {
-    //     console.log('User not logged in')
-    //   }
-    // })
+        console.log('User logged in')
+        return
+      } else {
+        console.log('User not logged in')
+      }
+    })
 
     googleToken.then((googleToken) => {
       if (googleToken) {
@@ -68,7 +80,18 @@ const AppAuthInitializer = ({ children }: AppAuthInitializerProps) => {
 
   useEffect(() => {
     initializeAuthState()
+    setDelayRender(true)
   }, [])
+
+  useEffect(() => {
+    if (tokenExpired) {
+      router.replace('/auth')
+      toast.show('Your session has expired. Please log in again.', {
+        type: 'danger',
+        placement: 'bottom',
+      })
+    }
+  }, [delayRender, tokenExpired])
 
   return children
 }

@@ -1,5 +1,5 @@
 import { View, StyleSheet, Text, Button } from 'react-native'
-import React, { ReactNode, useState } from 'react'
+import React, { ReactNode, useEffect, useState } from 'react'
 import { BackgroundGrandient } from '../../components/BackgroundGrandient'
 import RecordButton from '../../components/RecordButton'
 import UploadButton from '../../components/UploadButton'

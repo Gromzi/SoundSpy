@@ -7,6 +7,7 @@ import { router, useLocalSearchParams } from 'expo-router'
 import Loader from '../../../components/Loader'
 import * as Animatable from 'react-native-animatable'
 import { login } from '../../../auth/auth'
+import { useToast } from 'react-native-toast-notifications'
 
 type FormData = {
   email: string
@@ -22,9 +23,12 @@ export default function LoginScreen() {
   const colorScheme = useColorScheme()
   const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light']
 
-  const [showPassword, setShowPassword] = useState(true)
+  const toast = useToast()
+
+  const [showPassword, setShowPassword] = useState(false)
   const [loginData, setLoginData] = useState<LoginData | null>(null)
   const [isLoading, setIsLoading] = useState(false)
+  const [isWrongPassword, setIsWrongPassword] = useState(false)
 
   const params = useLocalSearchParams()
   const { email } = params
@@ -64,14 +68,30 @@ export default function LoginScreen() {
       console.log('Code: ', code)
 
       if (code == 401) {
-        //cos
+        setIsWrongPassword(true)
+        toast.show('Wrong password!', {
+          type: 'danger',
+          placement: 'bottom',
+          animationType: 'slide-in',
+        })
       }
 
       if (code == 200) {
+        setIsWrongPassword(false)
         await login(json)
         router.replace('/settings')
+        toast.show('Successfully logged in!', {
+          type: 'success',
+          placement: 'bottom',
+          animationType: 'slide-in',
+        })
       }
     } catch (error) {
+      toast.show('Something went wrong, try again later', {
+        type: 'danger',
+        placement: 'bottom',
+        animationType: 'slide-in',
+      })
       console.error(error)
     }
     setIsLoading(false)
@@ -206,7 +226,7 @@ export default function LoginScreen() {
                 label="Password"
                 mode="outlined"
                 style={{ width: '100%', maxWidth: 400 }}
-                error={errors.password ? true : false}
+                error={errors.password || isWrongPassword ? true : false}
                 left={
                   <TextInput.Icon icon={'lock'} color={colors.cardContrast} />
                 }
@@ -234,6 +254,11 @@ export default function LoginScreen() {
           />
           {errors.password && (
             <Text style={[styles.errorText]}>{errors.password.message}</Text>
+          )}
+          {isWrongPassword && (
+            <Text style={[styles.errorText, { marginTop: 0 }]}>
+              Wrong password
+            </Text>
           )}
 
           <Button

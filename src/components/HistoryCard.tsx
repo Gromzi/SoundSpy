@@ -11,10 +11,11 @@ import * as Animatable from 'react-native-animatable'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { ScrollView } from 'react-native-gesture-handler'
 import AccordionItem from './AccordionItem'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { GenreIconsEnum } from '../utils/genreIconsEnum'
 import GenresPieChart from './GenresPieChart'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
+import { useFocusEffect } from 'expo-router'
 
 const HistoryCard = () => {
   const colorScheme = useColorScheme()
@@ -27,6 +28,10 @@ const HistoryCard = () => {
     rock: 99.985,
     pop: 0.0013,
   }
+
+  useFocusEffect(() => {
+    console.log('HistoryCard focused')
+  })
 
   const chartData = Object.keys(serverData).map((genre) => {
     const prediction = serverData[genre as keyof typeof serverData].toFixed(3)

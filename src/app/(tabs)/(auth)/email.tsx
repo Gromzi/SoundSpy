@@ -5,6 +5,7 @@ import { Button, TextInput } from 'react-native-paper'
 import { Controller, useForm } from 'react-hook-form'
 import { router } from 'expo-router'
 import Loader from '../../../components/Loader'
+import { useToast } from 'react-native-toast-notifications'
 
 type FormData = {
   email: string
@@ -15,6 +16,8 @@ export default function EmailScreen() {
   const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light']
 
   const [isLoading, setIsLoading] = useState(false)
+
+  const toast = useToast()
 
   const {
     control,
@@ -59,6 +62,11 @@ export default function EmailScreen() {
         })
       }
     } catch (error) {
+      toast.show('Something went wrong, try again later', {
+        type: 'danger',
+        placement: 'bottom',
+        animationType: 'slide-in',
+      })
       console.error(error)
     }
     setIsLoading(false)

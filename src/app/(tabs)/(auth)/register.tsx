@@ -7,6 +7,7 @@ import { router, useLocalSearchParams } from 'expo-router'
 import Loader from '../../../components/Loader'
 import * as Animatable from 'react-native-animatable'
 import { login } from '../../../auth/auth'
+import { useToast } from 'react-native-toast-notifications'
 
 type FormData = {
   email: string
@@ -16,6 +17,8 @@ type FormData = {
 export default function RegisterScreen() {
   const colorScheme = useColorScheme()
   const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light']
+
+  const toast = useToast()
 
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -56,14 +59,28 @@ export default function RegisterScreen() {
       console.log('Code: ', code)
 
       if (code == 401) {
-        //cos
+        toast.show('Something went wrong, try again later', {
+          type: 'danger',
+          placement: 'bottom',
+          animationType: 'slide-in',
+        })
       }
 
       if (code == 200) {
         await login(json)
         router.replace('/settings')
+        toast.show('Successfully registered and logged in!', {
+          type: 'success',
+          placement: 'bottom',
+          animationType: 'slide-in',
+        })
       }
     } catch (error) {
+      toast.show('Something went wrong, try again later', {
+        type: 'danger',
+        placement: 'bottom',
+        animationType: 'slide-in',
+      })
       console.error(error)
     }
     setIsLoading(false)
