@@ -72,6 +72,12 @@ export default function LoginScreen() {
         toast.show('Wrong password!', {
           type: 'danger',
           placement: 'bottom',
+          textStyle: { fontFamily: 'Kanit-Regular' },
+          style: {
+            borderRadius: 16,
+            backgroundColor: colors.error,
+            marginBottom: 50,
+          },
           animationType: 'slide-in',
         })
       }
@@ -83,13 +89,25 @@ export default function LoginScreen() {
         toast.show('Successfully logged in!', {
           type: 'success',
           placement: 'bottom',
+          textStyle: { fontFamily: 'Kanit-Regular' },
+          style: {
+            borderRadius: 16,
+            backgroundColor: colors.primary,
+            marginBottom: 50,
+          },
           animationType: 'slide-in',
         })
       }
     } catch (error) {
-      toast.show('Something went wrong, try again later', {
+      toast.show('Something went wrong. Try again later', {
         type: 'danger',
         placement: 'bottom',
+        textStyle: { fontFamily: 'Kanit-Regular' },
+        style: {
+          borderRadius: 16,
+          backgroundColor: colors.error,
+          marginBottom: 50,
+        },
         animationType: 'slide-in',
       })
       console.error(error)

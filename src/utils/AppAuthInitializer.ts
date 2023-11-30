@@ -1,10 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { Platform } from 'react-native'
-import { login, signInWithGoogle } from '../auth/auth'
+import { Platform, useColorScheme } from 'react-native'
+import { login, logout, signInWithGoogle } from '../auth/auth'
 import * as SecureStore from 'expo-secure-store'
 import { useEffect, useState } from 'react'
 import { ToastProvider, useToast } from 'react-native-toast-notifications'
 import { router } from 'expo-router'
+import { colorPalette } from '../theme/colors'
 
 type AppAuthInitializerProps = {
   children: React.ReactNode
@@ -14,6 +15,9 @@ const AppAuthInitializer = ({ children }: AppAuthInitializerProps) => {
   const toast = useToast()
   const [delayRender, setDelayRender] = useState(false)
   const [tokenExpired, setTokenExpired] = useState(false)
+
+  const colorScheme = useColorScheme()
+  const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light']
 
   const initializeAuthState = async () => {
     // Platform.OS === 'web'
@@ -85,10 +89,18 @@ const AppAuthInitializer = ({ children }: AppAuthInitializerProps) => {
 
   useEffect(() => {
     if (tokenExpired) {
+      logout()
       router.replace('/auth')
-      toast.show('Your session has expired. Please log in again.', {
+      toast.show('Your session has expired. Please log in again', {
         type: 'danger',
         placement: 'bottom',
+        textStyle: { fontFamily: 'Kanit-Regular' },
+        style: {
+          borderRadius: 16,
+          backgroundColor: colors.error,
+          marginBottom: 50,
+        },
+        animationType: 'slide-in',
       })
     }
   }, [delayRender, tokenExpired])

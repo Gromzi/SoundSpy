@@ -83,6 +83,12 @@ const SettingsCard = () => {
                 toast.show('Successfully logged out!', {
                   type: 'success',
                   placement: 'bottom',
+                  textStyle: { fontFamily: 'Kanit-Regular' },
+                  style: {
+                    borderRadius: 16,
+                    backgroundColor: colors.primary,
+                    marginBottom: 50,
+                  },
                   animationType: 'slide-in',
                 })
               }}
