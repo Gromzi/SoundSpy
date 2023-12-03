@@ -5,7 +5,6 @@ import { IUser } from '../../../auth/interfaces/auth/IUser'
 import { useAuthStore } from '../../../auth/store/authStore'
 import { colorPalette } from '../../../theme/colors'
 import { Controller, useForm } from 'react-hook-form'
-import { isLoading } from 'expo-font'
 import Loader from '../../../components/Loader'
 import { Avatar, TextInput, Button } from 'react-native-paper'
 
@@ -45,6 +44,7 @@ export default function EditScreen() {
           headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
+            Authorization: `Bearer ${useAuthStore.getState().token}`,
           },
         }
       )
