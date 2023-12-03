@@ -159,7 +159,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   errorText: {
-    marginTop: -10,
     marginLeft: 5,
     color: '#D43232',
     width: '100%',
