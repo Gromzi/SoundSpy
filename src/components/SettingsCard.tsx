@@ -4,6 +4,7 @@ import {
   useColorScheme,
   Text,
   TouchableOpacity,
+  Pressable,
 } from 'react-native'
 import { colorPalette } from '../theme/colors'
 import { Avatar } from 'react-native-paper'
@@ -34,23 +35,29 @@ const SettingsCard = () => {
         { backgroundColor: colors.contrast },
       ]}
     >
-      <View style={styles.userInfoContainer}>
-        <Avatar.Image
-          size={48}
-          source={
-            user?.picture
-              ? { uri: user.picture }
-              : require('../../assets/images/avatar.png')
-          }
-        />
-        {user ? (
-          <Text style={[styles.text, { color: colors.cardText }]}>
-            {user.name}
-          </Text>
-        ) : (
-          <Text style={[styles.text, { color: colors.cardText }]}>Guest</Text>
-        )}
-      </View>
+      <Link style={styles.userInfoContainer} href={'/edit'} asChild>
+        <Pressable disabled={!user}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+            <Avatar.Image
+              size={48}
+              source={
+                user?.picture
+                  ? { uri: user.picture }
+                  : require('../../assets/images/avatar.png')
+              }
+            />
+            {user ? (
+              <Text style={[styles.text, { color: colors.cardText }]}>
+                {user.name}
+              </Text>
+            ) : (
+              <Text style={[styles.text, { color: colors.cardText }]}>
+                Guest
+              </Text>
+            )}
+          </View>
+        </Pressable>
+      </Link>
 
       <View
         style={[styles.divider, { backgroundColor: colors.cardContrast }]}
@@ -65,18 +72,22 @@ const SettingsCard = () => {
 
         {user ? (
           <React.Fragment>
-            <TouchableOpacity
+            <Link
               style={[styles.buttonContainer, { marginBottom: 20 }]}
+              href={'/edit'}
+              asChild
             >
-              <Text style={[styles.text, { color: colors.cardText }]}>
-                Edit account
-              </Text>
-              <MaterialIcons
-                name="keyboard-arrow-right"
-                size={32}
-                color={colors.cardText}
-              />
-            </TouchableOpacity>
+              <TouchableOpacity>
+                <Text style={[styles.text, { color: colors.cardText }]}>
+                  Edit account
+                </Text>
+                <MaterialIcons
+                  name="keyboard-arrow-right"
+                  size={32}
+                  color={colors.cardText}
+                />
+              </TouchableOpacity>
+            </Link>
             <TouchableOpacity
               onPress={() => {
                 logout()

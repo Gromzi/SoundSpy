@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { colorPalette } from '../../../theme/colors'
 import { Avatar, Button, TextInput } from 'react-native-paper'
 import { Controller, useForm } from 'react-hook-form'
-import { router, useLocalSearchParams } from 'expo-router'
+import { useLocalSearchParams, useRouter } from 'expo-router'
 import Loader from '../../../components/Loader'
 import * as Animatable from 'react-native-animatable'
 import { login } from '../../../auth/auth'
@@ -23,6 +23,7 @@ export default function LoginScreen() {
   const colorScheme = useColorScheme()
   const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light']
 
+  const router = useRouter()
   const toast = useToast()
 
   const [showPassword, setShowPassword] = useState(false)
