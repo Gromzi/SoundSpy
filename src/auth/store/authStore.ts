@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { IAuthState } from '../interfaces/auth/IAuthState'
+import { IUser } from '../interfaces/auth/IUser'
 
 export const useAuthStore = create<IAuthState>((set) => ({
   token: null,
@@ -8,7 +9,7 @@ export const useAuthStore = create<IAuthState>((set) => ({
   googleUser: null,
 
   setToken: (token: string | null) => set({ token }),
-  setUser: (user) => set({ user }),
+  setUser: (user: IUser | null | any) => set({ user }),
   setGoogleToken: (googleToken: string | null) => set({ googleToken }),
   setGoogleUser: (googleUser: any) => set({ googleUser }),
 }))

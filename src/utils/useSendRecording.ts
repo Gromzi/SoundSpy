@@ -1,15 +1,19 @@
-type Props = {
-  audioUri: string
-  setIsWaitingForResponse: React.Dispatch<React.SetStateAction<boolean>>
-  fileName?: string
-}
+import { useColorScheme } from 'react-native'
+import { colorPalette } from '../theme/colors'
+import { useToast } from 'react-native-toast-notifications'
 
-const useSendRecording = ({
-  audioUri,
-  setIsWaitingForResponse,
-  fileName,
-}: Props) => {
-  const sendRecording = async () => {
+const useSendRecording = () => {
+  const colorScheme = useColorScheme()
+  const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light']
+
+  const toast = useToast()
+
+  const sendRecording = async (
+    audioUri: string,
+    setWaitingForResponse: React.Dispatch<React.SetStateAction<boolean>>,
+    fileName?: string
+  ) => {
+    setWaitingForResponse(true)
     try {
       let filename: string
 
@@ -24,25 +28,41 @@ const useSendRecording = ({
       const fileContent = await fetch(audioUri).then((res) => res.blob())
 
       const formData = new FormData()
-      formData.append('audio', fileContent, filename)
+      formData.append('sound', fileContent, filename)
 
-      setIsWaitingForResponse(true)
-      const serverResponse = await fetch('YOUR_ENDPOINT_URL', {
+      const response = await fetch('https://soundset.webitup.pl/api/predict', {
         method: 'POST',
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
         body: formData,
       })
+      const code = await response.status
+      console.log('Code: ', code)
 
-      if (serverResponse.ok) {
-        setIsWaitingForResponse(false)
-        console.log('Recording sent successfully')
-        // Handle the server response
-      } else {
-        console.error('Failed to send recording to the server')
+      if (code === 200) {
+        // save new prediction to local storage
+        // show modal with prediction
+        console.log('Prediction: ', await response.json())
       }
     } catch (error) {
-      console.error('Error during fetch:', error)
+      toast.show('Something went wrong, try again later', {
+        type: 'danger',
+        placement: 'bottom',
+        textStyle: { fontFamily: 'Kanit-Regular' },
+        style: {
+          borderRadius: 16,
+          backgroundColor: colors.error,
+          marginBottom: 50,
+        },
+        animationType: 'slide-in',
+      })
+      console.error(error)
     }
+    setWaitingForResponse(false)
   }
 
   return { sendRecording }
 }
+
+export default useSendRecording

@@ -2,15 +2,19 @@ import { Audio } from 'expo-av'
 import { MONO_PRESET } from './customRecordingPresets'
 import { Alert } from 'react-native'
 import { useState } from 'react'
+import useSendRecording from './useSendRecording'
 
 const useRecordSound = (
-  setIsRecording: React.Dispatch<React.SetStateAction<boolean>>
+  setIsRecording: React.Dispatch<React.SetStateAction<boolean>>,
+  setWaitingForResponse: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
   let recording: Audio.Recording | null = null
   const [recordingState, setRecordingState] = useState<Audio.Recording | null>(
     null
   )
-  // const [recording, setRecording] = useState<Audio.Recording | null>(null)
+
+  const { sendRecording } = useSendRecording()
+
   const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null)
   let uri: string | null = null
 
@@ -78,9 +82,11 @@ const useRecordSound = (
 
       uri = recording.getURI()
       console.log('Recording finished and stored at', uri)
-      // SEND RECORDING TO SERVER
 
       if (uri) {
+        // SEND RECORDING TO SERVER
+        sendRecording(uri, setWaitingForResponse)
+
         console.log('Playing back recorded sound..')
         const playbackObject = new Audio.Sound()
         await playbackObject.loadAsync({ uri: uri })
