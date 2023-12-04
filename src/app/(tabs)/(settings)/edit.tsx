@@ -1,4 +1,4 @@
-import { View, Text, useColorScheme, StyleSheet } from 'react-native'
+import { View, Text, useColorScheme, StyleSheet, Platform } from 'react-native'
 import React, { useState } from 'react'
 import { useToast } from 'react-native-toast-notifications'
 import { IUser } from '../../../auth/interfaces/auth/IUser'
@@ -35,7 +35,7 @@ export default function EditScreen() {
   })
 
   const onPressPicture = async () => {
-    setIsLoading(true)
+    !(Platform.OS === 'web') && setIsLoading(true)
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
