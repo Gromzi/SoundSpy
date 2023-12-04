@@ -64,6 +64,12 @@ export default function EmailScreen() {
     } catch (error) {
       toast.show('Something went wrong, try again later', {
         type: 'danger',
+        textStyle: { fontFamily: 'Kanit-Regular' },
+        style: {
+          borderRadius: 16,
+          backgroundColor: colors.error,
+          marginBottom: 50,
+        },
         placement: 'bottom',
         animationType: 'slide-in',
       })

@@ -13,7 +13,7 @@ import { logout } from '../auth/auth'
 import { IUser } from '../auth/interfaces/auth/IUser'
 import { useAuthStore } from '../auth/store/authStore'
 import React from 'react'
-import { Link } from 'expo-router'
+import { Link, router } from 'expo-router'
 import * as Animatable from 'react-native-animatable'
 import { useToast } from 'react-native-toast-notifications'
 
@@ -35,29 +35,36 @@ const SettingsCard = () => {
         { backgroundColor: colors.contrast },
       ]}
     >
-      <Link style={styles.userInfoContainer} href={'/edit'} asChild>
-        <Pressable disabled={!user}>
-          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
-            <Avatar.Image
-              size={48}
-              source={
-                user?.picture
-                  ? { uri: user.picture }
-                  : require('../../assets/images/avatar.png')
-              }
-            />
-            {user ? (
-              <Text style={[styles.text, { color: colors.cardText }]}>
-                {user.name}
-              </Text>
-            ) : (
-              <Text style={[styles.text, { color: colors.cardText }]}>
-                Guest
-              </Text>
-            )}
-          </View>
-        </Pressable>
-      </Link>
+      {/* <Link
+        disabled={!user}
+        style={styles.userInfoContainer}
+        href={'/edit'}
+        asChild
+      > */}
+      <Pressable
+        disabled={!user}
+        onPress={() => router.push('/edit')}
+        style={[styles.userInfoContainer]}
+      >
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+          <Avatar.Image
+            size={48}
+            source={
+              user?.picture
+                ? { uri: user.picture }
+                : require('../../assets/images/avatar.png')
+            }
+          />
+          {user ? (
+            <Text style={[styles.text, { color: colors.cardText }]}>
+              {user.name}
+            </Text>
+          ) : (
+            <Text style={[styles.text, { color: colors.cardText }]}>Guest</Text>
+          )}
+        </View>
+      </Pressable>
+      {/* </Link> */}
 
       <View
         style={[styles.divider, { backgroundColor: colors.cardContrast }]}

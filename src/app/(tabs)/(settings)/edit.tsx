@@ -7,6 +7,8 @@ import { colorPalette } from '../../../theme/colors'
 import { Controller, useForm } from 'react-hook-form'
 import Loader from '../../../components/Loader'
 import { Avatar, TextInput, Button } from 'react-native-paper'
+import * as ImagePicker from 'expo-image-picker'
+import { TouchableOpacity } from 'react-native-gesture-handler'
 
 type FormData = {
   name: string
@@ -28,9 +30,86 @@ export default function EditScreen() {
     formState: { errors },
   } = useForm<FormData>({
     defaultValues: {
-      name: user?.name || '',
+      name: user?.name,
     },
   })
+
+  const onPressPicture = async () => {
+    setIsLoading(true)
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      quality: 0.5,
+    })
+
+    if (!result.canceled) {
+      const imageUri = result.assets[0].uri
+      const response = await fetch(imageUri)
+      const blob = await response.blob()
+
+      const formData = new FormData()
+      formData.append('picture', blob, imageUri)
+
+      try {
+        const response = await fetch(
+          'https://soundset.webitup.pl/api/auth/picture',
+          {
+            mode: 'no-cors',
+            method: 'POST',
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              Authorization: `Bearer ${useAuthStore.getState().token}`,
+            },
+            body: formData,
+          }
+        )
+        const code = await response.status
+        console.log('Code: ', code)
+
+        if (code === 200) {
+          useAuthStore.getState().setUser({ ...user, picture: imageUri })
+
+          toast.show('Avatar changed successfully!', {
+            type: 'success',
+            placement: 'bottom',
+            textStyle: { fontFamily: 'Kanit-Regular' },
+            style: {
+              borderRadius: 16,
+              backgroundColor: colors.primary,
+              marginBottom: 50,
+            },
+            animationType: 'slide-in',
+          })
+        }
+      } catch (error) {
+        toast.show('Something went wrong, try again later', {
+          type: 'danger',
+          placement: 'bottom',
+          textStyle: { fontFamily: 'Kanit-Regular' },
+          style: {
+            borderRadius: 16,
+            backgroundColor: colors.error,
+            marginBottom: 50,
+          },
+          animationType: 'slide-in',
+        })
+        console.error(error)
+      }
+    } else {
+      toast.show('No image selected', {
+        type: 'danger',
+        placement: 'bottom',
+        textStyle: { fontFamily: 'Kanit-Regular' },
+        style: {
+          borderRadius: 16,
+          backgroundColor: colors.error,
+          marginBottom: 50,
+        },
+        animationType: 'slide-in',
+      })
+    }
+    setIsLoading(false)
+  }
 
   const onSaveName = async (data: FormData) => {
     setIsLoading(true)
@@ -49,7 +128,6 @@ export default function EditScreen() {
         }
       )
       const code = await response.status
-      const json = await response.json()
       console.log('Code: ', code)
 
       if (code === 200) {
@@ -65,6 +143,12 @@ export default function EditScreen() {
       toast.show('Something went wrong, try again later', {
         type: 'danger',
         placement: 'bottom',
+        textStyle: { fontFamily: 'Kanit-Regular' },
+        style: {
+          borderRadius: 16,
+          backgroundColor: colors.error,
+          marginBottom: 50,
+        },
         animationType: 'slide-in',
       })
       console.error(error)
@@ -78,13 +162,15 @@ export default function EditScreen() {
       <View
         style={[styles.mainContainer, { backgroundColor: colors.contrast }]}
       >
-        <View style={{ marginBottom: 30 }}>
-          {user?.picture ? (
-            <Avatar.Image source={{ uri: user?.picture }} size={120} />
-          ) : (
-            <Avatar.Icon size={120} icon="account" />
-          )}
-        </View>
+        <TouchableOpacity onPress={onPressPicture}>
+          <View style={{ marginBottom: 30 }}>
+            {user?.picture ? (
+              <Avatar.Image source={{ uri: user?.picture }} size={120} />
+            ) : (
+              <Avatar.Icon size={120} icon="account" />
+            )}
+          </View>
+        </TouchableOpacity>
 
         <Controller
           control={control}
