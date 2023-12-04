@@ -20,6 +20,7 @@
     "expo-document-picker": "~11.5.4",
     "expo-file-system": "~15.4.5",
     "expo-font": "~11.4.0",
+    "expo-image-picker": "~14.3.2",
     "expo-linear-gradient": "~12.3.0",
     "expo-linking": "~5.0.2",
     "expo-navigation-bar": "~2.3.0",
@@ -41,8 +42,7 @@
     "react-native-svg": "13.9.0",
     "react-native-toast-notifications": "^3.4.0",
     "react-native-web": "~0.19.6",
-    "zustand": "^4.4.1",
-    "expo-image-picker": "~14.3.2"
+    "zustand": "^4.4.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

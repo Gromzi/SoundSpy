@@ -1,28 +1,28 @@
-import { View, Text, useColorScheme, StyleSheet, Platform } from 'react-native'
-import React, { useState } from 'react'
-import { useToast } from 'react-native-toast-notifications'
-import { IUser } from '../../../auth/interfaces/auth/IUser'
-import { useAuthStore } from '../../../auth/store/authStore'
-import { colorPalette } from '../../../theme/colors'
-import { Controller, useForm } from 'react-hook-form'
-import Loader from '../../../components/Loader'
-import { Avatar, TextInput, Button } from 'react-native-paper'
-import * as ImagePicker from 'expo-image-picker'
-import { TouchableOpacity } from 'react-native-gesture-handler'
+import { View, Text, useColorScheme, StyleSheet, Platform } from 'react-native';
+import React, { useState } from 'react';
+import { useToast } from 'react-native-toast-notifications';
+import { IUser } from '../../../auth/interfaces/auth/IUser';
+import { useAuthStore } from '../../../auth/store/authStore';
+import { colorPalette } from '../../../theme/colors';
+import { Controller, useForm } from 'react-hook-form';
+import Loader from '../../../components/Loader';
+import { Avatar, TextInput, Button } from 'react-native-paper';
+import * as ImagePicker from 'expo-image-picker';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 type FormData = {
-  name: string
-}
+  name: string;
+};
 
 export default function EditScreen() {
-  const user: IUser | null = useAuthStore((state) => state.user)
+  const user: IUser | null = useAuthStore((state) => state.user);
 
-  const colorScheme = useColorScheme()
-  const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light']
+  const colorScheme = useColorScheme();
+  const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light'];
 
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
 
-  const toast = useToast()
+  const toast = useToast();
 
   const {
     control,
@@ -32,42 +32,68 @@ export default function EditScreen() {
     defaultValues: {
       name: user?.name,
     },
-  })
+  });
 
   const onPressPicture = async () => {
-    !(Platform.OS === 'web') && setIsLoading(true)
+    !(Platform.OS === 'web') && setIsLoading(true);
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       quality: 0.5,
-    })
+    });
 
     if (!result.canceled) {
-      const imageUri = result.assets[0].uri
-      const response = await fetch(imageUri)
-      const blob = await response.blob()
+      const imageUri = result.assets[0].uri;
+      const response = await fetch(imageUri);
+      const blob = await response.blob();
 
-      const formData = new FormData()
-      formData.append('picture', blob, imageUri)
+      const uriArray = imageUri.split('.');
+      const fileExtension = uriArray[uriArray.length - 1]; // e.g.: "jpg"
+      const fileTypeExtended = `${result.assets[0].type}/${fileExtension}`; // e.g.: "image/jpg"
+      const imageName = result.assets[0].fileName;
+      console.log(result.assets[0], fileTypeExtended);
+
+      // const blob2 = blob.slice(0, blob.size, fileTypeExtended);
+      const blob3 = new Blob([blob], {
+        // uri: imageUri,
+
+        // name: imageName,
+        type: fileTypeExtended,
+      });
+
+      //       new Blob([blob.text] ,{
+      //         uri: imageUri,
+      //         name: imageName,
+      //         type: fileTypeExtended
+      // })
+
+      // const formData2 = new FormData();
+      // formData2.append('image', {
+      //  uri : newImageUri,
+      //  type: mime.getType(newImageUri),
+      //  name: newImageUri.split("/").pop()
+      // });
+      const formData = new FormData();
+      formData.append('picture', blob3, imageName ? imageName : 'test');
 
       try {
         const response = await fetch(
           'https://soundset.webitup.pl/api/auth/picture',
           {
-            mode: 'no-cors',
             method: 'POST',
             headers: {
-              'Content-Type': 'multipart/form-data',
+              Accept: 'application/json',
+              // 'Content-Type': 'application/json',
               Authorization: `Bearer ${useAuthStore.getState().token}`,
             },
             body: formData,
           }
-        )
-        const code = await response.status
-        console.log('Code: ', code)
+        );
+        const code = await response.status;
+        console.log('Code: ', code);
 
         if (code === 200) {
-          useAuthStore.getState().setUser({ ...user, picture: imageUri })
+          useAuthStore.getState().setUser({ ...user, picture: imageUri });
 
           toast.show('Avatar changed successfully!', {
             type: 'success',
@@ -79,7 +105,7 @@ export default function EditScreen() {
               marginBottom: 50,
             },
             animationType: 'slide-in',
-          })
+          });
         }
       } catch (error) {
         toast.show('Something went wrong, try again later', {
@@ -92,8 +118,8 @@ export default function EditScreen() {
             marginBottom: 50,
           },
           animationType: 'slide-in',
-        })
-        console.error(error)
+        });
+        console.error(error);
       }
     } else {
       toast.show('No image selected', {
@@ -106,13 +132,13 @@ export default function EditScreen() {
           marginBottom: 50,
         },
         animationType: 'slide-in',
-      })
+      });
     }
-    setIsLoading(false)
-  }
+    setIsLoading(false);
+  };
 
   const onSaveName = async (data: FormData) => {
-    setIsLoading(true)
+    setIsLoading(true);
     try {
       const response = await fetch(
         `https://soundset.webitup.pl/api/auth/name?name=${encodeURIComponent(
@@ -126,18 +152,18 @@ export default function EditScreen() {
             Authorization: `Bearer ${useAuthStore.getState().token}`,
           },
         }
-      )
-      const code = await response.status
-      console.log('Code: ', code)
+      );
+      const code = await response.status;
+      console.log('Code: ', code);
 
       if (code === 200) {
-        useAuthStore.getState().setUser({ ...user, name: data.name })
+        useAuthStore.getState().setUser({ ...user, name: data.name });
 
         toast.show('Name changed successfully!', {
           type: 'success',
           placement: 'bottom',
           animationType: 'slide-in',
-        })
+        });
       }
     } catch (error) {
       toast.show('Something went wrong, try again later', {
@@ -150,12 +176,12 @@ export default function EditScreen() {
           marginBottom: 50,
         },
         animationType: 'slide-in',
-      })
-      console.error(error)
+      });
+      console.error(error);
     }
 
-    setIsLoading(false)
-  }
+    setIsLoading(false);
+  };
 
   return (
     <>
@@ -228,7 +254,7 @@ export default function EditScreen() {
         <Loader color={colors.secondary} size={'large'} centered={true} />
       )}
     </>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -250,4 +276,4 @@ const styles = StyleSheet.create({
     width: '100%',
     maxWidth: 400,
   },
-})
+});
