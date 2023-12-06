@@ -21,6 +21,7 @@ if (Platform.OS === 'android') {
 type AccordionItemProps = PropsWithChildren<{
   date: string
   time: string
+  name: string
   picture?: React.ReactNode
 }>
 
@@ -29,6 +30,7 @@ const AccordionItem = ({
   date,
   time,
   picture,
+  name,
 }: AccordionItemProps) => {
   const colorScheme = useColorScheme()
   const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light']
@@ -41,7 +43,9 @@ const AccordionItem = ({
   }
 
   const body = (
-    <View style={[styles.accordBody, { backgroundColor: colors.primary }]}>
+    <View
+      style={[styles.accordBody, { backgroundColor: colors.accordionBody }]}
+    >
       {children}
     </View>
   )
@@ -51,22 +55,32 @@ const AccordionItem = ({
       <TouchableOpacity
         style={[
           styles.accordHeader,
-          { backgroundColor: expanded ? colors.darkerPrimary : colors.primary },
+          { backgroundColor: colors.primary },
           expanded ? styles.removeBorderRadius : null,
         ]}
         onPress={toggleExpand}
       >
         <View style={styles.leftContainer}>
-          <View style={styles.pictureContainer}>
+          <View
+            style={[
+              styles.pictureContainer,
+              { backgroundColor: colors.contrast },
+            ]}
+          >
             {picture ? picture : null}
           </View>
           <View>
-            <Text style={[styles.accordDate, { color: colors.cardText }]}>
-              {date}
+            <Text style={[styles.genreText, { color: colors.cardText }]}>
+              {name}
             </Text>
-            <Text style={[styles.accordTime, { color: colors.cardText }]}>
-              {time}
-            </Text>
+            <View style={styles.datetimeContainer}>
+              <Text style={[styles.accordDate, { color: colors.cardText }]}>
+                {date}
+              </Text>
+              <Text style={[styles.accordTime, { color: colors.cardText }]}>
+                {time}
+              </Text>
+            </View>
           </View>
         </View>
 
@@ -94,9 +108,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 10,
   },
-  accordDate: {
+  genreText: {
     fontSize: 18,
-    fontFamily: 'Kanit-Regular',
+    fontFamily: 'Kanit-Medium',
+  },
+  accordDate: {
+    fontSize: 16,
+    fontFamily: 'Kanit-Medium',
   },
   accordTime: {
     fontSize: 14,
@@ -110,7 +128,6 @@ const styles = StyleSheet.create({
   pictureContainer: {
     height: 50,
     width: 50,
-    backgroundColor: '#fdfd',
     borderRadius: 5,
   },
   leftContainer: {
@@ -121,6 +138,11 @@ const styles = StyleSheet.create({
   removeBorderRadius: {
     borderBottomLeftRadius: 0,
     borderBottomRightRadius: 0,
+  },
+  datetimeContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
   },
 })
 

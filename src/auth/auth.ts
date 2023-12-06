@@ -44,6 +44,26 @@ const login = async (loginResponse: ILoginRegisterResponse) => {
     console.error('Error storing token: ', error)
   }
 
+  // // fetch user history and store it in local storage
+  // try {
+  //   const response = await fetch('https://soundset.webitup.pl/api/predict', {
+  //     headers: {
+  //       Accept: 'application/json',
+  //       Authorization: `Bearer ${useAuthStore.getState().token}`,
+  //     },
+  //   })
+  //   const code = response.status
+  //   const serverResponse = await response.json()
+  //   const history = serverResponse.predicts
+
+  //   if (code === 200) {
+  //     AsyncStorage.removeItem('history')
+  //     AsyncStorage.setItem('history', JSON.stringify(history))
+  //   }
+  // } catch (error) {
+  //   console.error('Error fetching user history: ', error)
+  // }
+
   console.log(
     'Logged in: ',
     useAuthStore.getState().token,
@@ -138,6 +158,8 @@ const logout = async () => {
       await SecureStore.deleteItemAsync('token')
       await SecureStore.deleteItemAsync('googleToken')
     }
+
+    await AsyncStorage.removeItem('history')
   } catch (error) {
     console.error('Error logging out: ', error)
   }

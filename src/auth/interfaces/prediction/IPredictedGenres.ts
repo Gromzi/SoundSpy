@@ -1,7 +1,13 @@
 export interface IPredictedGenres {
-  classical: number
-  jazz: number
-  blues: number
-  rock: number
-  pop: number
+  classical?: number
+  disco?: number
+  edm?: number
+  funk?: number
+  heavy_metal?: number
+  hip_hop?: number
+  jazz?: number
+  pop?: number
+  raggae?: number
+  rock?: number
+  techno?: number
 }

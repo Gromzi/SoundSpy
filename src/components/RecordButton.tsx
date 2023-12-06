@@ -15,6 +15,7 @@ type Props = {
   setIsRecording: React.Dispatch<React.SetStateAction<boolean>>
   waitingForResponse: boolean
   setWaitingForResponse: React.Dispatch<React.SetStateAction<boolean>>
+  setResultModalVisible: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const RecordButton = ({
@@ -22,13 +23,15 @@ const RecordButton = ({
   setIsRecording,
   waitingForResponse,
   setWaitingForResponse,
+  setResultModalVisible,
 }: Props) => {
   const colorScheme = useColorScheme()
   const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light']
 
   const { startRecording, abortRecording, showAlert } = useRecordSound(
     setIsRecording,
-    setWaitingForResponse
+    setWaitingForResponse,
+    setResultModalVisible
   )
 
   const handleRecordPress = () => {

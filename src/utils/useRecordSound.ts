@@ -6,7 +6,8 @@ import useSendRecording from './useSendRecording'
 
 const useRecordSound = (
   setIsRecording: React.Dispatch<React.SetStateAction<boolean>>,
-  setWaitingForResponse: React.Dispatch<React.SetStateAction<boolean>>
+  setWaitingForResponse: React.Dispatch<React.SetStateAction<boolean>>,
+  setResultModalVisible: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
   let recording: Audio.Recording | null = null
   const [recordingState, setRecordingState] = useState<Audio.Recording | null>(
@@ -85,7 +86,7 @@ const useRecordSound = (
 
       if (uri) {
         // SEND RECORDING TO SERVER
-        sendRecording(uri, setWaitingForResponse)
+        sendRecording(uri, setWaitingForResponse, setResultModalVisible)
 
         console.log('Playing back recorded sound..')
         const playbackObject = new Audio.Sound()

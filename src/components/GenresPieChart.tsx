@@ -26,11 +26,12 @@ const GenresPieChart = ({ data, width, height }: GenresPieChartProps) => {
         backgroundGradientFrom: colors.contrast,
         backgroundGradientTo: colors.contrast,
         color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+        propsForLabels: {},
       }}
       accessor={'prediction'}
       backgroundColor={'transparent'}
-      paddingLeft={'15'}
-      absolute
+      paddingLeft={'10'}
+      avoidFalseZero={true}
     />
   )
 }

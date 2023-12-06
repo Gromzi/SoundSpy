@@ -62,6 +62,7 @@ export default function HomeScreen() {
           setIsRecording={setIsRecording}
           waitingForResponse={waitingForResponse}
           setWaitingForResponse={setWaitingForResponse}
+          setResultModalVisible={setResultModalVisible}
         />
         <UploadButton
           isRecording={isRecording}

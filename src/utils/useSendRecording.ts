@@ -1,16 +1,25 @@
 import { useColorScheme } from 'react-native'
 import { colorPalette } from '../theme/colors'
 import { useToast } from 'react-native-toast-notifications'
+import { useAuthStore } from '../auth/store/authStore'
+import { IUser } from '../auth/interfaces/auth/IUser'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { IPredictionResponse } from '../auth/interfaces/prediction/IPredictionResponse'
+import { usePredictStore } from '../auth/store/predictStore'
+import { IPredictedGenres } from '../auth/interfaces/prediction/IPredictedGenres'
 
 const useSendRecording = () => {
   const colorScheme = useColorScheme()
   const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light']
+
+  const user: IUser | null = useAuthStore((state) => state.user)
 
   const toast = useToast()
 
   const sendRecording = async (
     audioUri: string,
     setWaitingForResponse: React.Dispatch<React.SetStateAction<boolean>>,
+    setResultModalVisible: React.Dispatch<React.SetStateAction<boolean>>,
     fileName?: string
   ) => {
     setWaitingForResponse(true)
@@ -33,17 +42,45 @@ const useSendRecording = () => {
       const response = await fetch('https://soundset.webitup.pl/api/predict', {
         method: 'POST',
         headers: {
-          'Content-Type': 'multipart/form-data',
+          Accept: 'application/json',
+          Authorization: `Bearer ${useAuthStore.getState().token}`,
         },
         body: formData,
       })
-      const code = await response.status
+      const code = response.status
+      const serverResponse = await response.json()
+      const predictionData = serverResponse.predict
+      const predictionResult: IPredictedGenres = JSON.parse(
+        predictionData.result
+      )
       console.log('Code: ', code)
 
       if (code === 200) {
+        console.log('Prediction data: ', predictionData)
+        console.log('Prediction result: ', predictionData.result)
+
         // save new prediction to local storage
-        // show modal with prediction
-        console.log('Prediction: ', await response.json())
+        AsyncStorage.getItem('history').then((existingData: string | null) => {
+          console.log('Existing data: ', existingData)
+          const dataArray: IPredictionResponse[] = existingData
+            ? JSON.parse(existingData)
+            : []
+
+          dataArray.push(predictionData)
+
+          AsyncStorage.setItem('history', JSON.stringify(dataArray)).then(
+            () => {
+              // set zuustand state
+              usePredictStore.getState().setCurrentPrediction(predictionResult)
+              console.log(
+                'Zustand state: ',
+                usePredictStore.getState().currentPrediction
+              )
+              // show modal with prediction
+              setResultModalVisible(true)
+            }
+          )
+        })
       }
     } catch (error) {
       toast.show('Something went wrong, try again later', {

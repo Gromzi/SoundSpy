@@ -6,7 +6,7 @@ import {
   Platform,
   View,
 } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { colorPalette } from '../theme/colors'
 import * as Animatable from 'react-native-animatable'
 import GenresPieChart from './GenresPieChart'
@@ -16,6 +16,7 @@ import { Button } from 'react-native-paper'
 import { IPredictedGenres } from '../auth/interfaces/prediction/IPredictedGenres'
 import { IPieChartData } from '../auth/interfaces/prediction/IPieChartData'
 import { usePredictStore } from '../auth/store/predictStore'
+import Loader from './Loader'
 
 type ResultModalProps = {
   visible: boolean
@@ -26,35 +27,42 @@ const ResultModal = ({ visible, setVisible }: ResultModalProps) => {
   const colorScheme = useColorScheme()
   const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light']
 
-  const serverData: IPredictedGenres | null = usePredictStore(
-    (state) => state.currentPrediction
-  )
+  const [isLoading, setIsLoading] = React.useState<boolean>(false)
+  const [predictionData, setPredictionData] =
+    React.useState<IPredictedGenres | null>(null)
 
-  if (!serverData) {
+  useEffect(() => {
+    setIsLoading(true)
+    setPredictionData(usePredictStore.getState().currentPrediction)
+    console.log('Result Modal rendered. Prediction data:', predictionData)
+    setIsLoading(false)
+  }, [usePredictStore.getState().currentPrediction])
+
+  if (!predictionData) {
     return null
   }
 
-  // const serverData: IPredictedGenres = {
-  //   classical: 0.0021,
-  //   jazz: 0.0056,
-  //   blues: 0.0027,
-  //   rock: 99.985,
-  //   pop: 0.0013,
-  // }
+  const chartData: IPieChartData[] = Object.keys(predictionData).map(
+    (genre) => {
+      console.log(predictionData[genre as keyof typeof predictionData])
+      console.log(
+        'Type: ',
+        typeof predictionData[genre as keyof typeof predictionData]
+      )
 
-  const chartData: IPieChartData[] = Object.keys(serverData).map((genre) => {
-    const prediction = serverData[genre as keyof typeof serverData].toFixed(3)
+      const prediction =
+        predictionData[genre as keyof typeof predictionData]!.toFixed(3)
 
-    return {
-      name: genre.charAt(0).toUpperCase() + genre.slice(1), // Capitalize the genre name
-      prediction: parseFloat(prediction), // Convert percentage to decimal
-      color: colors[genre as keyof typeof colors],
-      legendFontColor: colors[genre as keyof typeof colors],
-      legendFontSize: Platform.OS === 'web' ? 18 : 14,
+      return {
+        name: genre,
+        prediction: parseFloat(prediction),
+        color: colors[genre.toLocaleLowerCase() as keyof typeof colors],
+        legendFontColor:
+          colors[genre.toLocaleLowerCase() as keyof typeof colors],
+        legendFontSize: Platform.OS === 'web' ? 18 : 14,
+      }
     }
-  })
-
-  const sortedData = chartData.sort((a, b) => b.prediction - a.prediction)
+  )
 
   return (
     <Modal
@@ -72,58 +80,62 @@ const ResultModal = ({ visible, setVisible }: ResultModalProps) => {
           },
         ]}
       >
-        <View style={styles.contentContainer}>
-          <View style={styles.headerOne}>
-            <Text
-              style={[
-                styles.text,
-                { color: colors.cardContrast, fontSize: 28 },
-              ]}
-            >
-              {'Most likely genre: '}
-            </Text>
-          </View>
-          <View style={styles.headerTwo}>
-            <MaterialCommunityIcons
-              name={
-                GenreIconsEnum[
-                  sortedData[0].name as keyof typeof GenreIconsEnum
-                ]
-              }
-              size={84}
-              color={sortedData[0].color}
+        {!isLoading ? (
+          <View style={styles.contentContainer}>
+            <View style={styles.headerOne}>
+              <Text
+                style={[
+                  styles.text,
+                  { color: colors.cardContrast, fontSize: 28 },
+                ]}
+              >
+                {'Most likely genre: '}
+              </Text>
+            </View>
+            <View style={styles.headerTwo}>
+              <MaterialCommunityIcons
+                name={
+                  GenreIconsEnum[
+                    chartData[0].name as keyof typeof GenreIconsEnum
+                  ]
+                }
+                size={84}
+                color={chartData[0].color}
+              />
+              <Text
+                style={[
+                  styles.text,
+                  { color: chartData[0].color, fontSize: 24 },
+                ]}
+              >
+                {chartData[0].name}
+              </Text>
+            </View>
+            <GenresPieChart
+              data={chartData}
+              width={Platform.OS === 'web' ? 400 : 350}
+              height={230}
             />
-            <Text
-              style={[
-                styles.text,
-                { color: sortedData[0].color, fontSize: 24 },
-              ]}
-            >
-              {sortedData[0].name}
-            </Text>
-          </View>
-          <GenresPieChart
-            data={sortedData}
-            width={Platform.OS === 'web' ? 400 : 350}
-            height={230}
-          />
 
-          <Button
-            icon="close"
-            mode="outlined"
-            onPress={() => setVisible(false)}
-            buttonColor={colors.secondary}
-            textColor={colors.contrast}
-            style={{
-              width: '100%',
-              maxWidth: 400,
-              borderRadius: 10,
-              marginTop: Platform.OS === 'web' ? 10 : 40,
-            }}
-          >
-            Close modal
-          </Button>
-        </View>
+            <Button
+              icon="close"
+              mode="outlined"
+              onPress={() => setVisible(false)}
+              buttonColor={colors.secondary}
+              textColor={colors.contrast}
+              style={{
+                width: '100%',
+                maxWidth: 400,
+                borderRadius: 10,
+                marginTop: Platform.OS === 'web' ? 10 : 40,
+              }}
+            >
+              Close modal
+            </Button>
+          </View>
+        ) : (
+          <Loader color={colors.secondary} size={'large'} centered={true} />
+        )}
       </Animatable.View>
     </Modal>
   )

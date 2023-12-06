@@ -24,6 +24,11 @@ const AppAuthInitializer = ({ children }: AppAuthInitializerProps) => {
     //   ? AsyncStorage.removeItem('USER_TOKEN')
     //   : SecureStore.deleteItemAsync('USER_TOKEN')
 
+    // await AsyncStorage.removeItem('history')
+
+    const history = await AsyncStorage.getItem('history')
+    console.log('History: ', history)
+
     const token: Promise<string | null> =
       Platform.OS === 'web'
         ? AsyncStorage.getItem('USER_TOKEN')
