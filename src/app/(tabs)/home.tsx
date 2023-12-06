@@ -67,10 +67,8 @@ export default function HomeScreen() {
         <UploadButton
           isRecording={isRecording}
           waitingForResponse={waitingForResponse}
-        />
-        <Button
-          onPress={() => setResultModalVisible(true)}
-          title="Show Modal"
+          setWaitingForResponse={setWaitingForResponse}
+          setResultModalVisible={setResultModalVisible}
         />
 
         {bottomText}

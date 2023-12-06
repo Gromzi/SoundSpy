@@ -81,9 +81,21 @@ const useSendRecording = () => {
             }
           )
         })
+      } else if (code === 413) {
+        toast.show('File is too large', {
+          type: 'danger',
+          textStyle: { fontFamily: 'Kanit-Regular' },
+          style: {
+            borderRadius: 16,
+            backgroundColor: colors.error,
+            marginBottom: 50,
+          },
+          placement: 'bottom',
+          animationType: 'slide-in',
+        })
       }
     } catch (error) {
-      toast.show('Something went wrong, try again later', {
+      toast.show('Something went wrong, the file might be too large', {
         type: 'danger',
         placement: 'bottom',
         textStyle: { fontFamily: 'Kanit-Regular' },

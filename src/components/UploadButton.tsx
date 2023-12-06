@@ -8,20 +8,29 @@ import {
 import { colorPalette } from '../theme/colors'
 import { MaterialIcons } from '@expo/vector-icons'
 import * as Animatable from 'react-native-animatable'
-import { pickFile } from '../utils/pickFile'
+import { usePickFile } from '../utils/usePickFile'
 
 type Props = {
   isRecording: boolean
   waitingForResponse: boolean
+  setWaitingForResponse: React.Dispatch<React.SetStateAction<boolean>>
+  setResultModalVisible: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const UploadButton = ({ isRecording, waitingForResponse }: Props) => {
+const UploadButton = ({
+  isRecording,
+  waitingForResponse,
+  setWaitingForResponse,
+  setResultModalVisible,
+}: Props) => {
   const colorScheme = useColorScheme()
   const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light']
 
+  const { pickFile } = usePickFile()
+
   return (
     <TouchableOpacity
-      onPress={pickFile}
+      onPress={() => pickFile(setWaitingForResponse, setResultModalVisible)}
       disabled={isRecording || waitingForResponse}
     >
       <Animatable.View

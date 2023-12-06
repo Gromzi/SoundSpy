@@ -126,7 +126,7 @@ const SettingsCard = () => {
               style={[styles.buttonContainer, { marginBottom: 30 }]}
             >
               <Text style={[styles.text, { color: colors.error }]}>
-                Delete account
+                Delete history
               </Text>
               <MaterialIcons
                 name="keyboard-arrow-right"

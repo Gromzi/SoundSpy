@@ -123,6 +123,10 @@ const ResultModal = ({ visible, setVisible }: ResultModalProps) => {
               onPress={() => setVisible(false)}
               buttonColor={colors.secondary}
               textColor={colors.contrast}
+              labelStyle={{
+                color: colors.contrast,
+                fontFamily: 'Kanit-Medium',
+              }}
               style={{
                 width: '100%',
                 maxWidth: 400,

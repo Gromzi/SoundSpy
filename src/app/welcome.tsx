@@ -6,9 +6,12 @@ import { BackgroundGrandient } from '../components/BackgroundGrandient'
 import Logo from '../components/Logo'
 import { colorPalette } from '../theme/colors'
 import * as Animatable from 'react-native-animatable'
+import { useState } from 'react'
 
 export default function WelcomeScreen() {
   const user: IUser | null = useAuthStore((state) => state.user)
+
+  const [animationEnded, setAnimationEnded] = useState(false)
 
   const handleContinueClick = () => {
     const router = useRouter()
@@ -23,18 +26,22 @@ export default function WelcomeScreen() {
           <Pressable android_ripple={{}} onPress={handleContinueClick}>
             {user ? (
               <Animatable.Text
-                animation={'pulse'}
-                iterationCount={'infinite'}
-                duration={2000}
+                animation={animationEnded ? 'pulse' : 'fadeIn'}
+                iterationCount={!animationEnded ? 1 : 'infinite'}
+                duration={animationEnded ? 2000 : 1000}
+                delay={animationEnded ? 0 : 3000}
+                onAnimationEnd={() => setAnimationEnded(true)}
                 style={[styles.text, { fontSize: 24 }]}
               >
                 Continue as {user.name}
               </Animatable.Text>
             ) : (
               <Animatable.Text
-                animation={'pulse'}
-                iterationCount={'infinite'}
+                animation={animationEnded ? 'pulse' : 'fadeIn'}
+                iterationCount={!animationEnded ? 1 : 'infinite'}
                 duration={2000}
+                delay={animationEnded ? 0 : 3000}
+                onAnimationEnd={() => setAnimationEnded(true)}
                 style={[styles.text, { fontSize: 24 }]}
               >
                 Continue as guest
@@ -43,11 +50,20 @@ export default function WelcomeScreen() {
           </Pressable>
 
           {!user && (
-            <Pressable onPress={() => router.replace('/auth')}>
-              <Text style={[styles.text, { fontSize: 18, marginTop: 50 }]}>
-                Log into account
-              </Text>
-            </Pressable>
+            <Animatable.View
+              animation={animationEnded ? '' : 'fadeIn'}
+              iterationCount={!animationEnded ? 1 : 'infinite'}
+              duration={2000}
+              delay={animationEnded ? 0 : 3000}
+              onAnimationEnd={() => setAnimationEnded(true)}
+              style={{ marginTop: 50 }}
+            >
+              <Pressable onPress={() => router.replace('/auth')}>
+                <Text style={[styles.text, { fontSize: 18 }]}>
+                  Log into account
+                </Text>
+              </Pressable>
+            </Animatable.View>
           )}
         </View>
       </View>
