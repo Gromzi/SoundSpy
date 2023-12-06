@@ -3,7 +3,7 @@
 This repo is the frontend of the application, created with **Typescript** using **React Native** with **Expo**. I used the new **Expo Router** for routing, **React Hook Form** for handling forms and validation and **Zustand** for state management. The app also has a dark and light mode.
 
 ## Link to site
-The app isn't deployed yet so if you want to test it out, you'd have to clone the repo, `run npm` i and `npm start`. After that you can run the web version. If you want to run the Android version, you'll need to scan the QR code in the console using the **Expo Go** app.
+The app isn't deployed yet so if you want to test it out, you'd have to clone the repo, run `npm i` and `npm start`. After that you can run the web version. If you want to run the Android version, you'll need to scan the QR code in the console using the **Expo Go** app.
 
 ## Tech Stack
 - React Native + Expo
