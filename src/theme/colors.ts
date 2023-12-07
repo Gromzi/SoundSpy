@@ -64,11 +64,11 @@ const colorPalette = {
     edm: '#009BA9',
     funk: '#B8860B',
     heavy_metal: '#808080',
-    hip_hop: '#E53D30 ',
+    hip_hop: '#E53D30',
     jazz: '#7A67C7',
     pop: '#D13E00',
     reggae: '#2E8B57',
-    rock: '#E53D30 ',
+    rock: '#E53D30',
     techno: '#009BA9',
   },
 }

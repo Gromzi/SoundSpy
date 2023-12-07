@@ -1,18 +1,16 @@
-import { useColorScheme } from 'react-native'
+import { Platform, useColorScheme } from 'react-native'
 import { colorPalette } from '../theme/colors'
 import { useToast } from 'react-native-toast-notifications'
 import { useAuthStore } from '../auth/store/authStore'
-import { IUser } from '../auth/interfaces/auth/IUser'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { IPredictionResponse } from '../auth/interfaces/prediction/IPredictionResponse'
 import { usePredictStore } from '../auth/store/predictStore'
 import { IPredictedGenres } from '../auth/interfaces/prediction/IPredictedGenres'
+import * as FileSystem from 'expo-file-system'
 
 const useSendRecording = () => {
   const colorScheme = useColorScheme()
   const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light']
-
-  const user: IUser | null = useAuthStore((state) => state.user)
 
   const toast = useToast()
 
@@ -20,32 +18,54 @@ const useSendRecording = () => {
     audioUri: string,
     setWaitingForResponse: React.Dispatch<React.SetStateAction<boolean>>,
     setResultModalVisible: React.Dispatch<React.SetStateAction<boolean>>,
-    fileName?: string
+    fileType?: string
   ) => {
     setWaitingForResponse(true)
     try {
-      let filename: string
+      // const fileContent = await fetch(audioUri)
+      //   .then((res) => {
+      //     return res.blob()
+      //   })
+      //   .then((data) => {
+      //     console.log(data)
+      //     return data
+      //   })
 
-      if (!fileName) {
-        const extension = audioUri.split('.').pop()
-        const timestamp = Date.now()
-        filename = `recording_${timestamp}.${extension}`
-      } else {
-        filename = fileName
-      }
+      // const fileContent: Blob = await new Promise((resolve, reject) => {
+      //   const xhr = new XMLHttpRequest()
+      //   xhr.onload = function () {
+      //     resolve(xhr.response)
+      //   }
+      //   xhr.onerror = function () {
+      //     reject(new TypeError('Network request failed'))
+      //   }
+      //   xhr.responseType = 'blob'
+      //   xhr.open('GET', audioUri, true)
+      //   xhr.send(null)
+      // })
 
-      const fileContent = await fetch(audioUri).then((res) => res.blob())
+      const base64 = await FileSystem.readAsStringAsync(audioUri, {
+        encoding: FileSystem.EncodingType.Base64,
+      })
+      // console.log('Base64: ', base64)
 
-      const formData = new FormData()
-      formData.append('sound', fileContent, filename)
+      // const formData = new FormData()
+      // formData.append('sound', JSON.stringify(base64))
+      // console.log('Stringified base64: ', JSON.stringify(base64))
 
       const response = await fetch('https://soundset.webitup.pl/api/predict', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
           Authorization: `Bearer ${useAuthStore.getState().token}`,
+          'Content-Type': 'application/json',
         },
-        body: formData,
+        body: JSON.stringify({
+          sound:
+            Platform.OS === 'android'
+              ? `data:${fileType ? fileType : 'audio/m4a'};base64,${base64}`
+              : `data:${fileType ? fileType : 'audio/webm'};base64,${base64}`,
+        }),
       })
       const code = response.status
       const serverResponse = await response.json()
