@@ -30,7 +30,7 @@ const GenresPieChart = ({ data, width, height }: GenresPieChartProps) => {
       }}
       accessor={'prediction'}
       backgroundColor={'transparent'}
-      paddingLeft={'10'}
+      paddingLeft={Platform.OS === 'web' ? '10' : '15'}
       avoidFalseZero={true}
     />
   )

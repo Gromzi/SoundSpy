@@ -200,7 +200,7 @@ const HistoryCard = () => {
 
             <GenresPieChart
               data={chartData}
-              width={Platform.OS === 'web' ? 400 : 350}
+              width={Platform.OS === 'web' ? 400 : 330}
               height={230}
             />
           </View>
