@@ -86,7 +86,9 @@ export default function LoginScreen() {
       if (code == 200) {
         setIsWrongPassword(false)
         await login(json)
-        router.replace('/settings')
+        router.back()
+        router.back()
+        router.back()
         toast.show('Successfully logged in!', {
           type: 'success',
           placement: 'bottom',

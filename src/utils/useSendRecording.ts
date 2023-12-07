@@ -22,36 +22,9 @@ const useSendRecording = () => {
   ) => {
     setWaitingForResponse(true)
     try {
-      // const fileContent = await fetch(audioUri)
-      //   .then((res) => {
-      //     return res.blob()
-      //   })
-      //   .then((data) => {
-      //     console.log(data)
-      //     return data
-      //   })
-
-      // const fileContent: Blob = await new Promise((resolve, reject) => {
-      //   const xhr = new XMLHttpRequest()
-      //   xhr.onload = function () {
-      //     resolve(xhr.response)
-      //   }
-      //   xhr.onerror = function () {
-      //     reject(new TypeError('Network request failed'))
-      //   }
-      //   xhr.responseType = 'blob'
-      //   xhr.open('GET', audioUri, true)
-      //   xhr.send(null)
-      // })
-
       const base64 = await FileSystem.readAsStringAsync(audioUri, {
         encoding: FileSystem.EncodingType.Base64,
       })
-      // console.log('Base64: ', base64)
-
-      // const formData = new FormData()
-      // formData.append('sound', JSON.stringify(base64))
-      // console.log('Stringified base64: ', JSON.stringify(base64))
 
       const response = await fetch('https://soundset.webitup.pl/api/predict', {
         method: 'POST',
