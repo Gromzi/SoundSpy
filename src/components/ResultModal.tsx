@@ -118,7 +118,7 @@ const ResultModal = ({ visible, setVisible }: ResultModalProps) => {
             />
 
             <Button
-              icon="close"
+              // icon="close"
               mode="outlined"
               onPress={() => setVisible(false)}
               buttonColor={colors.secondary}
@@ -126,15 +126,17 @@ const ResultModal = ({ visible, setVisible }: ResultModalProps) => {
               labelStyle={{
                 color: colors.contrast,
                 fontFamily: 'Kanit-Medium',
+                fontSize: Platform.OS === 'web' ? 20 : 16,
               }}
               style={{
                 width: '100%',
                 maxWidth: 400,
                 borderRadius: 10,
                 marginTop: Platform.OS === 'web' ? 10 : 40,
+                alignItems: 'center',
               }}
             >
-              Close modal
+              Close
             </Button>
           </View>
         ) : (
@@ -151,15 +153,14 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     position: 'absolute',
-    margin: 'auto',
-    height: 700,
     width: '95%',
     maxWidth: 500,
     marginTop: 120,
-    maxHeight: '70%',
+    // maxHeight: '70%',
     alignSelf: 'center',
     borderRadius: 20,
     alignItems: 'center',
+    paddingBottom: 20,
   },
   contentContainer: {
     flex: 1,
