@@ -10,6 +10,7 @@ import { Avatar, TextInput, Button } from 'react-native-paper'
 import * as ImagePicker from 'expo-image-picker'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import * as FileSystem from 'expo-file-system'
+import { getBase64Web } from '../../../utils/getBase64Web'
 
 type FormData = {
   name: string
@@ -36,7 +37,6 @@ export default function EditScreen() {
   })
 
   const onPressPicture = async () => {
-    !(Platform.OS === 'web') && setIsLoading(true)
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
@@ -44,17 +44,24 @@ export default function EditScreen() {
     })
 
     if (!result.canceled) {
+      setIsLoading(true)
+
       const imageUri = result.assets[0].uri
 
       const uriArray = imageUri.split('.')
-      const fileExtension = uriArray[uriArray.length - 1] // e.g.: "jpg"
+      const fileExtension = uriArray[uriArray.length - 1]
       const fileMimeType = `${result.assets[0].type}/${fileExtension}`
-      // const imageName = result.assets[0].fileName
       console.log(result.assets[0], fileMimeType)
 
-      const base64 = await FileSystem.readAsStringAsync(imageUri, {
-        encoding: FileSystem.EncodingType.Base64,
-      })
+      let base64: any
+
+      if (Platform.OS === 'web') {
+        base64 = await getBase64Web(imageUri)
+      } else {
+        base64 = await FileSystem.readAsStringAsync(imageUri, {
+          encoding: FileSystem.EncodingType.Base64,
+        })
+      }
 
       try {
         const response = await fetch(
@@ -67,7 +74,10 @@ export default function EditScreen() {
               Authorization: `Bearer ${useAuthStore.getState().token}`,
             },
             body: JSON.stringify({
-              picture: `data:${fileMimeType};base64,${base64}`,
+              picture:
+                Platform.OS === 'web'
+                  ? base64
+                  : `data:${fileMimeType};base64,${base64}`,
             }),
           }
         )

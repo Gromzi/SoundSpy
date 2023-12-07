@@ -32,7 +32,6 @@ export const usePickFile = () => {
             result.assets[0].name
           )
           const audioUri = result.assets[0].uri
-          const fileName = result.assets[0].name
           const fileType = result.assets[0].mimeType
 
           sendRecording(

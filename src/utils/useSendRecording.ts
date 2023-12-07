@@ -7,6 +7,7 @@ import { IPredictionResponse } from '../auth/interfaces/prediction/IPredictionRe
 import { usePredictStore } from '../auth/store/predictStore'
 import { IPredictedGenres } from '../auth/interfaces/prediction/IPredictedGenres'
 import * as FileSystem from 'expo-file-system'
+import { getBase64Web } from './getBase64Web'
 
 const useSendRecording = () => {
   const colorScheme = useColorScheme()
@@ -22,9 +23,15 @@ const useSendRecording = () => {
   ) => {
     setWaitingForResponse(true)
     try {
-      const base64 = await FileSystem.readAsStringAsync(audioUri, {
-        encoding: FileSystem.EncodingType.Base64,
-      })
+      let base64: any
+
+      if (Platform.OS === 'web') {
+        base64 = await getBase64Web(audioUri)
+      } else {
+        base64 = await FileSystem.readAsStringAsync(audioUri, {
+          encoding: FileSystem.EncodingType.Base64,
+        })
+      }
 
       const response = await fetch('https://soundset.webitup.pl/api/predict', {
         method: 'POST',
@@ -37,7 +44,7 @@ const useSendRecording = () => {
           sound:
             Platform.OS === 'android'
               ? `data:${fileType ? fileType : 'audio/m4a'};base64,${base64}`
-              : `data:${fileType ? fileType : 'audio/webm'};base64,${base64}`,
+              : base64,
         }),
       })
       const code = response.status
