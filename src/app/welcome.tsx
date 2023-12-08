@@ -6,12 +6,19 @@ import { BackgroundGrandient } from '../components/BackgroundGrandient'
 import Logo from '../components/Logo'
 import { colorPalette } from '../theme/colors'
 import * as Animatable from 'react-native-animatable'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function WelcomeScreen() {
   const user: IUser | null = useAuthStore((state) => state.user)
 
   const [animationEnded, setAnimationEnded] = useState(false)
+  const [buttonsDisabled, setButtonsDisabled] = useState(true)
+
+  useEffect(() => {
+    setTimeout(() => {
+      setButtonsDisabled(false)
+    }, 1500)
+  }, [])
 
   const handleContinueClick = () => {
     const router = useRouter()
@@ -23,7 +30,7 @@ export default function WelcomeScreen() {
       <View style={styles.mainContainer}>
         <Logo />
         <View style={styles.inputContainer}>
-          <Pressable disabled={!animationEnded} onPress={handleContinueClick}>
+          <Pressable disabled={buttonsDisabled} onPress={handleContinueClick}>
             {user ? (
               <Animatable.Text
                 animation={animationEnded ? 'pulse' : 'fadeIn'}
@@ -59,7 +66,7 @@ export default function WelcomeScreen() {
               style={{ marginTop: 50 }}
             >
               <Pressable
-                disabled={!animationEnded}
+                disabled={buttonsDisabled}
                 onPress={() => router.replace('/auth')}
               >
                 <Text style={[styles.text, { fontSize: 18 }]}>

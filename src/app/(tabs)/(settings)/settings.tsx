@@ -1,21 +1,23 @@
-import { View, Text, Pressable, StyleSheet, useColorScheme } from 'react-native'
-import React from 'react'
-import { useAuthStore } from '../../../auth/store/authStore'
-import { IUser } from '../../../auth/interfaces/auth/IUser'
+import { View, StyleSheet, useColorScheme } from 'react-native'
+import React, { useState } from 'react'
 import { colorPalette } from '../../../theme/colors'
 import { BackgroundGrandient } from '../../../components/BackgroundGrandient'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import TabLabel from '../../../components/TabLabel'
 import SettingsCard from '../../../components/SettingsCard'
+import Loader from '../../../components/Loader'
 
 export default function SettingsScreen() {
-  const user: IUser | null = useAuthStore((state) => state.user)
+  const [isLoading, setIsLoading] = useState(false)
 
   const colorScheme = useColorScheme()
   const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light']
 
   return (
     <BackgroundGrandient>
+      {isLoading && (
+        <Loader color={colors.secondary} size={'large'} centered={true} />
+      )}
       <View style={styles.mainContainer}>
         <TabLabel
           labelText="Settings"
@@ -28,14 +30,8 @@ export default function SettingsScreen() {
           }
         />
         <View style={styles.contentContainer}>
-          <SettingsCard />
+          <SettingsCard setIsLoading={setIsLoading} />
         </View>
-
-        {/* <Link href={"/login"} asChild>
-        <Pressable>
-          <Text>Log into account</Text>
-        </Pressable>
-        </Link> */}
       </View>
     </BackgroundGrandient>
   )

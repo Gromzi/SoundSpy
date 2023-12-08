@@ -6,7 +6,7 @@ export enum GenreIconsEnum {
   Heavy_metal = 'guitar-pick',
   Hip_hop = 'microphone',
   Jazz = 'saxophone',
-  Pop = 'microphone-variant',
+  POP = 'microphone-variant',
   Reggae = 'guitar-acoustic',
   Rock = 'guitar-electric',
   Techno = 'music-note-sixteenth',

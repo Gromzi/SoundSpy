@@ -16,14 +16,109 @@ import React from 'react'
 import { Link, router } from 'expo-router'
 import * as Animatable from 'react-native-animatable'
 import { useToast } from 'react-native-toast-notifications'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { usePredictStore } from '../auth/store/predictStore'
 
-const SettingsCard = () => {
+type Props = {
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+const SettingsCard = ({ setIsLoading }: Props) => {
   const user: IUser | null = useAuthStore((state) => state.user)
 
   const colorScheme = useColorScheme()
   const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light']
 
   const toast = useToast()
+
+  const handleDeleteHistory = async () => {
+    if ((await AsyncStorage.getItem('history')) === null) {
+      toast.show('History is already empty!', {
+        type: 'info',
+        placement: 'bottom',
+        textStyle: { fontFamily: 'Kanit-Regular' },
+        style: {
+          borderRadius: 16,
+          backgroundColor: colors.primary,
+          marginBottom: 50,
+        },
+        animationType: 'slide-in',
+      })
+      return
+    }
+
+    if (user) {
+      setIsLoading(true)
+      const response = await fetch(
+        'https://soundset.webitup.pl/api/predict/history',
+        {
+          method: 'DELETE',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${useAuthStore.getState().token}`,
+          },
+        }
+      )
+      const code = response.status
+      console.log('Delete response code: ', code)
+
+      if (code === 200) {
+        toast.show('Successfully deleted history!', {
+          type: 'success',
+          placement: 'bottom',
+          textStyle: { fontFamily: 'Kanit-Regular' },
+          style: {
+            borderRadius: 16,
+            backgroundColor: colors.primary,
+            marginBottom: 50,
+          },
+          animationType: 'slide-in',
+        })
+      } else {
+        toast.show('Something went wrong. Try again later', {
+          type: 'error',
+          placement: 'bottom',
+          textStyle: { fontFamily: 'Kanit-Regular' },
+          style: {
+            borderRadius: 16,
+            backgroundColor: colors.error,
+            marginBottom: 50,
+          },
+          animationType: 'slide-in',
+        })
+        setIsLoading(false)
+        return
+      }
+
+      await AsyncStorage.removeItem('history')
+      usePredictStore
+        .getState()
+        .setRefreshAfterDelete(
+          usePredictStore.getState().refreshAfterDelete + 1
+        )
+      setIsLoading(false)
+    } else {
+      await AsyncStorage.removeItem('history')
+      usePredictStore
+        .getState()
+        .setRefreshAfterDelete(
+          usePredictStore.getState().refreshAfterDelete + 1
+        )
+
+      toast.show('Successfully deleted history!', {
+        type: 'success',
+        placement: 'bottom',
+        textStyle: { fontFamily: 'Kanit-Regular' },
+        style: {
+          borderRadius: 16,
+          backgroundColor: colors.primary,
+          marginBottom: 50,
+        },
+        animationType: 'slide-in',
+      })
+    }
+  }
 
   return (
     <Animatable.View
@@ -35,12 +130,6 @@ const SettingsCard = () => {
         { backgroundColor: colors.contrast },
       ]}
     >
-      {/* <Link
-        disabled={!user}
-        style={styles.userInfoContainer}
-        href={'/edit'}
-        asChild
-      > */}
       <Pressable
         disabled={!user}
         onPress={() => router.push('/edit')}
@@ -64,7 +153,6 @@ const SettingsCard = () => {
           )}
         </View>
       </Pressable>
-      {/* </Link> */}
 
       <View
         style={[styles.divider, { backgroundColor: colors.cardContrast }]}
@@ -123,6 +211,7 @@ const SettingsCard = () => {
               />
             </TouchableOpacity>
             <TouchableOpacity
+              onPress={handleDeleteHistory}
               style={[styles.buttonContainer, { marginBottom: 30 }]}
             >
               <Text style={[styles.text, { color: colors.error }]}>
@@ -153,6 +242,19 @@ const SettingsCard = () => {
                 />
               </TouchableOpacity>
             </Link>
+            <TouchableOpacity
+              onPress={handleDeleteHistory}
+              style={[styles.buttonContainer, { marginBottom: 30 }]}
+            >
+              <Text style={[styles.text, { color: colors.error }]}>
+                Delete history
+              </Text>
+              <MaterialIcons
+                name="keyboard-arrow-right"
+                size={32}
+                color={colors.error}
+              />
+            </TouchableOpacity>
           </React.Fragment>
         )}
 

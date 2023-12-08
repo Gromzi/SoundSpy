@@ -34,6 +34,42 @@ const HistoryCard = () => {
     null
   )
 
+  // useEffect(() => {
+  //   setIsLoading(true)
+  //   console.log('HistoryCard rendered')
+  //   AsyncStorage.getItem('history')
+  //     .then((history) => {
+  //       if (history) {
+  //         const parsedServerResponse: Array<ServerResponse> =
+  //           JSON.parse(history)
+
+  //         const historyData: IPredictionResponse[] = parsedServerResponse.map(
+  //           (element) => {
+  //             return {
+  //               id: element.id,
+  //               user_id: element.user_id,
+  //               result: JSON.parse(element.result),
+  //               created_at: element.created_at,
+  //               updated_at: element.updated_at,
+  //             }
+  //           }
+  //         )
+
+  //         historyData.sort((a, b) => b.id - a.id)
+  //         setHistoryData(historyData)
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.log(
+  //         'Error fetching data from AsyncStorage in HistoryCard: ',
+  //         error
+  //       )
+  //     })
+  //     .finally(() => {
+  //       setIsLoading(false)
+  //     })
+  // }, [usePredictStore.getState().refreshAfterDelete])
+
   useFocusEffect(
     React.useCallback(() => {
       setIsLoading(true)
@@ -69,44 +105,11 @@ const HistoryCard = () => {
         .finally(() => {
           setIsLoading(false)
         })
-    }, [usePredictStore.getState().currentPrediction])
+    }, [
+      usePredictStore.getState().currentPrediction,
+      usePredictStore.getState().refreshAfterDelete,
+    ])
   )
-
-  // useEffect(() => {
-  //   setIsLoading(true)
-  //   console.log('HistoryCard rendered')
-  //   AsyncStorage.getItem('history')
-  //     .then((history) => {
-  //       if (history) {
-  //         const parsedServerResponse: Array<ServerResponse> =
-  //           JSON.parse(history)
-
-  //         const historyData: IPredictionResponse[] = parsedServerResponse.map(
-  //           (element) => {
-  //             return {
-  //               id: element.id,
-  //               user_id: element.user_id,
-  //               result: JSON.parse(element.result),
-  //               created_at: element.created_at,
-  //               updated_at: element.updated_at,
-  //             }
-  //           }
-  //         )
-
-  //         historyData.sort((a, b) => b.id - a.id)
-  //         setHistoryData(historyData)
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.log(
-  //         'Error fetching data from AsyncStorage in HistoryCard: ',
-  //         error
-  //       )
-  //     })
-  //     .finally(() => {
-  //       setIsLoading(false)
-  //     })
-  // }, [usePredictStore.getState().currentPrediction])
 
   const renderAccordionItems = () => {
     console.log('History data in renderAccordionItems: ', historyData)
