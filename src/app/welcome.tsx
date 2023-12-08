@@ -23,13 +23,13 @@ export default function WelcomeScreen() {
       <View style={styles.mainContainer}>
         <Logo />
         <View style={styles.inputContainer}>
-          <Pressable android_ripple={{}} onPress={handleContinueClick}>
+          <Pressable disabled={!animationEnded} onPress={handleContinueClick}>
             {user ? (
               <Animatable.Text
                 animation={animationEnded ? 'pulse' : 'fadeIn'}
                 iterationCount={!animationEnded ? 1 : 'infinite'}
                 duration={animationEnded ? 2000 : 1000}
-                delay={animationEnded ? 0 : 3000}
+                delay={animationEnded ? 0 : 2000}
                 onAnimationEnd={() => setAnimationEnded(true)}
                 style={[styles.text, { fontSize: 24 }]}
               >
@@ -40,7 +40,7 @@ export default function WelcomeScreen() {
                 animation={animationEnded ? 'pulse' : 'fadeIn'}
                 iterationCount={!animationEnded ? 1 : 'infinite'}
                 duration={2000}
-                delay={animationEnded ? 0 : 3000}
+                delay={animationEnded ? 0 : 2000}
                 onAnimationEnd={() => setAnimationEnded(true)}
                 style={[styles.text, { fontSize: 24 }]}
               >
@@ -54,11 +54,14 @@ export default function WelcomeScreen() {
               animation={animationEnded ? '' : 'fadeIn'}
               iterationCount={!animationEnded ? 1 : 'infinite'}
               duration={2000}
-              delay={animationEnded ? 0 : 3000}
+              delay={animationEnded ? 0 : 2000}
               onAnimationEnd={() => setAnimationEnded(true)}
               style={{ marginTop: 50 }}
             >
-              <Pressable onPress={() => router.replace('/auth')}>
+              <Pressable
+                disabled={!animationEnded}
+                onPress={() => router.replace('/auth')}
+              >
                 <Text style={[styles.text, { fontSize: 18 }]}>
                   Log into account
                 </Text>
