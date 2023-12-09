@@ -5,53 +5,53 @@ import {
   useColorScheme,
   Platform,
   View,
-} from 'react-native'
-import React, { useEffect } from 'react'
-import { colorPalette } from '../theme/colors'
-import * as Animatable from 'react-native-animatable'
-import GenresPieChart from './GenresPieChart'
-import { MaterialCommunityIcons } from '@expo/vector-icons'
-import { GenreIconsEnum } from '../utils/genreIconsEnum'
-import { Button } from 'react-native-paper'
-import { IPredictedGenres } from '../auth/interfaces/prediction/IPredictedGenres'
-import { IPieChartData } from '../auth/interfaces/prediction/IPieChartData'
-import { usePredictStore } from '../auth/store/predictStore'
-import Loader from './Loader'
+  Pressable,
+} from 'react-native';
+import React, { useEffect } from 'react';
+import { colorPalette } from '../theme/colors';
+import * as Animatable from 'react-native-animatable';
+import GenresPieChart from './GenresPieChart';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { GenreIconsEnum } from '../utils/genreIconsEnum';
+import { IPredictedGenres } from '../auth/interfaces/prediction/IPredictedGenres';
+import { IPieChartData } from '../auth/interfaces/prediction/IPieChartData';
+import { usePredictStore } from '../auth/store/predictStore';
+import Loader from './Loader';
 
 type ResultModalProps = {
-  visible: boolean
-  setVisible: React.Dispatch<React.SetStateAction<boolean>>
-}
+  visible: boolean;
+  setVisible: React.Dispatch<React.SetStateAction<boolean>>;
+};
 
 const ResultModal = ({ visible, setVisible }: ResultModalProps) => {
-  const colorScheme = useColorScheme()
-  const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light']
+  const colorScheme = useColorScheme();
+  const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light'];
 
-  const [isLoading, setIsLoading] = React.useState<boolean>(false)
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [predictionData, setPredictionData] =
-    React.useState<IPredictedGenres | null>(null)
+    React.useState<IPredictedGenres | null>(null);
 
   useEffect(() => {
-    setIsLoading(true)
-    setPredictionData(usePredictStore.getState().currentPrediction)
-    console.log('Result Modal rendered. Prediction data:', predictionData)
-    setIsLoading(false)
-  }, [usePredictStore.getState().currentPrediction])
+    setIsLoading(true);
+    setPredictionData(usePredictStore.getState().currentPrediction);
+    console.log('Result Modal rendered. Prediction data:', predictionData);
+    setIsLoading(false);
+  }, [usePredictStore.getState().currentPrediction]);
 
   if (!predictionData) {
-    return null
+    return null;
   }
 
   const chartData: IPieChartData[] = Object.keys(predictionData).map(
     (genre) => {
-      console.log(predictionData[genre as keyof typeof predictionData])
+      console.log(predictionData[genre as keyof typeof predictionData]);
       console.log(
         'Type: ',
         typeof predictionData[genre as keyof typeof predictionData]
-      )
+      );
 
       const prediction =
-        predictionData[genre as keyof typeof predictionData]!.toFixed(3)
+        predictionData[genre as keyof typeof predictionData]!.toFixed(3);
 
       return {
         name: genre,
@@ -60,9 +60,9 @@ const ResultModal = ({ visible, setVisible }: ResultModalProps) => {
         legendFontColor:
           colors[genre.toLocaleLowerCase() as keyof typeof colors],
         legendFontSize: Platform.OS === 'web' ? 18 : 14,
-      }
+      };
     }
-  )
+  );
 
   return (
     <Modal
@@ -117,35 +117,38 @@ const ResultModal = ({ visible, setVisible }: ResultModalProps) => {
               height={230}
             />
 
-            <Button
-              // icon="close"
-              mode="outlined"
-              onPress={() => setVisible(false)}
-              buttonColor={colors.secondary}
-              textColor={colors.contrast}
-              labelStyle={{
-                color: colors.contrast,
-                fontFamily: 'Kanit-Medium',
-                fontSize: Platform.OS === 'web' ? 20 : 16,
-              }}
+            <Pressable
+              android_ripple={{ color: colors.cardContrast }}
               style={{
+                backgroundColor: colors.secondary,
                 width: '100%',
                 maxWidth: 400,
+                height: Platform.OS === 'web' ? 60 : 40,
                 borderRadius: 10,
                 marginTop: Platform.OS === 'web' ? 10 : 40,
                 alignItems: 'center',
+                justifyContent: 'center',
               }}
+              onPress={() => setVisible(false)}
             >
-              Close
-            </Button>
+              <Text
+                style={{
+                  color: colors.contrast,
+                  fontFamily: 'Kanit-Medium',
+                  fontSize: Platform.OS === 'web' ? 20 : 16,
+                }}
+              >
+                Close
+              </Text>
+            </Pressable>
           </View>
         ) : (
           <Loader color={colors.secondary} size={'large'} centered={true} />
         )}
       </Animatable.View>
     </Modal>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   text: {
@@ -181,6 +184,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 30,
   },
-})
+});
 
-export default ResultModal
+export default ResultModal;

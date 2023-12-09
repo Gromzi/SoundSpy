@@ -95,7 +95,7 @@ const useSendRecording = () => {
         })
       }
     } catch (error) {
-      toast.show('Something went wrong, the file might be too large', {
+      toast.show('Something went wrong, try again later', {
         type: 'danger',
         placement: 'bottom',
         textStyle: { fontFamily: 'Kanit-Regular' },
