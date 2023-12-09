@@ -1,84 +1,48 @@
-import { StyleSheet, useColorScheme, Text, Platform, View } from 'react-native'
-import { colorPalette } from '../theme/colors'
-import * as Animatable from 'react-native-animatable'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { ScrollView } from 'react-native-gesture-handler'
-import AccordionItem from './AccordionItem'
-import React, { useEffect, useState } from 'react'
-import { GenreIconsEnum } from '../utils/genreIconsEnum'
-import GenresPieChart from './GenresPieChart'
-import { MaterialCommunityIcons } from '@expo/vector-icons'
-import { useFocusEffect } from 'expo-router'
-import { usePredictStore } from '../auth/store/predictStore'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { IPredictedGenres } from '../auth/interfaces/prediction/IPredictedGenres'
-import Loader from './Loader'
-import { IPredictionResponse } from '../auth/interfaces/prediction/IPredictionResponse'
-import { IPieChartData } from '../auth/interfaces/prediction/IPieChartData'
-import moment from 'moment'
+import { StyleSheet, useColorScheme, Text, Platform, View } from 'react-native';
+import { colorPalette } from '../theme/colors';
+import * as Animatable from 'react-native-animatable';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { ScrollView } from 'react-native-gesture-handler';
+import AccordionItem from './AccordionItem';
+import React, { useEffect, useState } from 'react';
+import { GenreIconsEnum } from '../utils/genreIconsEnum';
+import GenresPieChart from './GenresPieChart';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useFocusEffect } from 'expo-router';
+import { usePredictStore } from '../auth/store/predictStore';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { IPredictedGenres } from '../auth/interfaces/prediction/IPredictedGenres';
+import Loader from './Loader';
+import { IPredictionResponse } from '../auth/interfaces/prediction/IPredictionResponse';
+import { IPieChartData } from '../auth/interfaces/prediction/IPieChartData';
+import moment from 'moment';
 
 type ServerResponse = {
-  id: number
-  user_id?: number
-  result: string
-  created_at: string
-  updated_at: string
-}
+  id: number;
+  user_id?: number;
+  result: string;
+  created_at: string;
+  updated_at: string;
+};
 
 const HistoryCard = () => {
-  const colorScheme = useColorScheme()
-  const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light']
+  const colorScheme = useColorScheme();
+  const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light'];
 
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
   const [historyData, setHistoryData] = useState<IPredictionResponse[] | null>(
     null
-  )
-
-  // useEffect(() => {
-  //   setIsLoading(true)
-  //   console.log('HistoryCard rendered')
-  //   AsyncStorage.getItem('history')
-  //     .then((history) => {
-  //       if (history) {
-  //         const parsedServerResponse: Array<ServerResponse> =
-  //           JSON.parse(history)
-
-  //         const historyData: IPredictionResponse[] = parsedServerResponse.map(
-  //           (element) => {
-  //             return {
-  //               id: element.id,
-  //               user_id: element.user_id,
-  //               result: JSON.parse(element.result),
-  //               created_at: element.created_at,
-  //               updated_at: element.updated_at,
-  //             }
-  //           }
-  //         )
-
-  //         historyData.sort((a, b) => b.id - a.id)
-  //         setHistoryData(historyData)
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.log(
-  //         'Error fetching data from AsyncStorage in HistoryCard: ',
-  //         error
-  //       )
-  //     })
-  //     .finally(() => {
-  //       setIsLoading(false)
-  //     })
-  // }, [usePredictStore.getState().refreshAfterDelete])
+  );
 
   useFocusEffect(
     React.useCallback(() => {
-      setIsLoading(true)
-      console.log('HistoryCard rendered')
+      setIsLoading(true);
+      console.log('HistoryCard rendered');
       AsyncStorage.getItem('history')
         .then((history) => {
           if (history) {
             const parsedServerResponse: Array<ServerResponse> =
-              JSON.parse(history)
+              JSON.parse(history);
 
             const historyData: IPredictionResponse[] = parsedServerResponse.map(
               (element) => {
@@ -88,31 +52,33 @@ const HistoryCard = () => {
                   result: JSON.parse(element.result),
                   created_at: element.created_at,
                   updated_at: element.updated_at,
-                }
+                };
               }
-            )
+            );
 
-            historyData.sort((a, b) => b.id - a.id)
-            setHistoryData(historyData)
+            historyData.sort((a, b) => b.id - a.id);
+            setHistoryData(historyData);
+          } else {
+            setHistoryData(null);
           }
         })
         .catch((error) => {
           console.log(
             'Error fetching data from AsyncStorage in HistoryCard: ',
             error
-          )
+          );
         })
         .finally(() => {
-          setIsLoading(false)
-        })
+          setIsLoading(false);
+        });
     }, [
       usePredictStore.getState().currentPrediction,
       usePredictStore.getState().refreshAfterDelete,
     ])
-  )
+  );
 
   const renderAccordionItems = () => {
-    console.log('History data in renderAccordionItems: ', historyData)
+    console.log('History data in renderAccordionItems: ', historyData);
     if (!historyData) {
       return (
         <View style={{ flex: 1, alignItems: 'center', marginTop: 30 }}>
@@ -133,15 +99,15 @@ const HistoryCard = () => {
             {'Start predicting!'}
           </Text>
         </View>
-      )
+      );
     }
 
     return historyData.map((predictionResponse) => {
-      const predictedGenres: IPredictedGenres = predictionResponse.result
+      const predictedGenres: IPredictedGenres = predictionResponse.result;
       const chartData: IPieChartData[] = Object.keys(predictedGenres).map(
         (genre) => {
           const prediction =
-            predictedGenres[genre as keyof typeof predictedGenres]!
+            predictedGenres[genre as keyof typeof predictedGenres]!;
 
           return {
             name: genre,
@@ -150,21 +116,21 @@ const HistoryCard = () => {
             legendFontColor:
               colors[genre.toLocaleLowerCase() as keyof typeof colors],
             legendFontSize: Platform.OS === 'web' ? 18 : 14,
-          }
+          };
         }
-      )
+      );
 
-      const topGenreName = chartData[0].name
-      const topGenreColor = chartData[0].color
+      const topGenreName = chartData[0].name;
+      const topGenreColor = chartData[0].color;
 
       const date = moment
         .utc(predictionResponse.created_at)
         .local()
-        .format('DD-MM-YYYY')
+        .format('DD-MM-YYYY');
       const time = moment
         .utc(predictionResponse.created_at)
         .local()
-        .format('HH:mm:ss')
+        .format('HH:mm:ss');
 
       return (
         <AccordionItem
@@ -208,9 +174,9 @@ const HistoryCard = () => {
             />
           </View>
         </AccordionItem>
-      )
-    })
-  }
+      );
+    });
+  };
 
   return (
     <Animatable.View
@@ -237,8 +203,8 @@ const HistoryCard = () => {
         </ScrollView>
       </SafeAreaView>
     </Animatable.View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   card: {
@@ -292,6 +258,6 @@ const styles = StyleSheet.create({
   historyElementBody: {
     alignItems: 'center',
   },
-})
+});
 
-export default HistoryCard
+export default HistoryCard;
