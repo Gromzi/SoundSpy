@@ -91,6 +91,7 @@ export default function LoginScreen() {
         router.back()
         toast.show('Successfully logged in!', {
           type: 'success',
+          duration: 2000,
           placement: 'bottom',
           textStyle: { fontFamily: 'Kanit-Regular' },
           style: {

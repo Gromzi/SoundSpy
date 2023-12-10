@@ -123,7 +123,7 @@ const ResultModal = ({ visible, setVisible }: ResultModalProps) => {
                 backgroundColor: colors.secondary,
                 width: '100%',
                 maxWidth: 400,
-                height: Platform.OS === 'web' ? 60 : 40,
+                height: 40,
                 borderRadius: 10,
                 marginTop: Platform.OS === 'web' ? 10 : 40,
                 alignItems: 'center',

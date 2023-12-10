@@ -35,12 +35,14 @@ const SettingsCard = ({ setIsLoading }: Props) => {
     if ((await AsyncStorage.getItem('history')) === null) {
       toast.show('History is already empty!', {
         type: 'info',
+        duration: 2000,
         placement: 'bottom',
         textStyle: { fontFamily: 'Kanit-Regular' },
         style: {
           borderRadius: 16,
           backgroundColor: colors.primary,
           marginBottom: 50,
+          
         },
         animationType: 'slide-in',
       })

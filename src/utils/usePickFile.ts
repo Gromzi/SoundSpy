@@ -43,6 +43,17 @@ export const usePickFile = () => {
         } else {
           // More than one file was selected, handle this case accordingly
           console.log('Please select only one file')
+          toast.show('Please select only one file', {
+            type: 'danger',
+            textStyle: { fontFamily: 'Kanit-Regular' },
+            style: {
+              borderRadius: 16,
+              backgroundColor: colors.error,
+              marginBottom: 50,
+            },
+            placement: 'bottom',
+            animationType: 'slide-in',
+          })
         }
       } else {
         console.log('Document picking canceled')
