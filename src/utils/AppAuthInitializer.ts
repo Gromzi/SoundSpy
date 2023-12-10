@@ -20,12 +20,6 @@ const AppAuthInitializer = ({ children }: AppAuthInitializerProps) => {
   const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light']
 
   const initializeAuthState = async () => {
-    // Platform.OS === 'web'
-    //   ? AsyncStorage.removeItem('USER_TOKEN')
-    //   : SecureStore.deleteItemAsync('USER_TOKEN')
-
-    // await AsyncStorage.removeItem('history')
-
     const history = await AsyncStorage.getItem('history')
     console.log('History: ', history)
 
@@ -53,7 +47,7 @@ const AppAuthInitializer = ({ children }: AppAuthInitializerProps) => {
               Authorization: 'Bearer ' + JSON.parse(token),
             },
           })
-          const code = await response.status
+          const code = response.status
           const json = await response.json()
           console.log('Code: ', code)
 
