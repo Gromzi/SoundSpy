@@ -28,11 +28,10 @@ const AboutModal = ({ visible, setVisible }: Props) => {
       onDismiss={() => setVisible(false)}
       onRequestClose={() => setVisible(false)}
     >
-      <ScrollView
+      <View
         style={[styles.mainContainer, { backgroundColor: colors.contrast }]}
-        contentContainerStyle={{ alignItems: 'center', paddingBottom: 60 }}
       >
-        <View style={styles.header}>
+        <View style={[styles.header]}>
           <Pressable hitSlop={10} onPress={() => setVisible(false)}>
             <AntDesign name="back" size={32} color={colors.cardContrast} />
           </Pressable>
@@ -47,99 +46,114 @@ const AboutModal = ({ visible, setVisible }: Props) => {
             About
           </Text>
 
-          <FontAwesome
-            name="question-circle"
-            size={32}
-            color={colors.primary}
-          />
+          <Pressable hitSlop={10} onPress={() => setVisible(false)}>
+            <FontAwesome
+              name="question-circle"
+              size={32}
+              color={colors.primary}
+            />
+          </Pressable>
         </View>
-        <View>
-          <Text
-            style={[
-              styles.text,
-              {
+        <View style={styles.content}>
+          <ScrollView>
+            <Text
+              style={[
+                styles.text,
+                {
+                  color: colors.cardContrast,
+                  marginBottom: 40,
+                  textAlign: 'center',
+                },
+              ]}
+            >
+              SoundSet is an app that uses machine learning to predict the genre
+              of a song based on the recorded or provided audio.
+            </Text>
+            <Text
+              style={{
+                fontFamily: 'Kanit-Medium',
+                fontSize: 22,
                 color: colors.cardContrast,
+                textAlign: 'center',
                 marginBottom: 20,
-                textAlign: 'center',
-              },
-            ]}
-          >
-            SoundSet is an app that uses machine learning to predict the genre
-            of a song based on the recorded or provided audio.
-          </Text>
-          <Text
-            style={[
-              styles.text,
-              {
-                color: colors.cardContrast,
-                marginBottom: 40,
-                textAlign: 'center',
-              },
-            ]}
-          >
-            To start recording, press the big button and wait 30 seconds. The
-            app will then analyse the audio and provide a prediction. You can
-            also upload a song from your device to get a prediction. The
-            prediction is then saved to the history tab. If you want to access
-            your history on another device, you can sign up for an account and
-            log in.
-          </Text>
-          <Text
-            style={{
-              fontFamily: 'Kanit-Medium',
-              fontSize: 22,
-              color: colors.cardContrast,
-              textAlign: 'center',
-              marginBottom: 20,
-            }}
-          >
-            Authors
-          </Text>
-          <View style={{ marginBottom: 20 }}>
-            <Text
-              style={{
-                fontFamily: 'Kanit-Regular',
-                color: colors.cardContrast,
-                textAlign: 'center',
               }}
             >
-              <Text style={{ fontFamily: 'Kanit-Medium', fontSize: 16 }}>
-                Michał Gierak{'\n'}
-              </Text>
-              - UI/UX design, Frontend
+              How it works
             </Text>
-          </View>
-          <View style={{ marginBottom: 20 }}>
+            <Text
+              style={[
+                styles.text,
+                {
+                  color: colors.cardContrast,
+                  marginBottom: 40,
+                  textAlign: 'center',
+                },
+              ]}
+            >
+              To start recording, press the big button and wait 30 seconds. The
+              app will then analyse the audio and provide a prediction. You can
+              also upload a song from your device to get a prediction. The
+              prediction is then saved to the history tab. If you want to access
+              your history on another device, you can sign up for an account and
+              log in.
+            </Text>
             <Text
               style={{
-                fontFamily: 'Kanit-Regular',
+                fontFamily: 'Kanit-Medium',
+                fontSize: 22,
                 color: colors.cardContrast,
                 textAlign: 'center',
+                marginBottom: 20,
               }}
             >
-              <Text style={{ fontFamily: 'Kanit-Medium', fontSize: 16 }}>
-                Konrad Chęciński{'\n'}
-              </Text>
-              - Backend, Dev-Ops
+              Authors
             </Text>
-          </View>
+            <View style={{ marginBottom: 20 }}>
+              <Text
+                style={{
+                  fontFamily: 'Kanit-Regular',
+                  color: colors.cardContrast,
+                  textAlign: 'center',
+                }}
+              >
+                <Text style={{ fontFamily: 'Kanit-Medium', fontSize: 16 }}>
+                  Michał Gierak{'\n'}
+                </Text>
+                - UI/UX design, Frontend
+              </Text>
+            </View>
+            <View style={{ marginBottom: 20 }}>
+              <Text
+                style={{
+                  fontFamily: 'Kanit-Regular',
+                  color: colors.cardContrast,
+                  textAlign: 'center',
+                }}
+              >
+                <Text style={{ fontFamily: 'Kanit-Medium', fontSize: 16 }}>
+                  Konrad Chęciński{'\n'}
+                </Text>
+                - Backend, Dev-Ops
+              </Text>
+            </View>
 
-          <View style={{ marginBottom: 20 }}>
-            <Text
-              style={{
-                fontFamily: 'Kanit-Regular',
-                color: colors.cardContrast,
-                textAlign: 'center',
-              }}
-            >
-              <Text style={{ fontFamily: 'Kanit-Medium', fontSize: 16 }}>
-                Piotr Dyba{'\n'}
+            <View style={{ marginBottom: 20 }}>
+              <Text
+                style={{
+                  fontFamily: 'Kanit-Regular',
+                  color: colors.cardContrast,
+                  textAlign: 'center',
+                }}
+              >
+                <Text style={{ fontFamily: 'Kanit-Medium', fontSize: 16 }}>
+                  Piotr Dyba{'\n'}
+                </Text>
+                - Machine Learning prediction model
               </Text>
-              - Machine Learning prediction model
-            </Text>
-          </View>
+            </View>
+          </ScrollView>
         </View>
-      </ScrollView>
+      </View>
     </Modal>
   )
 }
@@ -153,6 +167,13 @@ const styles = StyleSheet.create({
     paddingLeft: 35,
     paddingRight: 35,
     paddingTop: 20,
+    alignItems: 'center',
+    paddingBottom: 20,
+  },
+  content: {
+    width: '100%',
+    paddingBottom: 120,
+    maxWidth: 600,
   },
   header: {
     width: '100%',

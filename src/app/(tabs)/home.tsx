@@ -69,8 +69,8 @@ export default function HomeScreen() {
       <Pressable
         style={{
           position: 'absolute',
-          top: Platform.OS === 'web' ? 20 : 40,
-          right: 20,
+          top: Platform.OS === 'web' ? 8 : 47,
+          right: 15,
           padding: 20,
         }}
         hitSlop={10}
