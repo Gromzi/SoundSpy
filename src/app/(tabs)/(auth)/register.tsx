@@ -1,30 +1,30 @@
-import { View, Text, useColorScheme, StyleSheet } from 'react-native';
-import React, { useState } from 'react';
-import { colorPalette } from '../../../theme/colors';
-import { Button, TextInput } from 'react-native-paper';
-import { Controller, set, useForm } from 'react-hook-form';
-import { router, useLocalSearchParams } from 'expo-router';
-import Loader from '../../../components/Loader';
-import * as Animatable from 'react-native-animatable';
-import { login } from '../../../auth/auth';
-import { useToast } from 'react-native-toast-notifications';
+import { View, Text, useColorScheme, StyleSheet } from 'react-native' 
+import React, { useState } from 'react' 
+import { colorPalette } from '../../../theme/colors' 
+import { Button, TextInput } from 'react-native-paper' 
+import { Controller, set, useForm } from 'react-hook-form' 
+import { router, useLocalSearchParams } from 'expo-router' 
+import Loader from '../../../components/Loader' 
+import * as Animatable from 'react-native-animatable' 
+import { login } from '../../../auth/auth' 
+import { useToast } from 'react-native-toast-notifications' 
 
 type FormData = {
-  email: string;
-  password: string;
-};
+  email: string 
+  password: string 
+} 
 
 export default function RegisterScreen() {
-  const colorScheme = useColorScheme();
-  const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light'];
+  const colorScheme = useColorScheme() 
+  const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light'] 
 
-  const toast = useToast();
+  const toast = useToast() 
 
-  const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false) 
+  const [isLoading, setIsLoading] = useState(false) 
 
-  const params = useLocalSearchParams();
-  const { email } = params;
+  const params = useLocalSearchParams() 
+  const { email } = params 
 
   const {
     control,
@@ -35,10 +35,10 @@ export default function RegisterScreen() {
       email: email?.toString(),
       password: '',
     },
-  });
+  }) 
   const onSubmit = async (data: FormData) => {
-    console.log(data);
-    setIsLoading(true);
+    console.log(data) 
+    setIsLoading(true) 
     try {
       const response = await fetch(
         'https://soundset.webitup.pl/api/auth/register',
@@ -53,10 +53,10 @@ export default function RegisterScreen() {
             password: data.password,
           }),
         }
-      );
-      const code = await response.status;
-      const json = await response.json();
-      console.log('Code: ', code);
+      ) 
+      const code = response.status 
+      const json = await response.json() 
+      console.log('Code: ', code) 
 
       if (code == 401) {
         toast.show('Something went wrong. Try again later', {
@@ -69,12 +69,12 @@ export default function RegisterScreen() {
             marginBottom: 50,
           },
           animationType: 'slide-in',
-        });
+        }) 
       }
 
       if (code == 200) {
-        await login(json);
-        router.replace('/settings');
+        await login(json) 
+        router.replace('/settings') 
         toast.show('Successfully registered and logged in!', {
           type: 'success',
           placement: 'bottom',
@@ -85,7 +85,7 @@ export default function RegisterScreen() {
             marginBottom: 50,
           },
           animationType: 'slide-in',
-        });
+        }) 
       }
     } catch (error) {
       toast.show('Something went wrong. Try again later', {
@@ -98,11 +98,11 @@ export default function RegisterScreen() {
           marginBottom: 50,
         },
         animationType: 'slide-in',
-      });
-      console.error(error);
+      }) 
+      console.error(error) 
     }
-    setIsLoading(false);
-  };
+    setIsLoading(false) 
+  } 
 
   return (
     <>
@@ -244,7 +244,7 @@ export default function RegisterScreen() {
         <Loader color={colors.secondary} size={'large'} centered={true} />
       )}
     </>
-  );
+  ) 
 }
 
 const styles = StyleSheet.create({
@@ -269,4 +269,4 @@ const styles = StyleSheet.create({
     width: '100%',
     maxWidth: 400,
   },
-});
+}) 

@@ -1,23 +1,23 @@
-import { View, Text, useColorScheme, StyleSheet } from 'react-native';
-import React, { useState } from 'react';
-import { colorPalette } from '../../../theme/colors';
-import { Button, TextInput } from 'react-native-paper';
-import { Controller, useForm } from 'react-hook-form';
-import { router } from 'expo-router';
-import Loader from '../../../components/Loader';
-import { useToast } from 'react-native-toast-notifications';
+import { View, Text, useColorScheme, StyleSheet } from 'react-native' 
+import React, { useState } from 'react' 
+import { colorPalette } from '../../../theme/colors' 
+import { Button, TextInput } from 'react-native-paper' 
+import { Controller, useForm } from 'react-hook-form' 
+import { router } from 'expo-router' 
+import Loader from '../../../components/Loader' 
+import { useToast } from 'react-native-toast-notifications' 
 
 type FormData = {
-  email: string;
-};
+  email: string 
+} 
 
 export default function EmailScreen() {
-  const colorScheme = useColorScheme();
-  const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light'];
+  const colorScheme = useColorScheme() 
+  const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light'] 
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false) 
 
-  const toast = useToast();
+  const toast = useToast() 
 
   const {
     control,
@@ -27,10 +27,10 @@ export default function EmailScreen() {
     defaultValues: {
       email: '',
     },
-  });
+  }) 
   const onSubmit = async (data: FormData) => {
-    console.log(data);
-    setIsLoading(true);
+    console.log(data) 
+    setIsLoading(true) 
     try {
       const response = await fetch(
         `https://soundset.webitup.pl/api/auth/exist?email=${encodeURIComponent(
@@ -42,9 +42,9 @@ export default function EmailScreen() {
             'Content-Type': 'application/json',
           },
         }
-      );
-      const json = await response.json();
-      const exist = json.exist;
+      ) 
+      const json = await response.json() 
+      const exist = json.exist 
 
       if (exist) {
         router.push({
@@ -52,14 +52,14 @@ export default function EmailScreen() {
           params: {
             email: data.email,
           },
-        });
+        }) 
       } else {
         router.push({
           pathname: '/register',
           params: {
             email: data.email,
           },
-        });
+        }) 
       }
     } catch (error) {
       toast.show('Something went wrong, try again later', {
@@ -72,11 +72,11 @@ export default function EmailScreen() {
         },
         placement: 'bottom',
         animationType: 'slide-in',
-      });
-      console.error(error);
+      }) 
+      console.error(error) 
     }
-    setIsLoading(false);
-  };
+    setIsLoading(false) 
+  } 
 
   return (
     <>
@@ -145,7 +145,7 @@ export default function EmailScreen() {
         <Loader color={colors.secondary} size={'large'} centered={true} />
       )}
     </>
-  );
+  ) 
 }
 
 const styles = StyleSheet.create({
@@ -170,4 +170,4 @@ const styles = StyleSheet.create({
     width: '100%',
     maxWidth: 400,
   },
-});
+}) 

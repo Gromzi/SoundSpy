@@ -1,38 +1,39 @@
-import { View, Text, useColorScheme, StyleSheet } from 'react-native';
-import React, { useEffect, useState } from 'react';
-import { colorPalette } from '../../../theme/colors';
-import { Avatar, Button, TextInput } from 'react-native-paper';
-import { Controller, useForm } from 'react-hook-form';
-import { useLocalSearchParams, useRouter } from 'expo-router';
-import Loader from '../../../components/Loader';
-import * as Animatable from 'react-native-animatable';
-import { login } from '../../../auth/auth';
-import { useToast } from 'react-native-toast-notifications';
+import { View, Text, useColorScheme, StyleSheet } from 'react-native' 
+import React, { useEffect, useState } from 'react' 
+import { colorPalette } from '../../../theme/colors' 
+import { Avatar, Button, TextInput } from 'react-native-paper' 
+import { Controller, useForm } from 'react-hook-form' 
+import { useLocalSearchParams, useRouter } from 'expo-router' 
+import Loader from '../../../components/Loader' 
+import * as Animatable from 'react-native-animatable' 
+import { login } from '../../../auth/auth' 
+import { useToast } from 'react-native-toast-notifications' 
+import { ScrollView } from 'react-native-gesture-handler'
 
 type FormData = {
-  email: string;
-  password: string;
-};
+  email: string 
+  password: string 
+} 
 
 type LoginData = {
-  name: string;
-  picture: string;
-};
+  name: string 
+  picture: string 
+} 
 
 export default function LoginScreen() {
-  const colorScheme = useColorScheme();
-  const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light'];
+  const colorScheme = useColorScheme() 
+  const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light'] 
 
-  const router = useRouter();
-  const toast = useToast();
+  const router = useRouter() 
+  const toast = useToast() 
 
-  const [showPassword, setShowPassword] = useState(false);
-  const [loginData, setLoginData] = useState<LoginData | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isWrongPassword, setIsWrongPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false) 
+  const [loginData, setLoginData] = useState<LoginData | null>(null) 
+  const [isLoading, setIsLoading] = useState(false) 
+  const [isWrongPassword, setIsWrongPassword] = useState(false) 
 
-  const params = useLocalSearchParams();
-  const { email } = params;
+  const params = useLocalSearchParams() 
+  const { email } = params 
 
   const {
     control,
@@ -44,11 +45,11 @@ export default function LoginScreen() {
       email: email?.toString(),
       password: '',
     },
-  });
+  }) 
 
   const onSubmit = async (data: FormData) => {
-    console.log(data);
-    setIsLoading(true);
+    console.log(data) 
+    setIsLoading(true) 
     try {
       const response = await fetch(
         'https://soundset.webitup.pl/api/auth/login',
@@ -63,13 +64,13 @@ export default function LoginScreen() {
             password: data.password,
           }),
         }
-      );
-      const code = await response.status;
-      const json = await response.json();
-      console.log('Code: ', code);
+      ) 
+      const code = await response.status 
+      const json = await response.json() 
+      console.log('Code: ', code) 
 
       if (code == 401) {
-        setIsWrongPassword(true);
+        setIsWrongPassword(true) 
         toast.show('Wrong password!', {
           type: 'danger',
           placement: 'bottom',
@@ -80,15 +81,15 @@ export default function LoginScreen() {
             marginBottom: 50,
           },
           animationType: 'slide-in',
-        });
+        }) 
       }
 
       if (code == 200) {
-        setIsWrongPassword(false);
-        await login(json);
-        router.back();
-        router.back();
-        router.back();
+        setIsWrongPassword(false) 
+        await login(json) 
+        router.back() 
+        router.back() 
+        router.back() 
         toast.show('Successfully logged in!', {
           type: 'success',
           duration: 2000,
@@ -100,7 +101,7 @@ export default function LoginScreen() {
             marginBottom: 50,
           },
           animationType: 'slide-in',
-        });
+        }) 
       }
     } catch (error) {
       toast.show('Something went wrong. Try again later', {
@@ -113,11 +114,11 @@ export default function LoginScreen() {
           marginBottom: 50,
         },
         animationType: 'slide-in',
-      });
-      console.error(error);
+      }) 
+      console.error(error) 
     }
-    setIsLoading(false);
-  };
+    setIsLoading(false) 
+  } 
 
   const getLoginData = async (data: FormData) => {
     try {
@@ -131,26 +132,26 @@ export default function LoginScreen() {
             'Content-Type': 'application/json',
           },
         }
-      );
-      const json = await response.json();
-      setLoginData(json);
+      ) 
+      const json = await response.json() 
+      setLoginData(json) 
     } catch (error) {
-      console.error(error);
+      console.error(error) 
     }
-  };
+  } 
 
   useEffect(() => {
-    getLoginData(getValues());
-  }, []);
+    getLoginData(getValues()) 
+  }, []) 
 
   return (
-    <View style={{ width: '100%', flex: 1, backgroundColor: colors.contrast }}>
+    <ScrollView style={{ width: '100%', flex: 1, backgroundColor: colors.contrast }}>
       {loginData && (
         <Animatable.View
           style={[styles.mainContainer, { backgroundColor: colors.contrast }]}
-          animation={'fadeInUpBig'}
+          animation={'fadeInDownBig'}
         >
-          {loginData?.picture ? (
+          {loginData.picture ? (
             <Avatar.Image source={{ uri: loginData?.picture }} size={120} />
           ) : (
             <Avatar.Icon size={120} icon="account" />
@@ -270,7 +271,6 @@ export default function LoginScreen() {
                 onBlur={onBlur}
                 onChangeText={onChange}
                 onSubmitEditing={handleSubmit(onSubmit)}
-                autoFocus
                 value={value}
               />
             )}
@@ -306,8 +306,8 @@ export default function LoginScreen() {
       {(isLoading || !loginData) && (
         <Loader color={colors.secondary} size={'large'} centered={true} />
       )}
-    </View>
-  );
+    </ScrollView>
+  ) 
 }
 
 const styles = StyleSheet.create({
@@ -332,4 +332,4 @@ const styles = StyleSheet.create({
     width: '100%',
     maxWidth: 400,
   },
-});
+}) 

@@ -191,6 +191,7 @@ const SettingsCard = ({ setIsLoading }: Props) => {
                 toast.show('Successfully logged out!', {
                   type: 'success',
                   placement: 'bottom',
+                  duration: 2000,
                   textStyle: { fontFamily: 'Kanit-Regular' },
                   style: {
                     borderRadius: 16,
