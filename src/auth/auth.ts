@@ -4,6 +4,7 @@ import * as SecureStore from 'expo-secure-store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ILoginRegisterResponse } from './interfaces/auth/ILoginRegisterResponse';
 import { IHistory } from './interfaces/prediction/IHistory';
+import { usePredictStore } from './store/predictStore';
 
 const login = async (loginResponse: ILoginRegisterResponse) => {
   const { authorization, user } = loginResponse;
@@ -16,13 +17,13 @@ const login = async (loginResponse: ILoginRegisterResponse) => {
   try {
     Platform.OS === 'web'
       ? await AsyncStorage.setItem(
-          'USER_TOKEN',
-          JSON.stringify(authorization.token)
-        )
+        'USER_TOKEN',
+        JSON.stringify(authorization.token)
+      )
       : await SecureStore.setItemAsync(
-          'USER_TOKEN',
-          JSON.stringify(authorization.token)
-        );
+        'USER_TOKEN',
+        JSON.stringify(authorization.token)
+      );
   } catch (error) {
     console.error('Error storing token: ', error);
   }
@@ -37,37 +38,43 @@ const login = async (loginResponse: ILoginRegisterResponse) => {
 };
 
 const fetchHistory = async () => {
-  // const history = await AsyncStorage.getItem('history');
-  // let filteredHistory: IHistory[] | null = null;
+  const history = await AsyncStorage.getItem('history');
+  let filteredHistory: IHistory[] | null = null;
 
-  // if (history) {
-  //   filteredHistory = JSON.parse(history).filter(
-  //     (historyElement: IHistory) => !historyElement.user_id
-  //   );
+  if (history) {
+    filteredHistory = JSON.parse(history).filter(
+      (historyElement: IHistory) => !historyElement.user_id
+    );
 
-  //   console.log('Filtered history: ', filteredHistory);
-  // }
+    console.log('Filtered history: ', filteredHistory);
+  }
 
-  // try {
-  //   const response = await fetch(
-  //     'https://soundset.webitup.pl/api/predict/history',
-  //     {
-  //       method: 'POST',
-  //       headers: {
-  //         Accept: 'application/json',
-  //         'Content-Type': 'application/json',
-  //         Authorization: 'Bearer ' + useAuthStore.getState().token,
-  //       },
-  //       body: JSON.stringify({ history: filteredHistory }),
-  //     }
-  //   );
+  try {
+    const response = await fetch(
+      'https://soundset.webitup.pl/api/predict/history',
+      {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + useAuthStore.getState().token,
+        },
+        body: JSON.stringify({ history: filteredHistory }),
+      }
+    );
 
-  //   const mergedHistory = await response.json();
+    const mergedHistory = await response.json()
+    console.log(mergedHistory)
 
-  //   await AsyncStorage.setItem('history', JSON.stringify(mergedHistory));
-  // } catch (error) {
-  //   console.error('Error fetching history: ', error);
-  // }
+    await AsyncStorage.setItem('history', JSON.stringify(mergedHistory.history));
+    usePredictStore
+      .getState()
+      .setRefreshAfterDelete(
+        usePredictStore.getState().refreshAfterDelete + 1
+      )
+  } catch (error) {
+    console.error('Error fetching history: ', error);
+  }
 };
 
 const signInWithGoogle = async (token: string | undefined) => {

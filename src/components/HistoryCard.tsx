@@ -120,7 +120,9 @@ const HistoryCard = () => {
         }
       );
 
-      const topGenreName = chartData[0].name;
+      const topGenreName = chartData.sort(
+        (a, b) => b.prediction - a.prediction
+      )[0].name;
       const topGenreColor = chartData[0].color;
 
       const date = moment
