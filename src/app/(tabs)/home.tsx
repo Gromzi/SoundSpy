@@ -1,15 +1,30 @@
-import { View, StyleSheet, Text, Button } from 'react-native'
-import React, { ReactNode, useEffect, useState } from 'react'
+import {
+  View,
+  StyleSheet,
+  Text,
+  Button,
+  Pressable,
+  useColorScheme,
+  Platform,
+} from 'react-native'
+import React, { ReactNode, useState } from 'react'
 import { BackgroundGrandient } from '../../components/BackgroundGrandient'
 import RecordButton from '../../components/RecordButton'
 import UploadButton from '../../components/UploadButton'
 import * as Animatable from 'react-native-animatable'
 import ResultModal from '../../components/ResultModal'
+import AboutModal from '../../components/AboutModal'
+import { FontAwesome } from '@expo/vector-icons'
+import { colorPalette } from '../../theme/colors'
 
 export default function HomeScreen() {
+  const colorScheme = useColorScheme()
+  const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light']
+
   const [isRecording, setIsRecording] = useState<boolean>(false)
   const [waitingForResponse, setWaitingForResponse] = useState<boolean>(false)
   const [resultModalVisible, setResultModalVisible] = useState<boolean>(false)
+  const [aboutModalVisible, setAboutModalVisible] = useState<boolean>(false)
 
   let bottomText: ReactNode = null
 
@@ -51,6 +66,28 @@ export default function HomeScreen() {
 
   return (
     <BackgroundGrandient>
+      <Pressable
+        style={{
+          position: 'absolute',
+          top: Platform.OS === 'web' ? 20 : 40,
+          right: 20,
+          padding: 20,
+        }}
+        hitSlop={10}
+        onPress={() => setAboutModalVisible(true)}
+      >
+        <FontAwesome
+          name="question-circle"
+          size={32}
+          color={colors.secondary}
+        />
+      </Pressable>
+
+      <AboutModal
+        visible={aboutModalVisible}
+        setVisible={setAboutModalVisible}
+      />
+
       <ResultModal
         visible={resultModalVisible}
         setVisible={setResultModalVisible}
