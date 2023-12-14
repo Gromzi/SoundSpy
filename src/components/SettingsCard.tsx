@@ -42,7 +42,6 @@ const SettingsCard = ({ setIsLoading }: Props) => {
           borderRadius: 16,
           backgroundColor: colors.primary,
           marginBottom: 50,
-          
         },
         animationType: 'slide-in',
       })
@@ -260,30 +259,6 @@ const SettingsCard = ({ setIsLoading }: Props) => {
             </TouchableOpacity>
           </React.Fragment>
         )}
-
-        <View
-          style={[
-            styles.divider,
-            { backgroundColor: colors.cardContrast, marginBottom: 30 },
-          ]}
-        ></View>
-
-        <Text
-          style={[styles.text, { color: colors.secondary, marginBottom: 30 }]}
-        >
-          App configuration
-        </Text>
-
-        <TouchableOpacity style={styles.buttonContainer}>
-          <Text style={[styles.text, { color: colors.cardText }]}>
-            Duration of recording
-          </Text>
-          <MaterialIcons
-            name="keyboard-arrow-down"
-            size={32}
-            color={colors.cardText}
-          />
-        </TouchableOpacity>
       </View>
     </Animatable.View>
   )
