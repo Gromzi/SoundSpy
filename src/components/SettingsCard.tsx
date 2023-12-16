@@ -299,7 +299,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     paddingLeft: 17,
     paddingRight: 17,
-    paddingBottom: 20,
+    paddingBottom: 10,
   },
   buttonContainer: {
     flexDirection: 'row',
