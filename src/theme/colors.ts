@@ -1,24 +1,24 @@
 type Colors = {
-  primary: string
-  secondary: string
-  contrast: string
-  cardContrast: string
-  disabledCardContrast: string
-  text: string
-  cardText: string
-  disabledCardText: string
-  error: string
-  darkerPrimary: string
+  primary: string;
+  secondary: string;
+  contrast: string;
+  cardContrast: string;
+  disabledCardContrast: string;
+  text: string;
+  cardText: string;
+  disabledCardText: string;
+  error: string;
+  darkerPrimary: string;
 
-  rock: string
-  pop: string
-  rap: string
-  edm: string
-  country: string
-  metal: string
-  classical: string
-  jazz: string
-}
+  rock: string;
+  pop: string;
+  rap: string;
+  edm: string;
+  country: string;
+  metal: string;
+  classical: string;
+  jazz: string;
+};
 
 const colorPalette = {
   dark: {
@@ -34,17 +34,17 @@ const colorPalette = {
     darkerPrimary: '#731460',
     accordionBody: '#570f49',
 
-    classical: '#FFD700',
-    disco: '#FF1493',
-    edm: '#00CED1',
-    funk: '#FFD700',
-    heavy_metal: '#808080',
-    hip_hop: '#FF4500',
-    jazz: '#8A2BE2',
-    pop: '#FF69B4',
-    reggae: '#00FF00',
-    rock: '#FF4500',
-    techno: '#00CED1',
+    classical: '#FFD700', // Gold
+    disco: '#FF69B4', // Medium Violet Red
+    edm: '#00CED1', // Dark Turquoise
+    funk: '#8A2BE2', // Blue-Violet
+    heavy_metal: '#808080', // Gray
+    hip_hop: '#FF6347', // Tomato
+    jazz: '#32CD32', // Lime Green
+    pop: '#FF4500', // Orange-Red
+    reggae: '#228B22', // Forest Green
+    rock: '#5E60CE', // Lighter Indigo
+    techno: '#00CED1', // Dark Turquoise
   },
   light: {
     primary: '#F79540',
@@ -59,18 +59,18 @@ const colorPalette = {
     darkerPrimary: '#cf7d36',
     accordionBody: '#ffbf41',
 
-    classical: '#483D8B',
-    disco: '#E63E99',
-    edm: '#009BA9',
-    funk: '#B8860B',
-    heavy_metal: '#808080',
-    hip_hop: '#E53D30',
-    jazz: '#7A67C7',
-    pop: '#D13E00',
-    reggae: '#2E8B57',
-    rock: '#E53D30',
-    techno: '#009BA9',
+    classical: '#4CAF50',    // Green
+    disco: '#006666', // Dark Teal
+    edm: '#B22222', // Fire Brick
+    funk: '#551A8B', // Purple
+    heavy_metal: '#696969', // Dim Gray
+    hip_hop: '#006400', // Dark Green
+    jazz: '#FF4500', // Orange-Red
+    pop: '#800080', // Purple
+    reggae: '#00008B', // Dark Blue
+    rock: '#8B0000', // Dark Red
+    techno: '#008B8B', // Dark Cyan
   },
-}
+};
 
-export { colorPalette, Colors }
+export { colorPalette, Colors };
