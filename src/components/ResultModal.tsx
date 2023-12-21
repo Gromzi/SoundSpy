@@ -34,7 +34,7 @@ const ResultModal = ({ visible, setVisible }: ResultModalProps) => {
   useEffect(() => {
     setIsLoading(true);
     setPredictionData(usePredictStore.getState().currentPrediction);
-    console.log('Result Modal rendered. Prediction data:', predictionData);
+    // console.log('Result Modal rendered. Prediction data:', predictionData);
     setIsLoading(false);
   }, [usePredictStore.getState().currentPrediction]);
 
@@ -44,11 +44,11 @@ const ResultModal = ({ visible, setVisible }: ResultModalProps) => {
 
   const chartData: IPieChartData[] = Object.keys(predictionData).map(
     (genre) => {
-      console.log(predictionData[genre as keyof typeof predictionData]);
-      console.log(
-        'Type: ',
-        typeof predictionData[genre as keyof typeof predictionData]
-      );
+      // console.log(predictionData[genre as keyof typeof predictionData]);
+      // console.log(
+      //   'Type: ',
+      //   typeof predictionData[genre as keyof typeof predictionData]
+      // );
 
       const prediction =
         predictionData[genre as keyof typeof predictionData]!.toFixed(3);

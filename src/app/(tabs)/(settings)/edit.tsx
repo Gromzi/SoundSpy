@@ -54,7 +54,7 @@ export default function EditScreen() {
         const uriArray = imageUri.split('.');
         const fileExtension = uriArray[uriArray.length - 1];
         const fileMimeType = `${result.assets[0].type}/${fileExtension}`;
-        console.log(result.assets[0], fileMimeType);
+        // console.log(result.assets[0], fileMimeType);
 
         let base64: any;
 
@@ -85,7 +85,7 @@ export default function EditScreen() {
             }
           );
           const code = await response.status;
-          console.log('Code: ', code);
+          // console.log('Code: ', code);
 
           if (code === 200) {
             useAuthStore.getState().setUser({ ...user, picture: imageUri });
@@ -163,7 +163,7 @@ export default function EditScreen() {
         }
       );
       const code = await response.status;
-      console.log('Code: ', code);
+      // console.log('Code: ', code);
 
       if (code === 200) {
         useAuthStore.getState().setUser({ ...user, name: data.name });

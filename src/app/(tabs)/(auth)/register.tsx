@@ -37,7 +37,7 @@ export default function RegisterScreen() {
     },
   }) 
   const onSubmit = async (data: FormData) => {
-    console.log(data) 
+    // console.log(data) 
     setIsLoading(true) 
     try {
       const response = await fetch(
@@ -56,7 +56,7 @@ export default function RegisterScreen() {
       ) 
       const code = response.status 
       const json = await response.json() 
-      console.log('Code: ', code) 
+      // console.log('Code: ', code) 
 
       if (code == 401) {
         toast.show('Something went wrong. Try again later', {

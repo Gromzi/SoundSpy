@@ -21,7 +21,7 @@ const AppAuthInitializer = ({ children }: AppAuthInitializerProps) => {
 
   const initializeAuthState = async () => {
     const history = await AsyncStorage.getItem('history')
-    console.log('History: ', history)
+    // console.log('History: ', history)
 
     const token: Promise<string | null> =
       Platform.OS === 'web'
@@ -36,8 +36,8 @@ const AppAuthInitializer = ({ children }: AppAuthInitializerProps) => {
     // Check if user is logged in
     token.then(async (token) => {
       if (token) {
-        console.log('Token: ', token)
-        console.log('Token parse: ', JSON.parse(token))
+        // console.log('Token: ', token)
+        // console.log('Token parse: ', JSON.parse(token))
         // make request to api to check if token is valid
         try {
           const response = await fetch('https://soundset.webitup.pl/api/user', {
@@ -49,7 +49,7 @@ const AppAuthInitializer = ({ children }: AppAuthInitializerProps) => {
           })
           const code = response.status
           const json = await response.json()
-          console.log('Code: ', code)
+          // console.log('Code: ', code)
 
           if (code == 401) {
             setTokenExpired(true)
@@ -63,20 +63,20 @@ const AppAuthInitializer = ({ children }: AppAuthInitializerProps) => {
           console.log('Error: ', error)
         }
 
-        console.log('User logged in')
+        // console.log('User logged in')
         return
       } else {
-        console.log('User not logged in')
+        // console.log('User not logged in')
       }
     })
 
     googleToken.then((googleToken) => {
       if (googleToken) {
         signInWithGoogle(googleToken)
-        console.log('Google user logged in')
+        // console.log('Google user logged in')
         return
       } else {
-        console.log('Google user not logged in')
+        // console.log('Google user not logged in')
       }
     })
   }

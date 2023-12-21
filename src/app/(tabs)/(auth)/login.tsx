@@ -48,7 +48,7 @@ export default function LoginScreen() {
   })
 
   const onSubmit = async (data: FormData) => {
-    console.log(data)
+    // console.log(data)
     setIsLoading(true)
     try {
       const response = await fetch(
@@ -67,7 +67,7 @@ export default function LoginScreen() {
       )
       const code = await response.status
       const json = await response.json()
-      console.log('Code: ', code)
+      // console.log('Code: ', code)
 
       if (code == 401) {
         setIsWrongPassword(true)

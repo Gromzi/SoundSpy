@@ -62,7 +62,7 @@ const SettingsCard = ({ setIsLoading }: Props) => {
         }
       )
       const code = response.status
-      console.log('Delete response code: ', code)
+      // console.log('Delete response code: ', code)
 
       if (code === 200) {
         toast.show('Successfully deleted history!', {

@@ -29,7 +29,7 @@ export default function EmailScreen() {
     },
   }) 
   const onSubmit = async (data: FormData) => {
-    console.log(data) 
+    // console.log(data) 
     setIsLoading(true) 
     try {
       const response = await fetch(

@@ -30,11 +30,11 @@ const login = async (loginResponse: ILoginRegisterResponse) => {
 
   fetchHistory()
 
-  console.log(
-    'Logged in: ',
-    useAuthStore.getState().token,
-    useAuthStore.getState().user
-  )
+  // console.log(
+  //   'Logged in: ',
+  //   useAuthStore.getState().token,
+  //   useAuthStore.getState().user
+  // )
 }
 
 const fetchHistory = async () => {
@@ -46,7 +46,7 @@ const fetchHistory = async () => {
       (historyElement: IHistory) => !historyElement.user_id
     )
 
-    console.log('Filtered history: ', filteredHistory)
+    // console.log('Filtered history: ', filteredHistory)
   }
 
   try {
@@ -64,7 +64,7 @@ const fetchHistory = async () => {
     )
 
     const mergedHistory = await response.json()
-    console.log(mergedHistory)
+    // console.log(mergedHistory)
 
     await AsyncStorage.setItem('history', JSON.stringify(mergedHistory.history))
     usePredictStore
@@ -97,11 +97,11 @@ const signInWithGoogle = async (token: string | undefined) => {
       console.error('Error storing google token: ', error)
     }
 
-    console.log(
-      'Logged in with Google: ',
-      useAuthStore.getState().googleToken,
-      useAuthStore.getState().googleUser
-    )
+    // console.log(
+    //   'Logged in with Google: ',
+    //   useAuthStore.getState().googleToken,
+    //   useAuthStore.getState().googleUser
+    // )
   } catch (error) {
     console.error('Error signing in with Google: ', error)
   }

@@ -53,15 +53,15 @@ const useSendRecording = () => {
       const predictionResult: IPredictedGenres = JSON.parse(
         predictionData.result
       )
-      console.log('Code: ', code)
+      // console.log('Code: ', code)
 
       if (code === 200) {
-        console.log('Prediction data: ', predictionData)
-        console.log('Prediction result: ', predictionData.result)
+        // console.log('Prediction data: ', predictionData)
+        // console.log('Prediction result: ', predictionData.result)
 
         // save new prediction to local storage
         AsyncStorage.getItem('history').then((existingData: string | null) => {
-          console.log('Existing data: ', existingData)
+          // console.log('Existing data: ', existingData)
           const dataArray: IPredictionResponse[] = existingData
             ? JSON.parse(existingData)
             : []
@@ -72,10 +72,10 @@ const useSendRecording = () => {
             () => {
               // set zuustand state
               usePredictStore.getState().setCurrentPrediction(predictionResult)
-              console.log(
-                'Zustand state: ',
-                usePredictStore.getState().currentPrediction
-              )
+              // console.log(
+              //   'Zustand state: ',
+              //   usePredictStore.getState().currentPrediction
+              // )
               // show modal with prediction
               setResultModalVisible(true)
             }

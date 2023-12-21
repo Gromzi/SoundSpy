@@ -21,14 +21,14 @@ const useRecordSound = (
 
   const startRecording = async () => {
     try {
-      console.log('Requesting permissions..')
+      // console.log('Requesting permissions..')
       await Audio.requestPermissionsAsync()
       await Audio.setAudioModeAsync({
         allowsRecordingIOS: true,
         playsInSilentModeIOS: true,
       })
 
-      console.log('Starting recording setup..')
+      // console.log('Starting recording setup..')
 
       const { recording: newRecording } = await Audio.Recording.createAsync(
         MONO_PRESET
@@ -36,25 +36,25 @@ const useRecordSound = (
       // setRecording(newRecording)
       setRecordingState(newRecording)
       recording = newRecording
-      console.log('Recording setup complete')
+      // console.log('Recording setup complete')
 
       // Automatically stop recording after 5 seconds
 
       setTimeoutId(
         setTimeout(() => {
-          console.log(
-            'Recording state in timeout: ',
-            recording ? 'jest' : 'nie ma'
-          )
+          // console.log(
+          //   'Recording state in timeout: ',
+          //   recording ? 'jest' : 'nie ma'
+          // )
           stopRecordingAutomatically(recording)
-        }, 5150)
+        }, 30150)
       )
 
       setIsRecording(true)
 
-      console.log('Starting recording..')
+      // console.log('Starting recording..')
     } catch (error) {
-      console.error('Failed to start recording', error)
+      // console.error('Failed to start recording', error)
       setIsRecording(false)
     }
   }
@@ -64,35 +64,35 @@ const useRecordSound = (
   ) => {
     try {
       if (!recording) {
-        console.log('No recording to stop')
+        // console.log('No recording to stop')
         return
       }
 
-      console.log('Stopping recording automatically...')
+      // console.log('Stopping recording automatically...')
 
       await recording.stopAndUnloadAsync()
       await Audio.setAudioModeAsync({
         allowsRecordingIOS: false,
       })
 
-      console.log('Recording state: ', recording)
+      // console.log('Recording state: ', recording)
 
       const recordingStatus = await recording.getStatusAsync()
       const recordingDuration = recordingStatus.durationMillis
-      console.log('Time of recording: ', recordingDuration)
+      // console.log('Time of recording: ', recordingDuration)
 
       uri = recording.getURI()
-      console.log('Recording finished and stored at', uri)
+      // console.log('Recording finished and stored at', uri)
 
       if (uri) {
         // SEND RECORDING TO SERVER
         sendRecording(uri, setWaitingForResponse, setResultModalVisible)
 
-        console.log('Playing back recorded sound..')
-        const playbackObject = new Audio.Sound()
-        await playbackObject.loadAsync({ uri: uri })
-        await playbackObject.playAsync()
-        console.log('Playback complete')
+        // console.log('Playing back recorded sound..')
+        // const playbackObject = new Audio.Sound()
+        // await playbackObject.loadAsync({ uri: uri })
+        // await playbackObject.playAsync()
+        // console.log('Playback complete')
       }
 
       recording = null
@@ -106,28 +106,28 @@ const useRecordSound = (
   const abortRecording = async () => {
     try {
       if (!recordingState || recordingState._isDoneRecording) {
-        console.log('No recording to stop')
+        // console.log('No recording to stop')
         return
       }
 
-      console.log('Aborting recording...')
+      // console.log('Aborting recording...')
 
       await recordingState.stopAndUnloadAsync()
       await Audio.setAudioModeAsync({
         allowsRecordingIOS: false,
       })
 
-      console.log('Recording state: ', recording)
+      // console.log('Recording state: ', recording)
 
       const recordingStatus = await recordingState.getStatusAsync()
       const recordingDuration = recordingStatus.durationMillis
-      console.log('Recording aborted. Duration: ', recordingDuration)
+      // console.log('Recording aborted. Duration: ', recordingDuration)
 
       setRecordingState(null)
 
       setIsRecording(false)
     } catch (error) {
-      console.error('Failed to abort recording', error)
+      // console.error('Failed to abort recording', error)
     }
   }
 

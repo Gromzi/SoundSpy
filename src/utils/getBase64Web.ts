@@ -7,11 +7,11 @@ export const getBase64Web = async (
     const reader = new FileReader()
     reader.readAsDataURL(blob)
     reader.onload = () => {
-      console.log('getBase64Web result: ', reader.result)
+      // console.log('getBase64Web result: ', reader.result)
       resolve(reader.result)
     }
     reader.onerror = (error) => {
-      console.error('getBase64Web error: ', error)
+      // console.error('getBase64Web error: ', error)
       reject(error)
     }
   })

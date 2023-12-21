@@ -25,12 +25,12 @@ export const usePickFile = () => {
       if (!result.canceled) {
         if (result.assets.length === 1) {
           // Only one file was selected
-          console.log(
-            'File URI:',
-            result.assets[0].uri,
-            'File name:',
-            result.assets[0].name
-          )
+          // console.log(
+          //   'File URI:',
+          //   result.assets[0].uri,
+          //   'File name:',
+          //   result.assets[0].name
+          // )
           const audioUri = result.assets[0].uri
           const fileType = result.assets[0].mimeType
 
@@ -42,7 +42,7 @@ export const usePickFile = () => {
           )
         } else {
           // More than one file was selected, handle this case accordingly
-          console.log('Please select only one file')
+          // console.log('Please select only one file')
           toast.show('Please select only one file', {
             type: 'danger',
             textStyle: { fontFamily: 'Kanit-Regular' },
@@ -56,7 +56,7 @@ export const usePickFile = () => {
           })
         }
       } else {
-        console.log('Document picking canceled')
+        // console.log('Document picking canceled')
         toast.show('Document picking canceled', {
           type: 'danger',
           textStyle: { fontFamily: 'Kanit-Regular' },
@@ -70,7 +70,7 @@ export const usePickFile = () => {
         })
       }
     } catch (error) {
-      console.error('Error picking document:', error)
+      // console.error('Error picking document:', error)
       toast.show('Error picking document', {
         type: 'danger',
         textStyle: { fontFamily: 'Kanit-Regular' },

@@ -8,11 +8,10 @@ import {
 } from 'react-native'
 import { colorPalette } from '../theme/colors'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
-import { login, signInWithGoogle } from '../auth/auth'
-import { Link, useRouter } from 'expo-router'
+import { signInWithGoogle } from '../auth/auth'
+import { Link } from 'expo-router'
 import * as Animatable from 'react-native-animatable'
-import { useEffect, useState } from 'react'
-import LoginModal from './LoginModal'
+import { useEffect } from 'react'
 import * as WebBrowser from 'expo-web-browser'
 import * as Google from 'expo-auth-session/providers/google'
 import { IUser } from '../auth/interfaces/auth/IUser'
@@ -39,26 +38,16 @@ const LoginCard = () => {
     }),
   })
 
-  const [modalVisible, setModalVisible] = useState(false)
-
-  const router = useRouter()
-
-  // const onLoginPressHandler = () => {
-  //   Platform.OS === 'android' && promptAsync()
-  //   login()
-  //   router.back()
-  // }
-
   useEffect(() => {
     handleSignInWithGoogle()
   }, [response])
 
   const handleSignInWithGoogle = async () => {
     if (response?.type === 'success') {
-      console.log('response type: ', response?.type)
+      // console.log('response type: ', response?.type)
       await signInWithGoogle(response.authentication?.accessToken)
     } else {
-      console.log('response type: ', response?.type)
+      // console.log('response type: ', response?.type)
     }
   }
 
@@ -101,7 +90,7 @@ const LoginCard = () => {
         onPress={() => {
           if (Platform.OS === 'android') promptAsync()
           else {
-            console.log('Only available on Android')
+            // console.log('Only available on Android')
             return
           }
           // router.replace('/settings')

@@ -37,7 +37,7 @@ const HistoryCard = () => {
   useFocusEffect(
     React.useCallback(() => {
       setIsLoading(true)
-      console.log('HistoryCard rendered')
+      // console.log('HistoryCard rendered')
       AsyncStorage.getItem('history')
         .then((history) => {
           if (history) {
@@ -63,10 +63,10 @@ const HistoryCard = () => {
           }
         })
         .catch((error) => {
-          console.log(
-            'Error fetching data from AsyncStorage in HistoryCard: ',
-            error
-          )
+          // console.log(
+          //   'Error fetching data from AsyncStorage in HistoryCard: ',
+          //   error
+          // )
         })
         .finally(() => {
           setIsLoading(false)
@@ -78,7 +78,7 @@ const HistoryCard = () => {
   )
 
   const renderAccordionItems = () => {
-    console.log('History data in renderAccordionItems: ', historyData)
+    // console.log('History data in renderAccordionItems: ', historyData)
     if (!historyData || historyData.length === 0) {
       return (
         <View style={{ flex: 1, alignItems: 'center', marginTop: 30 }}>
