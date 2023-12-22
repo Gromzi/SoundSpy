@@ -1,18 +1,21 @@
 # SoundSet
 **SoundSet** (I changed the name after creating the repo ;)) is a Shazam-inspired cross-platform application that predicts genres based on a recording or an uploaded file. It will be available on Android and web (and maybe iOS if I ever buy a MAC).
-This repo is the frontend of the application, written in **Typescript** using **React Native** with **Expo**. I used the new **Expo Router** for routing, **React Hook Form** for handling forms and validation and **Zustand** for state management.
+I was responsible for writing the frontend of this app. I used the new **Expo Router** for routing, **React Hook Form** for handling forms and validation and **Zustand** for state management.
 
 ## App functionality
 The app allows the user to record the audio or send an audio file. The file is then send to the backend, which runs an ML script with a trained model. The predicted results are sent back to the app, and are displayed in a modal. The app saves the prediction result to the "history" view. The data is saved locally (or on the server, if the user decides to create an account). If the user has an account, they can modify their username and avatar image. 
 
 ## Link to site
-The app isn't deployed yet so if you want to test it out, you have to clone the repo, then run `npm i` and `npm start`. After that you can run the web version by opening the link in the console. If you want to run the Android version, you'll need to scan the QR code in the console using the **Expo Go** app. You can try running the iOS version, but I'm like 90% sure it won't work ;)
+Web - https://soundset.webitup.pl/
+
+The Android version wasn't published to the app store. If you want to test it out, you'll have to clone the repo, then run `npm i` and `npm start`. Scan the QR code in the console using the **Expo Go** app. You can try running the iOS version, but I'm like 90% sure it won't work ;)
 
 ## Tech Stack
 - React Native + Expo
 - Typescript
 - Expo Router
 - React Hook Form
+- Zustand
 
 ## A few screenshots of the app
 <img src="https://github.com/Gromzi/SoundSpy/assets/54584700/82f3fa54-67cb-4071-ba0b-eb8fe0371000" alt="screen1" width="300" /> 
