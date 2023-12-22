@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "SoundSet",
-    "slug": "soundset",
+    "slug": "SoundSet",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -34,7 +34,10 @@
               "pathPrefix": "/records"
             }
           ],
-          "category": [ "BROWSABLE", "DEFAULT" ]
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
         }
       ]
     },
@@ -54,6 +57,7 @@
       "eas": {
         "projectId": "fdbd1d90-f651-4282-9c9a-ae8ada5a6ae8"
       }
-    }
+    },
+    "owner": "kompajerteam"
   }
 }
