@@ -32,7 +32,7 @@ export const usePickFile = () => {
           //   result.assets[0].name
           // )
           const fileSize = result.assets[0].size
-          console.log('File size: ', fileSize)
+          // console.log('File size: ', fileSize)
           if(fileSize) {
             // if file size is bigger than 2.15MB, abort
             if(fileSize > 2250000) {
