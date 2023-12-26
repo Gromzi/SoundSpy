@@ -31,6 +31,7 @@ const useSendRecording = () => {
         base64 = await FileSystem.readAsStringAsync(audioUri, {
           encoding: FileSystem.EncodingType.Base64,
         })
+        // console.log('Base64: ', base64)
       }
 
       const response = await fetch('https://soundset.webitup.pl/api/predict', {
@@ -95,7 +96,7 @@ const useSendRecording = () => {
         })
       }
     } catch (error) {
-      toast.show('Something went wrong, try again later', {
+      toast.show('Something went wrong, make sure the file is not too large', {
         type: 'danger',
         placement: 'bottom',
         textStyle: { fontFamily: 'Kanit-Regular' },

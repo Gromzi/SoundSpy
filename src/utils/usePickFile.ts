@@ -19,7 +19,7 @@ export const usePickFile = () => {
     try {
       const result = await DocumentPicker.getDocumentAsync({
         type: 'audio/*',
-        copyToCacheDirectory: false,
+        copyToCacheDirectory: true,
       })
 
       if (!result.canceled) {
@@ -31,6 +31,26 @@ export const usePickFile = () => {
           //   'File name:',
           //   result.assets[0].name
           // )
+          const fileSize = result.assets[0].size
+          console.log('File size: ', fileSize)
+          if(fileSize) {
+            // if file size is bigger than 2.15MB, abort
+            if(fileSize > 2250000) {
+              toast.show('File too big! Pick a less-than-2MB file.', {
+                type: 'danger',
+                textStyle: { fontFamily: 'Kanit-Regular' },
+                style: {
+                  borderRadius: 16,
+                  backgroundColor: colors.error,
+                  marginBottom: 50,
+                },
+                placement: 'bottom',
+                animationType: 'slide-in',
+              })
+              return
+            }
+          }
+
           const audioUri = result.assets[0].uri
           const fileType = result.assets[0].mimeType
 
