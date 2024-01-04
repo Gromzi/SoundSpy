@@ -1,14 +1,14 @@
 import { Platform } from 'react-native'
 import { PieChart } from 'react-native-chart-kit'
-import { ColorPalette } from '../theme/colors'
+import { Colors } from '../theme/colors'
 
-const generatePieChart = (data: Array<any>, colors: ColorPalette) => {
+const generatePieChart = (data: Array<any>, colors: Colors) => {
   const sortedData = data.sort((a, b) => b.prediction - a.prediction)
 
   return (
     <PieChart
       data={sortedData}
-      width={Platform.OS === 'web' ? 400 : 325}
+      width={Platform.OS === 'web' ? 325 : 325}
       height={230}
       chartConfig={{
         backgroundColor: colors.contrast,

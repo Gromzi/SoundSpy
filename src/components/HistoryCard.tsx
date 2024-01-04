@@ -16,6 +16,7 @@ import Loader from './Loader'
 import { IPredictionResponse } from '../auth/interfaces/prediction/IPredictionResponse'
 import { IPieChartData } from '../auth/interfaces/prediction/IPieChartData'
 import moment from 'moment'
+import { Dimensions } from 'react-native'
 
 type ServerResponse = {
   id: number
@@ -33,6 +34,7 @@ const HistoryCard = () => {
   const [historyData, setHistoryData] = useState<IPredictionResponse[] | null>(
     null
   )
+  const [currentWidth, setCurrentWidth] = useState<number>(0)
 
   useFocusEffect(
     React.useCallback(() => {
@@ -148,7 +150,13 @@ const HistoryCard = () => {
             />
           }
         >
-          <View style={styles.historyElementBody}>
+          <View
+            style={styles.historyElementBody}
+            onLayout={(event) => {
+              const { width } = event.nativeEvent.layout
+              setCurrentWidth(width)
+            }}
+          >
             <View style={styles.headerOne}>
               <Text style={[styles.text, { color: colors.text, fontSize: 26 }]}>
                 {'Most likely genre: '}
@@ -171,8 +179,8 @@ const HistoryCard = () => {
 
             <GenresPieChart
               data={chartData}
-              width={Platform.OS === 'web' ? 400 : 330}
-              height={230}
+              width={currentWidth}
+              height={Platform.OS === 'web' ? 230 : 230}
             />
           </View>
         </AccordionItem>

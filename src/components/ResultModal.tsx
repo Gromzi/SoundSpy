@@ -6,40 +6,42 @@ import {
   Platform,
   View,
   Pressable,
-} from 'react-native';
-import React, { useEffect } from 'react';
-import { colorPalette } from '../theme/colors';
-import * as Animatable from 'react-native-animatable';
-import GenresPieChart from './GenresPieChart';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { GenreIconsEnum } from '../utils/genreIconsEnum';
-import { IPredictedGenres } from '../auth/interfaces/prediction/IPredictedGenres';
-import { IPieChartData } from '../auth/interfaces/prediction/IPieChartData';
-import { usePredictStore } from '../auth/store/predictStore';
-import Loader from './Loader';
+} from 'react-native'
+import React, { useEffect } from 'react'
+import { colorPalette } from '../theme/colors'
+import * as Animatable from 'react-native-animatable'
+import GenresPieChart from './GenresPieChart'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
+import { GenreIconsEnum } from '../utils/genreIconsEnum'
+import { IPredictedGenres } from '../auth/interfaces/prediction/IPredictedGenres'
+import { IPieChartData } from '../auth/interfaces/prediction/IPieChartData'
+import { usePredictStore } from '../auth/store/predictStore'
+import Loader from './Loader'
 
 type ResultModalProps = {
-  visible: boolean;
-  setVisible: React.Dispatch<React.SetStateAction<boolean>>;
-};
+  visible: boolean
+  setVisible: React.Dispatch<React.SetStateAction<boolean>>
+}
 
 const ResultModal = ({ visible, setVisible }: ResultModalProps) => {
-  const colorScheme = useColorScheme();
-  const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light'];
+  const colorScheme = useColorScheme()
+  const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light']
 
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [isLoading, setIsLoading] = React.useState<boolean>(false)
   const [predictionData, setPredictionData] =
-    React.useState<IPredictedGenres | null>(null);
+    React.useState<IPredictedGenres | null>(null)
+
+  const [currentWidth, setCurrentWidth] = React.useState<number>(0)
 
   useEffect(() => {
-    setIsLoading(true);
-    setPredictionData(usePredictStore.getState().currentPrediction);
+    setIsLoading(true)
+    setPredictionData(usePredictStore.getState().currentPrediction)
     // console.log('Result Modal rendered. Prediction data:', predictionData);
-    setIsLoading(false);
-  }, [usePredictStore.getState().currentPrediction]);
+    setIsLoading(false)
+  }, [usePredictStore.getState().currentPrediction])
 
   if (!predictionData) {
-    return null;
+    return null
   }
 
   const chartData: IPieChartData[] = Object.keys(predictionData).map(
@@ -51,7 +53,7 @@ const ResultModal = ({ visible, setVisible }: ResultModalProps) => {
       // );
 
       const prediction =
-        predictionData[genre as keyof typeof predictionData]!.toFixed(3);
+        predictionData[genre as keyof typeof predictionData]!.toFixed(3)
 
       return {
         name: genre,
@@ -60,9 +62,9 @@ const ResultModal = ({ visible, setVisible }: ResultModalProps) => {
         legendFontColor:
           colors[genre.toLocaleLowerCase() as keyof typeof colors],
         legendFontSize: Platform.OS === 'web' ? 18 : 14,
-      };
+      }
     }
-  );
+  )
 
   return (
     <Modal
@@ -81,7 +83,13 @@ const ResultModal = ({ visible, setVisible }: ResultModalProps) => {
         ]}
       >
         {!isLoading ? (
-          <View style={styles.contentContainer}>
+          <View
+            style={styles.contentContainer}
+            onLayout={(event) => {
+              const { width } = event.nativeEvent.layout
+              setCurrentWidth(width)
+            }}
+          >
             <View style={styles.headerOne}>
               <Text
                 style={[
@@ -111,10 +119,11 @@ const ResultModal = ({ visible, setVisible }: ResultModalProps) => {
                 {chartData[0].name}
               </Text>
             </View>
+
             <GenresPieChart
               data={chartData}
-              width={Platform.OS === 'web' ? 400 : 350}
-              height={230}
+              width={currentWidth}
+              height={Platform.OS === 'web' ? 230 : 230}
             />
 
             <Pressable
@@ -147,8 +156,8 @@ const ResultModal = ({ visible, setVisible }: ResultModalProps) => {
         )}
       </Animatable.View>
     </Modal>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   text: {
@@ -184,6 +193,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 30,
   },
-});
+})
 
-export default ResultModal;
+export default ResultModal

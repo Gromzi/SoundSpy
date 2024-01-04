@@ -80,7 +80,20 @@ const LoginCard = () => {
           animationType: 'slide-in',
         })
       }
-    } else {
+    } else if (response?.type === 'cancel') {
+      toast.show('Google sign in canceled', {
+        type: 'danger',
+        duration: 2000,
+        placement: 'bottom',
+        textStyle: { fontFamily: 'Kanit-Regular' },
+        style: {
+          borderRadius: 16,
+          backgroundColor: colors.error,
+          marginBottom: 50,
+        },
+        animationType: 'slide-in',
+      })
+    } else if (response?.type === 'error') {
       toast.show('Something went wrong. Try again later', {
         type: 'danger',
         duration: 2000,
