@@ -180,7 +180,7 @@ const HistoryCard = () => {
             <GenresPieChart
               data={chartData}
               width={currentWidth}
-              height={Platform.OS === 'web' ? 230 : 230}
+              height={Platform.OS === 'web' ? 230 : 200}
             />
           </View>
         </AccordionItem>
