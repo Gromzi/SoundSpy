@@ -76,35 +76,47 @@ const fetchHistory = async () => {
 }
 
 const signInWithGoogle = async (token: string | undefined) => {
-  if (!token) return
+  if (!token) return null
+
+  let responseCode = null
+  let googleUser = null
+
+  // get google user
   try {
     const response = await fetch('https://www.googleapis.com/userinfo/v2/me', {
       headers: { Authorization: `Bearer ${token}` },
     })
 
-    const user = await response.json()
+    googleUser = await response.json()
+  } catch (error) {
+    console.error('Error fetching google user: ', error)
+    return null
+  }
 
-    // set zustand state
-    useAuthStore.getState().setGoogleUser(user)
-    useAuthStore.getState().setGoogleToken(token)
+  // send google user to backend
+  try {
+    const loginResponse = await fetch(
+      'https://soundset.webitup.pl/api/auth/glogin',
+      {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ googleUser }),
+      }
+    )
+    responseCode = loginResponse.status
+    const json = await loginResponse.json()
 
-    // store token
-    try {
-      Platform.OS === 'web'
-        ? await AsyncStorage.setItem('googleToken', JSON.stringify(token))
-        : await SecureStore.setItemAsync('googleToken', JSON.stringify(token))
-    } catch (error) {
-      console.error('Error storing google token: ', error)
+    if (responseCode === 200) {
+      await login(json)
     }
-
-    // console.log(
-    //   'Logged in with Google: ',
-    //   useAuthStore.getState().googleToken,
-    //   useAuthStore.getState().googleUser
-    // )
   } catch (error) {
     console.error('Error signing in with Google: ', error)
   }
+
+  return responseCode
 }
 
 const logout = async () => {

@@ -17,6 +17,7 @@ import * as Google from 'expo-auth-session/providers/google'
 import { IUser } from '../auth/interfaces/auth/IUser'
 import { useAuthStore } from '../auth/store/authStore'
 import { makeRedirectUri } from 'expo-auth-session'
+import { useToast } from 'react-native-toast-notifications'
 
 WebBrowser.maybeCompleteAuthSession()
 
@@ -24,13 +25,16 @@ const LoginCard = () => {
   const colorScheme = useColorScheme()
   const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light']
 
+  const toast = useToast()
+
   const user: IUser | null = useAuthStore((state) => state.user)
 
   const [request, response, promptAsync] = Google.useAuthRequest({
     androidClientId:
       '859237873642-h8phdeqtoqicf2vcr714ofg5bcn6n79f.apps.googleusercontent.com',
     iosClientId: '', // need to use IOS to get iosClientId
-    webClientId: '', // need to host web app on https protocol
+    webClientId:
+      '859237873642-gsfpuil1ao5o1b8jlve9clqp2vvso2co.apps.googleusercontent.com',
 
     redirectUri: makeRedirectUri({
       scheme: 'com.gromzi.SoundSet',
@@ -45,9 +49,51 @@ const LoginCard = () => {
   const handleSignInWithGoogle = async () => {
     if (response?.type === 'success') {
       // console.log('response type: ', response?.type)
-      await signInWithGoogle(response.authentication?.accessToken)
+      const responseCode = await signInWithGoogle(
+        response.authentication?.accessToken
+      )
+
+      if (responseCode === 200) {
+        toast.show('Logged in successfully', {
+          type: 'success',
+          duration: 2000,
+          placement: 'bottom',
+          textStyle: { fontFamily: 'Kanit-Regular' },
+          style: {
+            borderRadius: 16,
+            backgroundColor: colors.primary,
+            marginBottom: 50,
+          },
+          animationType: 'slide-in',
+        })
+      } else {
+        toast.show('Something went wrong. Try again later', {
+          type: 'danger',
+          duration: 2000,
+          placement: 'bottom',
+          textStyle: { fontFamily: 'Kanit-Regular' },
+          style: {
+            borderRadius: 16,
+            backgroundColor: colors.error,
+            marginBottom: 50,
+          },
+          animationType: 'slide-in',
+        })
+      }
     } else {
-      // console.log('response type: ', response?.type)
+      toast.show('Something went wrong. Try again later', {
+        type: 'danger',
+        duration: 2000,
+        placement: 'bottom',
+        textStyle: { fontFamily: 'Kanit-Regular' },
+        style: {
+          borderRadius: 16,
+          backgroundColor: colors.error,
+          marginBottom: 50,
+        },
+        animationType: 'slide-in',
+      })
+      console.log('Google login error. Response type: ', response?.type)
     }
   }
 
@@ -88,9 +134,20 @@ const LoginCard = () => {
       <TouchableOpacity
         disabled={user ? true : false}
         onPress={() => {
-          if (Platform.OS === 'android') promptAsync()
+          if (!(Platform.OS === 'ios')) promptAsync()
           else {
-            // console.log('Only available on Android')
+            toast.show('Google login is not supported on IOS', {
+              type: 'danger',
+              duration: 2000,
+              placement: 'bottom',
+              textStyle: { fontFamily: 'Kanit-Regular' },
+              style: {
+                borderRadius: 16,
+                backgroundColor: colors.error,
+                marginBottom: 50,
+              },
+              animationType: 'slide-in',
+            })
             return
           }
           // router.replace('/settings')
