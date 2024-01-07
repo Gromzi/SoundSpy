@@ -53,7 +53,6 @@ const LoginCard = () => {
       const responseCode = await signInWithGoogle(
         response.authentication?.accessToken
       )
-      router.back()
       router.replace('/settings')
 
       if (responseCode === 200) {
