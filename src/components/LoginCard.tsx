@@ -12,14 +12,11 @@ import { signInWithGoogle } from '../auth/auth'
 import { Link, useRouter } from 'expo-router'
 import * as Animatable from 'react-native-animatable'
 import { useEffect } from 'react'
-import * as WebBrowser from 'expo-web-browser'
 import * as Google from 'expo-auth-session/providers/google'
 import { IUser } from '../auth/interfaces/auth/IUser'
 import { useAuthStore } from '../auth/store/authStore'
 import { makeRedirectUri } from 'expo-auth-session'
 import { useToast } from 'react-native-toast-notifications'
-
-WebBrowser.maybeCompleteAuthSession()
 
 const LoginCard = () => {
   const colorScheme = useColorScheme()
