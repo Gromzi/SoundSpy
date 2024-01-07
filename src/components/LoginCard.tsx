@@ -53,9 +53,13 @@ const LoginCard = () => {
       const responseCode = await signInWithGoogle(
         response.authentication?.accessToken
       )
-      router.replace('/settings')
 
       if (responseCode === 200) {
+        if (Platform.OS === 'web') {
+          router.back()
+          router.replace('/settings')
+        }
+
         toast.show('Logged in successfully', {
           type: 'success',
           duration: 2000,
