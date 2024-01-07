@@ -44,18 +44,6 @@ const LoginCard = () => {
   })
 
   useEffect(() => {
-    toast.show('LoginCard rendered', {
-      type: 'success',
-      duration: 2000,
-      placement: 'bottom',
-      textStyle: { fontFamily: 'Kanit-Regular' },
-      style: {
-        borderRadius: 16,
-        backgroundColor: colors.primary,
-        marginBottom: 50,
-      },
-      animationType: 'slide-in',
-    })
     handleSignInWithGoogle()
   }, [response])
 
@@ -95,7 +83,7 @@ const LoginCard = () => {
           animationType: 'slide-in',
         })
       }
-    } else if (response?.type === 'cancel') {
+    } else if (response?.type === 'dismiss') {
       toast.show('Google sign in canceled', {
         type: 'danger',
         duration: 2000,
@@ -123,7 +111,7 @@ const LoginCard = () => {
       })
       console.log('Google sign in error. Response type: ', response?.type)
     } else {
-      toast.show('Something went wrong. Try again later', {
+      toast.show(`Something went wrong. Try again later: ${response?.type}`, {
         type: 'danger',
         duration: 2000,
         placement: 'bottom',
