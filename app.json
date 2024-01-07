@@ -2,7 +2,7 @@
   "expo": {
     "name": "SoundSet",
     "slug": "SoundSet",
-    "version": "1.0.0",
+    "version": "1.0.3",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
@@ -39,7 +39,8 @@
             "DEFAULT"
           ]
         }
-      ]
+      ],
+      "versionCode": 4
     },
     "web": {
       "favicon": "./assets/favicon.png",
