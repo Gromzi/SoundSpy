@@ -103,7 +103,7 @@ const signInWithGoogle = async (token: string | undefined) => {
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ googleUser }),
+        body: JSON.stringify(googleUser),
       }
     )
     responseCode = loginResponse.status

@@ -9,7 +9,7 @@ import {
 import { colorPalette } from '../theme/colors'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { signInWithGoogle } from '../auth/auth'
-import { Link } from 'expo-router'
+import { Link, useRouter } from 'expo-router'
 import * as Animatable from 'react-native-animatable'
 import { useEffect } from 'react'
 import * as WebBrowser from 'expo-web-browser'
@@ -26,6 +26,7 @@ const LoginCard = () => {
   const colors = colorPalette[colorScheme === 'dark' ? 'dark' : 'light']
 
   const toast = useToast()
+  const router = useRouter()
 
   const user: IUser | null = useAuthStore((state) => state.user)
 
@@ -54,6 +55,7 @@ const LoginCard = () => {
       )
 
       if (responseCode === 200) {
+        router.back()
         toast.show('Logged in successfully', {
           type: 'success',
           duration: 2000,
