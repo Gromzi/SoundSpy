@@ -39,7 +39,7 @@ const LoginCard = () => {
 
     redirectUri: makeRedirectUri({
       scheme: 'com.gromzi.soundset',
-      path: '/auth',
+      path: '/settings',
     }),
   })
 
