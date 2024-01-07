@@ -12,8 +12,13 @@ import * as NavigationBar from 'expo-navigation-bar'
 import { colorPalette } from '../theme/colors'
 import { ToastProvider } from 'react-native-toast-notifications'
 import Loader from '../components/Loader'
+import * as WebBrowser from 'expo-web-browser'
 
 SplashScreen.preventAutoHideAsync()
+
+if (Platform.OS === 'web') {
+  WebBrowser.maybeCompleteAuthSession()
+}
 
 export default () => {
   const colorScheme = useColorScheme()

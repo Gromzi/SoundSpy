@@ -108,6 +108,7 @@ const signInWithGoogle = async (token: string | undefined) => {
     )
     responseCode = loginResponse.status
     const json = await loginResponse.json()
+    console.log('Google login backend response: ', json)
 
     if (responseCode === 200) {
       await login(json)

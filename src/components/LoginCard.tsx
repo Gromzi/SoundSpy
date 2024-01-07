@@ -48,7 +48,7 @@ const LoginCard = () => {
 
   const handleSignInWithGoogle = async () => {
     if (response?.type === 'success') {
-      // console.log('response type: ', response?.type)
+      console.log('response type: ', response?.type)
       const responseCode = await signInWithGoogle(
         response.authentication?.accessToken
       )
