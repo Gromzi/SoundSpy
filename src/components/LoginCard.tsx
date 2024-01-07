@@ -17,6 +17,9 @@ import { IUser } from '../auth/interfaces/auth/IUser'
 import { useAuthStore } from '../auth/store/authStore'
 import { makeRedirectUri } from 'expo-auth-session'
 import { useToast } from 'react-native-toast-notifications'
+import * as WebBrowser from 'expo-web-browser'
+
+WebBrowser.maybeCompleteAuthSession()
 
 const LoginCard = () => {
   const colorScheme = useColorScheme()
@@ -36,11 +39,23 @@ const LoginCard = () => {
 
     redirectUri: makeRedirectUri({
       scheme: 'com.gromzi.SoundSet',
-      path: '/settings',
+      path: '/auth',
     }),
   })
 
   useEffect(() => {
+    toast.show('LoginCard rendered', {
+      type: 'success',
+      duration: 2000,
+      placement: 'bottom',
+      textStyle: { fontFamily: 'Kanit-Regular' },
+      style: {
+        borderRadius: 16,
+        backgroundColor: colors.primary,
+        marginBottom: 50,
+      },
+      animationType: 'slide-in',
+    })
     handleSignInWithGoogle()
   }, [response])
 
@@ -67,7 +82,7 @@ const LoginCard = () => {
           animationType: 'slide-in',
         })
       } else {
-        toast.show('Something went wrong. Try again later', {
+        toast.show('Invalid request. Try again later', {
           type: 'danger',
           duration: 2000,
           placement: 'bottom',
@@ -94,6 +109,20 @@ const LoginCard = () => {
         animationType: 'slide-in',
       })
     } else if (response?.type === 'error') {
+      toast.show('Google sign in error', {
+        type: 'danger',
+        duration: 2000,
+        placement: 'bottom',
+        textStyle: { fontFamily: 'Kanit-Regular' },
+        style: {
+          borderRadius: 16,
+          backgroundColor: colors.error,
+          marginBottom: 50,
+        },
+        animationType: 'slide-in',
+      })
+      console.log('Google sign in error. Response type: ', response?.type)
+    } else {
       toast.show('Something went wrong. Try again later', {
         type: 'danger',
         duration: 2000,
@@ -106,7 +135,7 @@ const LoginCard = () => {
         },
         animationType: 'slide-in',
       })
-      console.log('Google login error. Response type: ', response?.type)
+      console.log('Google sign in error. Response type: ', response?.type)
     }
   }
 
