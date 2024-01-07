@@ -38,7 +38,7 @@ const LoginCard = () => {
       '859237873642-gsfpuil1ao5o1b8jlve9clqp2vvso2co.apps.googleusercontent.com',
 
     redirectUri: makeRedirectUri({
-      scheme: 'com.gromzi.SoundSet',
+      scheme: 'com.gromzi.soundset',
       path: '/auth',
     }),
   })
@@ -98,20 +98,6 @@ const LoginCard = () => {
       })
     } else if (response?.type === 'error') {
       toast.show('Google sign in error', {
-        type: 'danger',
-        duration: 2000,
-        placement: 'bottom',
-        textStyle: { fontFamily: 'Kanit-Regular' },
-        style: {
-          borderRadius: 16,
-          backgroundColor: colors.error,
-          marginBottom: 50,
-        },
-        animationType: 'slide-in',
-      })
-      console.log('Google sign in error. Response type: ', response?.type)
-    } else {
-      toast.show(`Something went wrong. Try again later: ${response?.type}`, {
         type: 'danger',
         duration: 2000,
         placement: 'bottom',
