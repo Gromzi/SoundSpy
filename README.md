@@ -10,7 +10,7 @@ Web - https://soundset.webitup.pl/
 
 The Android version wasn't published to the app store. If you want to test it out, you'll have to clone the repo, then run `npm i` and `npm start`. Scan the QR code in the console using the **Expo Go** app. You can try running the iOS version, but I'm like 90% sure it won't work ;)
 
-## Tech Stack
+## Frontend Tech Stack
 - React Native + Expo
 - Typescript
 - Expo Router
